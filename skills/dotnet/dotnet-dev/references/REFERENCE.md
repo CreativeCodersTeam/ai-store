@@ -140,7 +140,8 @@ fix failures before the gate.
 
 ### GATE 4 output
 Implemented tasks · build/test result · App-Smoke-Check outcome (or `n/a`
-reason). **Wait.**
+reason) · planned Phase-5 reviewer parameters (mode / tools / language).
+**Wait.**
 
 ---
 
@@ -151,6 +152,14 @@ reason). **Wait.**
   also invoke `dotnet-reviewer` in the main conversation. The skill reviews
   working-tree or branch-vs-`main` changes and writes a severity-tagged Markdown
   report under `docs/reviews/`.
+- **Parameters travel in the prompt.** The sub-agent cannot ask the user:
+  determine mode / tools / report language before dispatch (defaults in this
+  workflow: `mode=uncommitted` — the workflow never commits —, tools `no`
+  because build/test already ran in Phase 4, language English), announce them
+  in the GATE 4 summary, and pass them explicitly in the sub-agent prompt. The
+  reviewer then runs its non-interactive mode: the Step 1 prompt is skipped and
+  the large-diff gate auto-selects strategy D (chunked) with a note in the
+  report header.
 - Review covers: correctness/completeness vs requirement, test coverage, doc
   accuracy, code quality/bugs/security, .NET idioms, convention consistency.
 

@@ -23,15 +23,17 @@ The user may add language preferences (e.g., "in German") — apply that to the 
 
 Follow these steps in order.
 
-### Step 1 — Interactive prompt
+### Step 1 — Determine review parameters
 
-Ask the user three things:
+Three parameters drive the review:
 
 1. **Mode:** `uncommitted` (working-tree vs HEAD, includes staged/unstaged/untracked) or `branch` (current branch vs `main`).
 2. **Tools:** for each of `build`, `format`, `test` — yes or no. Default no for all three.
 3. **Report language:** default English. If they want another language, capture it.
 
-Validate inputs against the whitelist. Re-prompt on invalid input.
+**Interactive invocation (default):** ask the user for all three. Validate inputs against the whitelist. Re-prompt on invalid input.
+
+**Non-interactive invocation:** when the invocation context already supplies parameters (e.g. the dispatching prompt of a calling workflow such as `dotnet-dev` Phase 5, or a sub-agent prompt), skip the prompt for those parameters and validate the supplied values the same way. When no user is reachable (you are running as a sub-agent) and a parameter is missing, do not guess and do not stall — use the defaults `mode=uncommitted`, all tools `no`, language English. Record every parameter and its origin (`provided` / `default`) in the report metadata block.
 
 ### Step 2 — Detect .NET version
 
@@ -60,6 +62,8 @@ If `loc > 2000` OR `files > 50`, ask the user to choose:
 - **(D) Chunk file-by-file** — review each file independently; group findings by file.
 
 If C is chosen but no files match the priority heuristics, fall back to D and note the fallback transparently in the report.
+
+**Non-interactive invocation:** do not ask — automatically choose **(D) Chunk file-by-file** and note the automatic selection in the `Review strategy` line of the report header (e.g. `chunked (auto-selected, non-interactive)`).
 
 ### Step 5 — Run requested tool checks
 

@@ -171,8 +171,9 @@ For each task (or parallel group):
      check startup logs / health endpoint / a representative request, then shut
      it down cleanly. Never block on a foreground long-running process.
 
-**GATE 4 — STOP.** Present implemented tasks, build/test result, and the
-App-Smoke-Check outcome (or its `n/a` reason). Wait for confirmation.
+**GATE 4 — STOP.** Present implemented tasks, build/test result, the
+App-Smoke-Check outcome (or its `n/a` reason), and the planned `dotnet-reviewer`
+parameters for Phase 5 (mode, tools, report language). Wait for confirmation.
 
 ## Phase 5 — Code Review
 
@@ -181,6 +182,17 @@ App-Smoke-Check outcome (or its `n/a` reason). Wait for confirmation.
    it to the sub-agent prompt. Inline self-review does NOT satisfy this phase —
    `dotnet-reviewer` produces a severity-tagged Markdown report under
    `docs/reviews/`.
+
+   **Reviewer parameters:** the sub-agent cannot ask the user, so determine the
+   three `dotnet-reviewer` parameters before dispatch and write them explicitly
+   into the sub-agent prompt: `mode=uncommitted` (this workflow never commits,
+   so the changes are in the working tree; use `branch` only if the user
+   committed in the meantime), tools build/format/test = `no` (build and tests
+   already ran in Phase 4), report language = English unless the user stated
+   another preference. Announce these values in the GATE 4 summary so the user
+   can correct them with their Gate-4 confirmation — no extra round-trip. The
+   reviewer then runs in its non-interactive mode (Step 1 prompt skipped,
+   large-diff gate auto-selects chunked strategy).
 2. Evaluate findings:
    - **Rework needed** → create new tasks (each with its own Skill checklist)
      and return to **Phase 4**. After fixing, re-run Phase 5 (rework loop).
