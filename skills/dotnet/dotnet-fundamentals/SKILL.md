@@ -22,7 +22,7 @@ description: Use when registering services in any .NET host (ASP.NET Core, Worke
 - **Options over constructor parameters for configuration** — bind config sections to `IOptions<T>`, do not pass raw `IConfiguration` values around.
 - **Fail fast** — use `ValidateDataAnnotations().ValidateOnStart()` so misconfiguration surfaces at startup, not at first use.
 - **Immutable configuration** — Options classes use `required` properties and `init`-only setters.
-- **Cancellation flows everywhere** — every async method takes a `CancellationToken` with default as its last parameter and forwards it.
+- **Cancellation flows everywhere** — every async method takes a `CancellationToken` as its last parameter (`= default` on public API surfaces) and forwards the received token to every async call — never re-default it mid-chain.
 
 ## Reference Index
 

@@ -57,7 +57,7 @@ public async Task<Order?> GetByIdAsync(Guid id, CancellationToken ct = default)
 ```
 
 - Parameter is named `ct` or `cancellationToken` consistently within a codebase.
-- Default to `default` only for entry points that have no caller-supplied token (e.g. CLI `Main`); library code should require the caller to pass one.
+- Use `= default` on public API surfaces (library and service methods) so callers without a token can still call cleanly; **forward** the received token to every downstream async call — never re-default mid-chain and never substitute `CancellationToken.None`.
 - In ASP.NET Core, `HttpContext.RequestAborted` is automatically bound to action parameters of type `CancellationToken`.
 - Never swallow `OperationCanceledException` — let it bubble. The host treats it as expected cancellation.
 
