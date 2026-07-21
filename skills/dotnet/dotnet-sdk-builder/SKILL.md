@@ -1,6 +1,6 @@
 ---
 name: dotnet-sdk-builder
-description: Generates complete .NET SDK libraries with DI support, interfaces, typed HTTP clients, Options pattern, and typed exceptions. Use when asked to create a .NET SDK, build a .NET client library, wrap a REST API in C#, or generate a typed HTTP client. Invokes dotnet-xmldocs for XML documentation and dotnet-tester for tests.
+description: Use when asked to create a .NET SDK or client library, wrap a REST API in a typed C# client, generate a typed HTTP client with IHttpClientFactory, or produce a library with DI registration (AddXxx), Options pattern, and typed exceptions.
 ---
 
 # .NET SDK Library Builder

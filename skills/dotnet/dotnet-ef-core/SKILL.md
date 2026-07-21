@@ -1,6 +1,6 @@
 ---
 name: dotnet-ef-core
-description: Applies Entity Framework Core best practices for .NET projects. Use when designing DbContext, creating entities or relationships, writing LINQ queries, managing migrations, implementing repository patterns, or troubleshooting N+1 queries and performance issues with EF Core.
+description: Use when designing a DbContext, entities, or relationships, writing LINQ queries against EF Core, creating or reviewing migrations, implementing concurrency control or repository patterns, setting up EF Core tests, or troubleshooting N+1 and other query performance issues.
 ---
 
 # Entity Framework Core Best Practices

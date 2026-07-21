@@ -1,6 +1,6 @@
 ---
 name: dotnet-fundamentals
-description: Applies modern .NET fundamentals — dependency injection, Options pattern, configuration, and modern C# idioms. Use when registering services in any .NET host (ASP.NET Core, Worker Service, Console, MAUI), binding configuration with IOptions<T>, choosing DI lifetimes, configuring appsettings.json / User Secrets / environment variables, or applying primary constructors, required properties, nullable reference types, and CancellationToken propagation.
+description: Use when registering services in any .NET host (ASP.NET Core, Worker Service, Console, MAUI), choosing DI lifetimes, binding configuration to IOptions<T>, setting up appsettings.json / User Secrets / environment variables, or applying modern C# idioms such as primary constructors, required properties, nullable reference types, and CancellationToken propagation.
 ---
 
 # Modern .NET Fundamentals

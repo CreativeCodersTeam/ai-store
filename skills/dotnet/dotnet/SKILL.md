@@ -1,6 +1,6 @@
 ---
 name: dotnet
-description: Entry point and router for .NET and C# work — directs you to the right specialized .NET skill. Use when a request mentions .NET or C# in general but the specific tool is not obvious, or to get an overview of the available .NET skills. Routes to knowledge skills (dotnet-fundamentals, dotnet-aspnet, dotnet-ef-core, dotnet-xmldocs) and workflow skills (dotnet-sdk-builder, dotnet-tester, dotnet-reviewer, dotnet-inspect, dotnet-nuget-manager). When the matching skill is already clear, invoke that skill directly instead.
+description: Use when a task involves .NET or C# and the right specialized skill is not obvious, or when an overview of the available .NET skills is needed. Routes between dotnet-fundamentals, dotnet-aspnet, dotnet-ef-core, dotnet-xmldocs, dotnet-sdk-builder, dotnet-tester, dotnet-reviewer, dotnet-inspect, and dotnet-nuget-manager. When the matching skill is already clear, invoke that skill directly instead.
 ---
 
 # .NET / C# Skill Router

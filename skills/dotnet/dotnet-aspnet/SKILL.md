@@ -1,6 +1,6 @@
 ---
 name: dotnet-aspnet
-description: Applies ASP.NET Core best practices for building Web and REST APIs. Use when creating controllers, minimal APIs, configuring middleware, routing, model binding, validation, authentication, authorization, error handling with ProblemDetails, OpenAPI/Swagger, health checks, CORS, rate limiting, or structuring an ASP.NET Core project. For DI, Options pattern, and configuration that apply to any .NET host, use dotnet-fundamentals.
+description: Use when building or changing ASP.NET Core Web/REST APIs — controllers, minimal APIs, middleware pipeline, routing, model binding, validation, authentication, authorization, error handling with ProblemDetails, OpenAPI/Swagger, health checks, CORS, or rate limiting. For DI, Options pattern, and configuration common to all .NET hosts, use dotnet-fundamentals instead.
 ---
 
 # ASP.NET Core Web API Best Practices

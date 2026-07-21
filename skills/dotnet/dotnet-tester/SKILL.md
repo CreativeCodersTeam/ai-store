@@ -1,6 +1,6 @@
 ---
 name: dotnet-tester
-description: Writes, executes, and completes unit tests for C#/.NET code using xUnit, FakeItEasy, and AwesomeAssertions. Uses a second agent to identify missing test cases. Use when asked to create .NET tests or improve test coverage.
+description: Use when creating unit tests, adding tests, or improving test coverage for C#/.NET code, when new production code lacks tests, or when an existing suite is missing edge cases or error paths — projects using xUnit, FakeItEasy, AwesomeAssertions, FluentAssertions, NUnit, MSTest, or Moq. Not for non-.NET code or integration tests that only exercise external systems.
 ---
 
 # .NET Tester

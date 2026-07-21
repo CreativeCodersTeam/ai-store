@@ -1,6 +1,6 @@
 ---
 name: dotnet-xmldocs
-description: Adds and reviews C# XML documentation comments following Microsoft's documentation standards. Use when writing or reviewing C# code that includes public APIs, complex logic, or when documentation is missing or insufficient. Covers <summary>, <param>, <returns>, <exception>, <remarks>, and all standard XML doc tags.
+description: Use when writing or reviewing C# XML documentation comments (///) — public APIs without docs, insufficient or non-Microsoft-style <summary>, <param>, <returns>, or <exception> tags, or documentation that feeds OpenAPI/Swagger or NuGet symbol output.
 ---
 
 # C# Documentation Best Practices

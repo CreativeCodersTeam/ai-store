@@ -1,6 +1,6 @@
 ---
 name: dotnet-inspect
-description: Query .NET APIs across NuGet packages, platform libraries, and local files. Search for types, list API surfaces, compare and diff versions, find extension methods and implementors. Use whenever you need to answer questions about .NET library contents.
+description: Use when answering questions about .NET library contents — which types or members a NuGet package, platform library (System.*, Microsoft.AspNetCore.*), or local .dll/.nupkg file exposes, what changed between two versions, which extension methods or interface implementors exist, or where the source of an API lives.
 ---
 
 # dotnet-inspect

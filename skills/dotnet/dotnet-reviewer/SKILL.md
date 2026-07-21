@@ -1,6 +1,6 @@
 ---
 name: dotnet-reviewer
-description: Performs structured code reviews on .NET 10+ projects. Reviews either uncommitted working-tree changes or committed changes on the current feature branch (vs. main). Produces a Markdown report under docs/reviews/ with severity-tagged findings ([Critical|Major|Minor|Suggestion|Nitpick][Security|Performance|Architecture|Code-Quality|Tests|.NET-Idioms]) and fix suggestions. Must NOT activate on generic "review my code" requests; other-language reviewers must not be hijacked.
+description: Use only when explicitly requested by name — "dotnet-reviewer", "dotnet code review", or "dotnet review" — for a structured code review of a .NET 10+ project (uncommitted working-tree changes or current feature branch vs. main). Must NOT activate on generic "review my code" requests; other-language reviewers must not be hijacked.
 ---
 
 # dotnet-reviewer

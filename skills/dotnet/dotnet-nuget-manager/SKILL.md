@@ -1,6 +1,6 @@
 ---
 name: dotnet-nuget-manager
-description: Manages NuGet packages in .NET projects and solutions. Use when adding, removing, or updating NuGet package references or versions. Enforces dotnet CLI for package operations, supports Directory.Packages.props central version management, and provides version verification workflows. Handles dotnet add/remove package, dotnet list package --outdated, and dotnet restore.
+description: Use when adding, removing, or updating NuGet package references or versions in a .NET project or solution, listing outdated packages, verifying that a package version exists, or working in a solution with Directory.Packages.props central package management — including requests phrased as dotnet add/remove package or dotnet list package --outdated.
 ---
 
 # NuGet Manager
