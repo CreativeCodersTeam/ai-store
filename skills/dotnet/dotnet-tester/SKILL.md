@@ -89,15 +89,24 @@ public class MyClassTests
 
 ## Phase 3: Identify Missing Test Cases
 
-Start a **separate agent** that reads the production code and written tests, then returns a prioritized list of missing cases:
+Start a **separate agent** that reads the production code and the tests written in Phase 1, then returns a prioritized list of missing cases. The agent is stateless — the dispatch prompt must carry everything. Use this template (fill in the paths):
 
-- **Edge Cases**: Null, empty strings/collections, boundary/maximum values
-- **Error Paths**: Exceptions, timeouts, dependency errors
-- **Boundary Conditions**: Off-by-one, integer overflow
-- **Interactions**: Call order, multiple/concurrent calls
-- **State Transitions**: Different initial states
-
-Format: `[HIGH/MEDIUM/LOW] MethodName - Scenario: Description`
+> Analyze C# test coverage. You have no prior context — everything you need is below.
+>
+> Production code (read in full): `<absolute paths of the files under test>`
+> Tests (read in full): `<absolute paths of the test files from Phase 1>`
+> You may also read fixtures, mocks, or interfaces these files reference when needed to judge coverage.
+>
+> For every public method, compare its behavior surface against what the tests exercise. Identify MISSING test cases in exactly these categories:
+> - Edge Cases: null, empty strings/collections, boundary/maximum values
+> - Error Paths: exceptions, timeouts, dependency errors
+> - Boundary Conditions: off-by-one, integer overflow
+> - Interactions: call order, multiple/concurrent calls
+> - State Transitions: different initial states
+>
+> Return ONLY the prioritized list, sorted HIGH → MEDIUM → LOW, one line per case:
+> `[HIGH/MEDIUM/LOW] MethodName - Scenario: Description`
+> HIGH = plausible real-bug path, MEDIUM = meaningful robustness gap, LOW = completeness. Do not list already-covered cases, do not write test code, do not modify files, no preamble or commentary. Return an empty list if nothing is missing — do not invent low-value cases to fill it.
 
 ## Phase 4: Add Missing Tests
 
