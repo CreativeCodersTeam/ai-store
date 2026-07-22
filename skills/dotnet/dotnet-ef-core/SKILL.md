@@ -23,10 +23,10 @@ description: Use when designing a DbContext, entities, or relationships, writing
 
 ## Entity Design
 
-- Use meaningful primary keys (consider natural vs surrogate keys)
+- Default to surrogate keys (`int`/`Guid` `Id`); use a natural key only when it is immutable and unique by domain rule (e.g. an ISO country code)
 - Implement proper relationships (one-to-one, one-to-many, many-to-many)
 - Use data annotations or fluent API for constraints and validations
-- Implement appropriate navigational properties
+- Add navigation properties only for relationships the code actually traverses — every navigation invites an `Include()` and widens the change-tracking graph
 - Consider using owned entity types for value objects
 
 ## Performance
@@ -50,13 +50,13 @@ description: Use when designing a DbContext, entities, or relationships, writing
 
 - Use IQueryable judiciously and understand when queries execute
 - Prefer strongly-typed LINQ queries over raw SQL
-- Use appropriate query operators (Where, OrderBy, GroupBy)
+- Push filtering, ordering, and grouping into the database — apply `Where`/`OrderBy`/`GroupBy` before materialization; do not call `ToList()` and then filter in memory (if a predicate is untranslatable, restructure the query instead of materializing early)
 - Consider database functions for complex operations
 - Implement specifications pattern for reusable queries
 
 ## Change Tracking & Saving
 
-- Use appropriate change tracking strategies
+- Track entities only on write paths; use `AsNoTracking()` for read paths and `AsNoTrackingWithIdentityResolution()` when the same entity may appear multiple times in the result graph
 - Batch your SaveChanges() calls
 - Implement concurrency control for multi-user scenarios (see below)
 - Consider using transactions for multiple operations
@@ -69,8 +69,8 @@ See [concurrency-control.md](./references/concurrency-control.md) for `[Timestam
 ## Security
 
 - Use parameterized queries to prevent SQL injection
-- Implement appropriate data access permissions
-- Be careful with raw SQL queries
+- Run the application under a least-privilege database account — no DDL rights for the app user; migrations run under a separate, privileged deployment identity
+- Raw SQL only via `FromSqlInterpolated` (EF Core 7+: `FromSql`) or `FromSqlRaw` with `{0}`-placeholders plus parameter arguments — never string concatenation; `FromSqlRaw($"…{userInput}")` is SQL injection
 - Consider data encryption for sensitive information
 - Use migrations to manage database user permissions
 
