@@ -191,7 +191,8 @@ Findings · report path · rework/no-rework decision. **Wait.**
     correct — it is the audit trail.
 
 End with: *All changes are ready for your review. Commit them yourself when
-satisfied — this workflow creates no commits.*
+satisfied, or instruct me explicitly to commit — I never commit on my own
+initiative.*
 
 ---
 
@@ -205,10 +206,12 @@ satisfied — this workflow creates no commits.*
   tokensave → built-in; no `Explore` agents when tokensave is available).
 
 ### Git
-- NEVER `git commit`, `git add -A`/`.`, branch, tag, or push. Read-only git
-  (`diff`/`status`/`log`) is fine. Stage by name only when explicitly asked;
-  refuse secret-like files (`.env`, `credentials.json`, `*.pem`).
-- If a commit is requested, skip it: *"Committing is your responsibility."*
+- NEVER commit, branch, tag, or push on your own initiative. Read-only git
+  (`diff`/`status`/`log`) is always fine.
+- An explicit user instruction to commit is executed under CRITICAL RULE 1's
+  conditions: announce the scope, stage by name only (never `git add -A`/`.`),
+  refuse secret-like files (`.env`, `credentials.json`, `*.pem`), never bypass
+  hooks, and record the commit as user-directed in the final summary.
 
 ### Project conventions
 - Honor `CLAUDE.md`, `AGENTS.md`, `.github/copilot-instructions.md`,

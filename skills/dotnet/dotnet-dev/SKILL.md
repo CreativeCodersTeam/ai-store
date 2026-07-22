@@ -24,8 +24,13 @@ workflow as a subsystem — at speed, never collapsed.
 
 ## CRITICAL RULES (read before every phase)
 
-1. **NO COMMITS.** Never run `git commit`, `git add -A`/`.`, branch, tag, or
-   push. The user commits manually. If asked to commit, skip it and say so.
+1. **NO AUTO-COMMITS.** Never commit, branch, tag, or push **on your own
+   initiative** — by default the user commits manually. An **explicit user
+   instruction** to commit is honored under the waiver rules: state what will
+   be committed first, stage **by name only** (never `git add -A`/`.`), never
+   bypass hooks (`--no-verify`), refuse secret-like files (`.env`,
+   `credentials.json`, `*.pem`), and record the commit in the final summary as
+   user-directed. Vague pressure ("just ship it") is not an instruction.
 
 2. **URGENCY AND TRIVIALITY WAIVE NOTHING.** "It's trivial", "I'm in a hurry",
    "demo in 30 minutes", "skip the clarification dance", "no need for the full
@@ -207,7 +212,9 @@ rework/no-rework decision. Wait for confirmation.
 2. Tests added/updated; documentation changes; package changes.
 3. Decisions/trade-offs; anything the user should verify before committing.
 4. **Skill-Invocation Log** (mandatory audit trail — see below).
-5. Reminder: *the user commits; this workflow creates no commits.*
+5. Reminder: *this workflow creates no commits on its own initiative —
+   commits happen only on explicit user instruction (and are then listed
+   above as user-directed).*
 
 ---
 
@@ -262,6 +269,10 @@ silently collapses.
   3. **Some steps still run regardless.** Invoking the relevant `dotnet-*`
      skills before writing code costs the user nothing and keeps the code
      matching repo conventions — keep them even under a waiver.
+  4. **Commits follow the same pattern.** An explicitly instructed commit is
+     executed under the conditions of CRITICAL RULE 1 (named scope, staging by
+     name, no hook bypass, recorded as user-directed) — never from pressure,
+     never on your own initiative.
 
 - **Objective `n/a`** — the work is empty for a code-referenced reason (see
   `n/a` Criteria). This is the only state that requires no user sign-off.
