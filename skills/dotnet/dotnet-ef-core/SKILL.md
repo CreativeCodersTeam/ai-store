@@ -32,7 +32,7 @@ description: Use when designing a DbContext, entities, or relationships, writing
 ## Performance
 
 - Use AsNoTracking() for read-only queries
-- Implement pagination for large result sets with Skip() and Take()
+- Paginate large result sets with `Skip()`/`Take()` — always paired with a deterministic `OrderBy` (unique key as tie-breaker, e.g. `.OrderBy(p => p.Name).ThenBy(p => p.Id)`); for large offsets prefer keyset pagination over the sort key (Id-ordered list: `.Where(p => p.Id > lastSeenId).OrderBy(p => p.Id).Take(n)`; composite sorts need a composite predicate)
 - Use Include() to eager load related entities when needed
 - Consider projection (Select) to retrieve only required fields
 - Use compiled queries for frequently executed queries
@@ -57,7 +57,7 @@ description: Use when designing a DbContext, entities, or relationships, writing
 ## Change Tracking & Saving
 
 - Track entities only on write paths; use `AsNoTracking()` for read paths and `AsNoTrackingWithIdentityResolution()` when the same entity may appear multiple times in the result graph
-- Batch your SaveChanges() calls
+- Accumulate related changes and call `SaveChanges()` once per unit of work — not once per entity, and never concurrently on the same `DbContext` (it is not thread-safe). Deliberate exception: very large bulk operations may save in chunks of N entities (with `ChangeTracker.Clear()` between chunks), wrapped in an explicit transaction if atomicity matters
 - Implement concurrency control for multi-user scenarios (see below)
 - Consider using transactions for multiple operations
 - Use appropriate DbContext lifetimes (scoped for web apps)
