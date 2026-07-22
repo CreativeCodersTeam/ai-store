@@ -117,8 +117,18 @@ Map table. Wait for confirmation.
 Clarify the following **one point at a time** — present point _N_, propose a
 concrete default/assumption, ask the open question, and **wait for the user's
 answer before moving to point _N+1_.** You may NOT batch points into one
-message, NOR skip a point silently. A point that objectively does not apply is
-presented with `n/a — <code-referenced reason>` and still acknowledged.
+message, NOR skip a point silently. Two statuses replace the **question**,
+never the **presentation** of a point:
+
+- `n/a — <code-referenced reason>` — the point objectively does not apply.
+- `pre-answered — <verbatim quote or precise reference>` — the requirement or
+  the Gate-1 answers already decide the point. Present it with the adopted
+  decision and its citation; do not ask. **Implication or inference is NOT
+  pre-answered** — "the requirement implies X" is an open question: ask it.
+
+All 8 points appear in the Gate-2 summary; the user's Gate-2 confirmation
+covers the `pre-answered` decisions collectively — correcting one there
+reopens exactly that point.
 
 | # | Item | Must clarify |
 |---|---|---|
@@ -131,8 +141,9 @@ presented with `n/a — <code-referenced reason>` and still acknowledged.
 | 7 | Persistence / EF Core | Entity shape, migrations yes/no, owned types, indexes, query style (LINQ vs spec) |
 | 8 | Dependencies / NuGet | Allowed/forbidden packages, Central Package Management versions |
 
-**GATE 2 — STOP.** Present: every clarified decision (all 8 points) and the
-**finalized** Skill Map (updated from the answers — e.g. points 7/8 confirm
+**GATE 2 — STOP.** Present: every clarified decision (all 8 points, including
+`n/a` and `pre-answered` entries with their citations) and the **finalized**
+Skill Map (updated from the answers — e.g. points 7/8 confirm
 `dotnet-ef-core` / `dotnet-nuget-manager`). Wait for confirmation.
 
 ## Phase 3 — Task Breakdown
@@ -313,7 +324,8 @@ Reproduce each task's checklist, every entry resolved with evidence:
 |---|---|
 | "It's trivial / one endpoint — phases & gates are overkill" | Size does not scale the workflow. Run all phases at speed. Gate after each. |
 | "Demo in 30 min / I'm in a hurry — one pass, no gates" | Urgency waives nothing (CRITICAL RULE 2). Acknowledge the deadline, keep the gates. |
-| "Lead waived the clarification dance" | The 8 points are mandatory, one round-trip each. User waiver is not a valid skip. |
+| "Lead waived the clarification dance" | The 8 points are mandatory; each is asked unless objectively `n/a` or `pre-answered` with a citation. User waiver is not a valid skip. |
+| "The requirement kind of implies X — I'll mark it pre-answered" | `pre-answered` requires a verbatim quote or precise reference. Implication or inference = open question — ask it. |
 | "Ambiguities aren't blocking — I'll state assumptions instead of asking" | Stating assumptions ≠ clarifying. Present each point and wait for the answer. |
 | "I'll batch all phases / ask one combined confirmation" | Batching is a gate violation. One phase → one summary → one wait. |
 | "This is a single ToListAsync — `dotnet-ef-core` isn't needed" | Touching EF Core triggers the binding regardless of LINQ simplicity. Invoke it. |

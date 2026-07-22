@@ -53,8 +53,13 @@ silently assumed.
   then the open question. Wait for the answer before point _N+1_.
 - **No batching, no skipping.** A point that objectively does not apply is shown
   with `n/a — <code-referenced reason>` and still acknowledged before moving on.
-- Pre-filling a sensible default is encouraged — it lets the user reply "ok"
-  fast — but the default never replaces the round-trip.
+- **Pre-answered points are presented, not asked.** When the requirement or a
+  Gate-1 answer decides a point, mark it `pre-answered — <verbatim quote or
+  precise reference>` and move on; Gate 2 confirms these collectively.
+  Inference does not qualify — without a citable source the point is open.
+- Distinguish the two carefully: a **proposed default** (the source is silent,
+  you suggest) never replaces the round-trip; a **pre-answered citation** (the
+  source decides) replaces the question, never the presentation.
 
 ### The 8 points (expanded prompts)
 1. **Project & folder structure** — which `*.csproj`, namespace, folder layout;
