@@ -33,9 +33,7 @@ description: Use when registering services in any .NET host (ASP.NET Core, Worke
 
 ## Related Skills
 
-- **dotnet-aspnet** — Builds the HTTP layer (controllers, minimal APIs, middleware, routing, auth, ProblemDetails) on an ASP.NET Core host
-- **dotnet-sdk-builder** — Generates .NET SDK / client libraries (DI extension methods, typed HTTP clients, typed Options, typed exceptions)
-- **dotnet-ef-core** — Entity Framework Core data access (DbContext, entities, LINQ, migrations); registered via DI and configured via Options
-- **dotnet-reviewer** — Structured .NET code review producing a severity-tagged Markdown report
-- **dotnet-tester** — Writes and runs C#/.NET unit tests (xUnit, FakeItEasy, AwesomeAssertions) and identifies missing test cases
-- **dotnet-nuget-manager** — Use whenever NuGet packages are added, removed, or updated in a project (dotnet CLI, central version management, version verification)
+- **dotnet-aspnet / dotnet-ef-core / dotnet-sdk-builder** — build on these fundamentals for their HTTP, data-access, and SDK layers
+- **dotnet-nuget-manager** — use when adding the `Microsoft.Extensions.*` packages for DI, Options, and Configuration
+
+The full skill overview lives in the `dotnet` router skill.

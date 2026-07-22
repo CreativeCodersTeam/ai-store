@@ -77,10 +77,8 @@ The output shows the current version, the latest resolved version, and the lates
 
 ## Related Skills
 
-- **[dotnet-fundamentals](../dotnet-fundamentals/SKILL.md)** — Used when adding `Microsoft.Extensions.*` packages for DI, Options, and Configuration
-- **[dotnet-aspnet](../dotnet-aspnet/SKILL.md)** — Invokes this skill for health-check, resilience, and middleware packages
 - **[dotnet-sdk-builder](../dotnet-sdk-builder/SKILL.md)** — Invokes this skill in Step 7 to add SDK runtime dependencies
-- **[dotnet-reviewer](../dotnet-reviewer/SKILL.md)** — Used when a review surfaces outdated or vulnerable packages
-- **[dotnet-inspect](../dotnet-inspect/SKILL.md)** — Inspect package APIs before upgrading or replacing them
-- **[dotnet-ef-core](../dotnet-ef-core/SKILL.md)** — Adds EF Core providers, Testcontainers, and SQLite packages
+- **[dotnet-inspect](../dotnet-inspect/SKILL.md)** — Use to inspect package APIs before upgrading or replacing them
+
+The full skill overview lives in the `dotnet` router skill.
 

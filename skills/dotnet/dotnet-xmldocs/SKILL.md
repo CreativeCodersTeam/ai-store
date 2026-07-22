@@ -36,6 +36,7 @@ See [member-documentation-rules.md](./references/member-documentation-rules.md) 
 
 ## Related Skills
 
-- **[dotnet-aspnet](../dotnet-aspnet/SKILL.md)** — XML docs feed OpenAPI/Swagger output
 - **[dotnet-sdk-builder](../dotnet-sdk-builder/SKILL.md)** — Invokes this skill in Step 8 to document generated SDKs
-- **[dotnet-reviewer](../dotnet-reviewer/SKILL.md)** — Code-quality checklist references these conventions for public-API docs
+- **[dotnet-aspnet](../dotnet-aspnet/SKILL.md)** — XML docs feed OpenAPI/Swagger output
+
+The full skill overview lives in the `dotnet` router skill.

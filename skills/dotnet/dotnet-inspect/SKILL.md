@@ -229,7 +229,8 @@ dnx dotnet-inspect -y -- <command>
 
 ## Related Skills
 
-- **[dotnet-reviewer](../dotnet-reviewer/SKILL.md)** — Uses dotnet-inspect to investigate API surface and version diffs during reviews
-- **[dotnet-sdk-builder](../dotnet-sdk-builder/SKILL.md)** — Queries types and members of existing libraries when generating SDK wrappers
-- **[dotnet-nuget-manager](../dotnet-nuget-manager/SKILL.md)** — Inspects packages before upgrading or replacing them
-- **[dotnet-aspnet](../dotnet-aspnet/SKILL.md)** — Discovers ASP.NET Core APIs across versions when migrating or adopting new features
+- **[dotnet-sdk-builder](../dotnet-sdk-builder/SKILL.md)** — Uses this skill to query existing libraries when generating SDK wrappers
+- **[dotnet-reviewer](../dotnet-reviewer/SKILL.md)** — Uses this skill to investigate API surface and version diffs during reviews
+- **[dotnet-nuget-manager](../dotnet-nuget-manager/SKILL.md)** — Use this skill to inspect package APIs before upgrading or replacing them
+
+The full skill overview lives in the `dotnet` router skill.

@@ -126,9 +126,10 @@ After documentation is complete, invoke the `dotnet-tester` skill to generate un
 
 ## Related Skills
 
-- **[dotnet-fundamentals](../dotnet-fundamentals/SKILL.md)** — Provides the DI, Options, and configuration patterns this skill emits in generated SDKs
+- **[dotnet-nuget-manager](../dotnet-nuget-manager/SKILL.md)** — Invoked in Step 7 to add SDK runtime dependencies
 - **[dotnet-xmldocs](../dotnet-xmldocs/SKILL.md)** — Invoked in Step 8 to document generated SDKs with XML comments
 - **[dotnet-tester](../dotnet-tester/SKILL.md)** — Invoked in Step 9 to generate unit and integration tests
-- **[dotnet-nuget-manager](../dotnet-nuget-manager/SKILL.md)** — Invoked in Step 7 to add SDK runtime dependencies
-- **[dotnet-inspect](../dotnet-inspect/SKILL.md)** — Queries existing libraries when generating SDK wrappers
-- **[dotnet-aspnet](../dotnet-aspnet/SKILL.md)** — Generates typed HTTP clients for consuming ASP.NET Core APIs
+- **[dotnet-fundamentals](../dotnet-fundamentals/SKILL.md)** — Background: the DI, Options, and configuration patterns generated SDKs follow
+- **[dotnet-inspect](../dotnet-inspect/SKILL.md)** — Use to query existing libraries when wrapping them
+
+The full skill overview lives in the `dotnet` router skill.

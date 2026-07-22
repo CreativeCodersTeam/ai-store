@@ -139,10 +139,10 @@ Output to chat: the file path and a one-line summary (e.g., `"Wrote review with 
 
 ## Related Skills
 
-- **[dotnet-fundamentals](../dotnet-fundamentals/SKILL.md)** — Review findings reference DI lifetime, Options, and configuration best practices
-- **[dotnet-xmldocs](../dotnet-xmldocs/SKILL.md)** — Code-quality checklist references XML documentation conventions
-- **[dotnet-tester](../dotnet-tester/SKILL.md)** — Test-quality findings reference this skill's expectations
-- **[dotnet-ef-core](../dotnet-ef-core/SKILL.md)** — EF Core findings reference these data-access best practices
-- **[dotnet-aspnet](../dotnet-aspnet/SKILL.md)** — ASP.NET Core findings reference this skill's conventions
-- **[dotnet-nuget-manager](../dotnet-nuget-manager/SKILL.md)** — Surfaced outdated/vulnerable packages are addressed via this skill
-- **[dotnet-inspect](../dotnet-inspect/SKILL.md)** — Used to investigate API surface and version diffs during review
+- **[dotnet-inspect](../dotnet-inspect/SKILL.md)** — Use to investigate API surface and version diffs during review
+- **[dotnet-nuget-manager](../dotnet-nuget-manager/SKILL.md)** — Use to address surfaced outdated or vulnerable packages
+
+The review checklists in `references/` cross-reference the knowledge skills
+(`dotnet-fundamentals`, `dotnet-aspnet`, `dotnet-ef-core`, `dotnet-xmldocs`,
+`dotnet-tester`) inline where their conventions apply. The full skill overview
+lives in the `dotnet` router skill.

@@ -133,8 +133,7 @@ At the end, provide a summary:
 
 ## Related Skills
 
-- **[dotnet-fundamentals](../dotnet-fundamentals/SKILL.md)** — Test DI-registered services using `IServiceCollection` overrides
-- **[dotnet-ef-core](../dotnet-ef-core/SKILL.md)** — DbContext-backed unit and integration tests (SQLite in-memory, Testcontainers)
-- **[dotnet-reviewer](../dotnet-reviewer/SKILL.md)** — Test-quality checks during code review
+- **[dotnet-ef-core](../dotnet-ef-core/SKILL.md)** — DbContext-backed test patterns (SQLite in-memory, Testcontainers)
 - **[dotnet-sdk-builder](../dotnet-sdk-builder/SKILL.md)** — Invoked by it in Step 9 to generate tests for new SDK libraries
-- **[dotnet-aspnet](../dotnet-aspnet/SKILL.md)** — Unit and integration tests for ASP.NET Core endpoints
+
+The full skill overview lives in the `dotnet` router skill.
