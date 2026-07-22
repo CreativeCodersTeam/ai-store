@@ -22,7 +22,7 @@ This skill covers the **HTTP / web layer only**. For dependency injection, Optio
 - Always use `[ApiController]` on MVC controllers; prefer `TypedResults` in minimal APIs.
 - Accept `CancellationToken` on every async endpoint.
 - Map domain exceptions to ProblemDetails — never leak internal exception messages.
-- Middleware order matters: exception handler → status code pages → HSTS/HTTPS → CORS → auth → rate limiter → endpoints.
+- Middleware order matters — never order the pipeline from memory; [references/middleware.md](references/middleware.md) holds the single canonical sequence.
 
 ## Reference Index
 
