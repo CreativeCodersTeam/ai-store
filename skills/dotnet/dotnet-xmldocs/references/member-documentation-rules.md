@@ -8,7 +8,7 @@
   - If the parameter is a flag enum, start the description with "A bitwise combination of the enumeration values that specifies...".
   - If the parameter is a non-flag enum, start the description with "One of the enumeration values that specifies...".
   - If the parameter is a Boolean, the wording should be of the form "`<see langword="true" />` to ...; otherwise, `<see langword="false" />`.".
-  - If the parameter is an "out" parameter, the wording should be of the form "When this method returns, contains .... This parameter is treated as uninitialized.".
+  - If the parameter is an "out" parameter, the wording should be of the form "When this method returns, contains .... This parameter is passed uninitialized.".
 - Use `<paramref>` to reference parameter names in documentation.
 - Use `<typeparam>` to describe type parameters in generic types or methods.
 - Use `<typeparamref>` to reference type parameters in documentation.
@@ -31,6 +31,37 @@
   - The description should be a noun phrase that doesn't specify the data type.
   - If the property has a default value, add it in a separate sentence, for example, "The default is `<see langword="false" />`".
   - If the value type is Boolean, the wording should be of the form "`<see langword="true" />` if ...; otherwise, `<see langword="false" />`. The default is ...".
+
+## Canonical Example
+
+This example anchors the rules above. Note the precedence: where a specific
+formula applies (Boolean parameter/return, out parameter), it overrides the
+general noun-phrase and introductory-article rules.
+
+```csharp
+/// <summary>
+/// Converts the string representation of a monetary amount to its
+/// <see cref="decimal" /> equivalent. A return value indicates whether the
+/// conversion succeeded.
+/// </summary>
+/// <param name="text">A string that contains the amount to convert.</param>
+/// <param name="strict"><see langword="true" /> to reject leading or trailing
+/// whitespace in <paramref name="text" />; otherwise, <see langword="false" />.</param>
+/// <param name="amount">When this method returns, contains the parsed amount if
+/// the conversion succeeded, or zero if it failed. This parameter is passed
+/// uninitialized.</param>
+/// <returns><see langword="true" /> if <paramref name="text" /> was converted
+/// successfully; otherwise, <see langword="false" />.</returns>
+/// <exception cref="ArgumentNullException"><paramref name="text" /> is
+/// <see langword="null" />.</exception>
+/// <example>
+/// <code language="csharp">
+/// if (MoneyParser.TryParseAmount("42.50", strict: true, out var amount))
+///     Console.WriteLine(amount);
+/// </code>
+/// </example>
+public static bool TryParseAmount(string text, bool strict, out decimal amount)
+```
 
 ## Exceptions
 

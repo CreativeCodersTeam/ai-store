@@ -21,7 +21,7 @@ description: Use when writing or reviewing C# XML documentation comments (///) â
 
 - Use `<summary>` to provide a brief, one sentence, description of what the type or member does. Start the summary with a present-tense, third-person verb.
 - Use `<remarks>` for additional information, which can include implementation details, usage notes, or any other relevant context.
-- Use `<see langword>` for language-specific keywords like `null`, `true`, `false`, `int`, `bool`, etc.
+- Use `<see langword>` for keywords that have no type to link to: `null`, `true`, `false`, and modifiers such as `static`, `async`, `abstract`. For type keywords (`int`, `bool`, `string`, `decimal`, â€¦) use `<see cref>` instead â€” they alias BCL types and should link (e.g. `<see cref="int" />` resolves to `System.Int32`).
 - Use `<c>` for inline code snippets.
 - Use `<example>` for usage examples on how to use the member.
   - Use `<code>` for code blocks. `<code>` tags should be placed within an `<example>` tag. Add the language of the code example using the `language` attribute, for example, `<code language="csharp">`.
@@ -32,7 +32,7 @@ description: Use when writing or reviewing C# XML documentation comments (///) â
 
 ## Member-Specific Rules
 
-See [member-documentation-rules.md](./references/member-documentation-rules.md) for detailed wording conventions for methods (`<param>`, `<returns>`), constructors, properties (`<value>`, Gets/Sets patterns), and exceptions (`<exception cref>`).
+See [member-documentation-rules.md](./references/member-documentation-rules.md) for detailed wording conventions for methods (`<param>`, `<returns>`), constructors, properties (`<value>`, Gets/Sets patterns), and exceptions (`<exception cref>`) â€” including a canonical fully documented example that anchors all the formulas.
 
 ## Related Skills
 
