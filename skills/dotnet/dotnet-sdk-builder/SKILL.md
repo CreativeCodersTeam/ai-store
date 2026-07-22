@@ -31,9 +31,9 @@ Determine what the input is:
 2. Extract the `<TargetFramework>` (or `<TargetFrameworks>`) value.
 3. If all projects use the same version → use that version.
 4. If versions differ → ask the user which version to target.
-5. Enable nullable reference types based on version:
-   - New project: add `<Nullable>enable</Nullable>` to `.csproj`.
-   - Existing project with nullable disabled: add `#pragma warning disable CS8600` / `#nullable enable` per source file, not globally.
+5. Enable nullable reference types (available since C# 8 / .NET Core 3.0 — every target this skill generates for):
+   - New project: `<Nullable>enable</Nullable>` in the `.csproj` — already part of the project template (see [project-setup.md](references/project-setup.md)).
+   - Existing project with nullable disabled: add `#nullable enable` at the top of each **new** source file; do not change the project-wide setting, and never suppress nullable warnings with `#pragma warning disable` — fix them.
 
 ### Step 3: Determine Target Project
 
