@@ -56,3 +56,7 @@ Probe results with the new excerpt:
 Both scenarios behave deterministically and inside the contract. No REFACTOR
 round needed. Re-run this probe whenever Step 1/Step 4 of
 `dotnet-reviewer/SKILL.md` or Phase 5 of `dotnet-dev/SKILL.md` changes.
+
+**Addendum 2026-07-22 (Finding V-1):** the Step 4 options were renumbered
+(B)/(C)/(D) → (A)/(B)/(C); the auto-selected chunked strategy referenced above
+as "D" is now **(C)**. The header note text is unchanged.

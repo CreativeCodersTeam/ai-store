@@ -37,9 +37,9 @@ Three parameters drive the review:
 2. **Tools:** for each of `build`, `format`, `test` — yes or no. Default no for all three.
 3. **Report language:** default English. If they want another language, capture it.
 
-**Interactive invocation (default):** ask the user for all three. Validate inputs against the whitelist. Re-prompt on invalid input.
+**Interactive invocation (default):** ask the user for all three. Valid values: mode ∈ {`uncommitted`, `branch`}; each tool ∈ {`yes`, `no`}; language: any language name (default English). Re-prompt on invalid input.
 
-**Non-interactive invocation:** when the invocation context already supplies parameters (e.g. the dispatching prompt of a calling workflow such as `dotnet-dev` Phase 5, or a sub-agent prompt), skip the prompt for those parameters and validate the supplied values the same way. When no user is reachable (you are running as a sub-agent) and a parameter is missing, do not guess and do not stall — use the defaults `mode=uncommitted`, all tools `no`, language English. Record every parameter and its origin (`provided` / `default`) in the report metadata block.
+**Non-interactive invocation:** when the invocation context already supplies parameters (e.g. the dispatching prompt of a calling workflow such as `dotnet-dev` Phase 5, or a sub-agent prompt), skip the prompt for those parameters and validate the supplied values against the same valid values. When no user is reachable (you are running as a sub-agent) and a parameter is missing, do not guess and do not stall — use the defaults `mode=uncommitted`, all tools `no`, language English; an invalid supplied value likewise falls back to its default (if a user IS reachable, ask about an invalid supplied value instead of silently defaulting). Record every parameter and its origin (`provided` / `default` / `default (invalid provided value)`) in the report metadata block.
 
 ### Step 2 — Detect .NET version
 
@@ -48,11 +48,13 @@ Run `scripts/detect-dotnet-version.sh --repo-root <repo>`.
 - Exit 0: parse JSON `{sdk, target_frameworks, project_files}`. Pick the highest `net<N>.0` from `target_frameworks` to drive checklist selection.
 - Exit 4 (SDK < 10 or none): abort. Tell the user "this skill targets .NET 10+; detected `<X>`."
 - Exit 5 (malformed): show offending file. Ask the user whether to proceed without version-awareness. If yes, fall back to general checklists only.
-- Exit 2 (not a directory) or 1 (usage): bug — report and abort.
+- Exit 1 (usage error or invalid `--repo-root`): the invocation is wrong — check arguments and path, correct, and retry; if they were correct, report the bug and abort.
 
 ### Step 3 — Collect diff
 
 Run `scripts/collect-diff.sh --repo-root <repo> --mode <mode> --baseline main`.
+
+The script excludes `*.min.js` and `wwwroot/lib/**` (in addition to everything `.gitignore`d). Carry these exclusions verbatim into the report's `Exclusions:` metadata line.
 
 - Exit 0 with `files == 0`: report "no changes to review" and exit.
 - Exit 0 with `files > 0`: continue.
@@ -63,13 +65,13 @@ Run `scripts/collect-diff.sh --repo-root <repo> --mode <mode> --baseline main`.
 
 If `loc > 2000` OR `files > 50`, ask the user to choose:
 
-- **(B) Review everything** — note token cost in report header.
-- **(C) Prioritize** — review files matching `*Service.cs`, `*Controller.cs`, files without sibling `*.Tests/*Tests.cs` first; summarize the rest.
-- **(D) Chunk file-by-file** — review each file independently; group findings by file.
+- **(A) Review everything** — note token cost in report header.
+- **(B) Prioritize** — review files matching `*Service.cs`, `*Controller.cs`, files without sibling `*.Tests/*Tests.cs` first; summarize the rest.
+- **(C) Chunk file-by-file** — review each file independently; group findings by file.
 
-If C is chosen but no files match the priority heuristics, fall back to D and note the fallback transparently in the report.
+If B is chosen but no files match the priority heuristics, fall back to C and note the fallback transparently in the report.
 
-**Non-interactive invocation:** do not ask — automatically choose **(D) Chunk file-by-file** and note the automatic selection in the `Review strategy` line of the report header (e.g. `chunked (auto-selected, non-interactive)`).
+**Non-interactive invocation:** do not ask — automatically choose **(C) Chunk file-by-file** and note the automatic selection in the `Review strategy` line of the report header (e.g. `chunked (auto-selected, non-interactive)`).
 
 ### Step 5 — Run requested tool checks
 
@@ -86,11 +88,7 @@ Walk the diff against:
 4. `references/review-checklist-architecture.md`.
 5. `references/review-checklist-code-quality.md`.
 
-Fold tool findings into the issue list using the severity mapping defined in `references/severity-taxonomy.md`:
-- `dotnet build` errors → Critical
-- `dotnet build` warnings → Minor
-- `dotnet test` failures → Critical
-- `dotnet format` violations → Suggestion
+Fold tool findings into the issue list using the severity mapping defined in `references/severity-taxonomy.md` ("Mapping from Tool Outputs") — that table is the single source of truth.
 
 Each finding MUST include a fix suggestion as a code block (`csharp` fenced) — no auto-patching.
 
