@@ -2,7 +2,7 @@
 
 ## Typed HTTP Client Implementation
 
-Always implement clients as typed HTTP clients registered via `AddHttpClient<TClient, TInterface>()`.
+Always implement clients as typed HTTP clients registered via `AddHttpClient<TClient, TImplementation>()` — the interface is the first type argument, the concrete client the second: `AddHttpClient<IGitHubClient, GitHubClient>()`.
 
 ```csharp
 internal sealed class GitHubClient : IGitHubClient
@@ -57,7 +57,14 @@ internal sealed class GitHubClient : IGitHubClient
         {
             HttpStatusCode.Unauthorized => new GitHubAuthenticationException(response.StatusCode, body),
             HttpStatusCode.NotFound     => new GitHubNotFoundException(response.StatusCode, body),
-            HttpStatusCode.TooManyRequests => new GitHubRateLimitException(response.StatusCode, body),
+            HttpStatusCode.TooManyRequests => new GitHubRateLimitException(response.StatusCode, body)
+            {
+                // Retry-After carries either an absolute date or a delta
+                ResetAt = response.Headers.RetryAfter?.Date
+                    ?? (response.Headers.RetryAfter?.Delta is { } delay
+                        ? DateTimeOffset.UtcNow + delay
+                        : null),
+            },
             _ => new GitHubException(response.StatusCode, body),
         };
     }
@@ -166,11 +173,7 @@ public sealed class GitHubRateLimitException : GitHubException
 
 ## Resilience (Polly via Microsoft.Extensions.Http.Resilience) {#resilience}
 
-Only add if the user confirms resilience is desired.
-
-```xml
-<PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="*" />
-```
+Only add if the user confirms resilience is desired. Requires the `Microsoft.Extensions.Http.Resilience` package — add it via the `dotnet-nuget-manager` skill (selected in Step 5, added in Step 7 of the workflow); never as a hand-written `PackageReference`.
 
 ```csharp
 private static IHttpClientBuilder AddGitHubCore(this IServiceCollection services)

@@ -24,14 +24,10 @@ Always ask the user for confirmation before creating a new project if not explic
     <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Http" Version="*" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="*" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="*" />
-  </ItemGroup>
-
 </Project>
 ```
+
+> **Packages are NOT part of the template.** Add the required packages (`Microsoft.Extensions.Http`, `Microsoft.Extensions.Options`, `Microsoft.Extensions.DependencyInjection.Abstractions`) afterwards via the `dotnet-nuget-manager` skill (Step 7 of the workflow) — never as literal template entries and never with floating `Version="*"`: wildcards defeat version pinning, and under Central Package Management any `Version` attribute on a `PackageReference` is a restore error (NU1008).
 
 **Key settings:**
 - `<Nullable>enable</Nullable>` — always for new projects when .NET version supports it.
