@@ -39,8 +39,10 @@ orientation, not an intermediate step.
 
 ## Notes
 
-- **`dotnet-reviewer` activates only on explicit name** — the phrases
-  `dotnet-reviewer`, `dotnet code review`, or `dotnet review`. It does **not** trigger
-  on generic "review my code", and the router does not trigger it automatically.
+- **`dotnet-reviewer` activates only on explicit invocation** — the phrases
+  `dotnet-reviewer`, `dotnet code review`, or `dotnet review`, or an invocation
+  by the `dotnet-dev` workflow (Phase 5), which counts as explicit. It does
+  **not** trigger on generic "review my code", and the router does not trigger
+  it automatically.
 - **Composition:** `dotnet-sdk-builder` invokes `dotnet-xmldocs` and `dotnet-tester`;
   `dotnet-aspnet` and `dotnet-ef-core` build on `dotnet-fundamentals`.

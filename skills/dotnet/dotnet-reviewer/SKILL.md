@@ -1,6 +1,6 @@
 ---
 name: dotnet-reviewer
-description: Use only when explicitly requested by name — "dotnet-reviewer", "dotnet code review", or "dotnet review" — for a structured code review of a .NET 10+ project (uncommitted working-tree changes or current feature branch vs. main). Must NOT activate on generic "review my code" requests; other-language reviewers must not be hijacked.
+description: Use only when explicitly requested by name — "dotnet-reviewer", "dotnet code review", or "dotnet review" — or when invoked by the dotnet-dev workflow (Phase 5), for a structured code review of a .NET 10+ project (uncommitted working-tree changes or current feature branch vs. main). Must NOT activate on generic "review my code" requests; other-language reviewers must not be hijacked.
 ---
 
 # dotnet-reviewer
@@ -9,7 +9,13 @@ Structured code review for .NET 10+ projects.
 
 ## When to Use This Skill
 
-A Code review for a .NET 10+ project is needed.
+Activate **only** on explicit invocation:
+
+- The user requests it by name — the phrases `dotnet-reviewer`, `dotnet code review`, or `dotnet review`.
+- The `dotnet-dev` workflow invokes it in its Phase 5 — this counts as explicit invocation.
+
+Must NOT activate on generic "review my code" requests; other-language reviewers must not be hijacked. The target is a .NET 10+ project (enforced in Step 2).
+
 The user may add language preferences (e.g., "in German") — apply that to the report only. The skill itself remains in English.
 
 ## Prerequisites
