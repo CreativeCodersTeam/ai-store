@@ -64,11 +64,14 @@ public class EmailSender(IOptions<SmtpOptions> options)
     // ...
 }
 
-public class ReloadableEmailSender(IOptionsMonitor<SmtpOptions> monitor)
+public class ReloadableEmailSender
 {
+    private SmtpOptions _current;
+
     public ReloadableEmailSender(IOptionsMonitor<SmtpOptions> monitor)
     {
-        monitor.OnChange(opts => RebuildClient(opts));
+        _current = monitor.CurrentValue;
+        monitor.OnChange(opts => _current = opts);
     }
 }
 ```

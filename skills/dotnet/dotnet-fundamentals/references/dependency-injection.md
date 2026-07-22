@@ -22,15 +22,12 @@ services.AddTransient<IEmailFormatter, EmailFormatter>();
 Lifetime mismatches (e.g. a Singleton capturing a Scoped service) are a common bug — `ValidateScopes` and `ValidateOnBuild` catch this at startup.
 
 ```csharp
-var host = Host.CreateApplicationBuilder()
-    .ConfigureContainer<IServiceCollection>((ctx, services) =>
-    {
-        // Register here
-    })
-    .Build();
+var builder = Host.CreateApplicationBuilder(args);
+builder.Services.AddScoped<IOrderService, OrderService>();
+var host = builder.Build();
 ```
 
-For ASP.NET Core, scope validation is on by default in Development. For other hosts, enable it explicitly via `ServiceProviderOptions`.
+Both ASP.NET Core and `Host.CreateApplicationBuilder` enable scope validation (`ValidateScopes` / `ValidateOnBuild`) by default in the Development environment. Only a bare `new HostBuilder()` (or a custom service-provider factory) applies no defaults — there, enable it explicitly via `UseDefaultServiceProvider` / `ServiceProviderOptions`.
 
 ## Keyed Services (.NET 8+)
 

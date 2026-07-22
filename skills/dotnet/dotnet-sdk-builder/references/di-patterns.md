@@ -14,6 +14,8 @@ public static class GitHubServiceCollectionExtensions
         Action<GitHubOptions> configureOptions)
     {
         services.Configure(configureOptions);
+        services.AddSingleton<IValidateOptions<GitHubOptions>, GitHubOptionsValidator>();
+        services.AddOptions<GitHubOptions>().ValidateOnStart();
 
         return services
             .AddHttpClient<IGitHubClient, GitHubClient>()
@@ -79,6 +81,9 @@ public static class GitHubServiceCollectionExtensions
 
     private static IHttpClientBuilder AddGitHubCore(this IServiceCollection services)
     {
+        services.AddSingleton<IValidateOptions<GitHubOptions>, GitHubOptionsValidator>();
+        services.AddOptions<GitHubOptions>().ValidateOnStart();
+
         return services
             .AddHttpClient<IGitHubClient, GitHubClient>()
             .ConfigureHttpClient((sp, client) =>
@@ -89,6 +94,8 @@ public static class GitHubServiceCollectionExtensions
     }
 }
 ```
+
+`services.Configure(...)` in the public overloads composes with `AddOptions<GitHubOptions>()` here — both act on the same default-named options instance, so configuration from either overload is validated at host startup.
 
 ## Options Class
 
@@ -114,9 +121,11 @@ public sealed class GitHubOptions
 - Use `sealed` — options classes are never subclassed.
 - Provide sensible defaults for all non-secret properties.
 - Nullable (`string?`) for optional secrets/tokens.
-- No validation logic in the class itself; use `IValidateOptions<T>` if needed.
+- No validation logic in the class itself; validation lives in the `IValidateOptions<T>` validator (see below).
 
-## Options Validation (Optional but Recommended)
+> **Deviation from `dotnet-fundamentals`** (which mandates `required` properties and `init`-only setters for options): SDK options use mutable `get; set;` properties **because consumers configure them via the `Action<TOptions>` lambda** in `AddXxx(...)` — `required` members cannot be satisfied by a configure delegate, and `init` setters reject assignment inside it. The fail-fast guarantee that `required` would provide comes from the standard `IValidateOptions<T>` validator plus `ValidateOnStart()` instead.
+
+## Options Validation (Standard)
 
 ```csharp
 internal sealed class GitHubOptionsValidator : IValidateOptions<GitHubOptions>
@@ -134,11 +143,7 @@ internal sealed class GitHubOptionsValidator : IValidateOptions<GitHubOptions>
 }
 ```
 
-Register alongside options:
-
-```csharp
-services.AddSingleton<IValidateOptions<GitHubOptions>, GitHubOptionsValidator>();
-```
+Every generated SDK library ships this validator (at minimum the BaseUrl checks above). Its registration — together with `ValidateOnStart()` — is already part of the canonical `AddXxxCore()` pattern shown earlier; do not treat it as an add-on.
 
 ## Interface Pattern
 

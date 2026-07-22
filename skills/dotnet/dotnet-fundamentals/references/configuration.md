@@ -8,7 +8,7 @@ Configuration in .NET is layered — later sources override earlier ones. The de
 4. Environment variables
 5. Command-line arguments
 
-The first source that supplies a key wins for that key; sources don't merge sections deeply, they override per leaf value.
+The **last** source that supplies a key wins for that key; sources don't merge sections deeply, they override per leaf value.
 
 ## `appsettings.json`
 

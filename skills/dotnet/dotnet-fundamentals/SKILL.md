@@ -7,7 +7,7 @@ description: Use when registering services in any .NET host (ASP.NET Core, Worke
 
 ## When to Use
 
-- Working with .NET/C# Code
+- Writing or modifying any C# production code — this is the baseline skill; `dotnet-aspnet`, `dotnet-ef-core`, and `dotnet-sdk-builder` build on top of it, so load this skill alongside them, not instead of them
 - Registering services in any `IServiceCollection` (ASP.NET Core, Worker Service, Console app, MAUI, library DI extension methods)
 - Choosing a DI lifetime (Transient, Scoped, Singleton) or registering keyed services (.NET 8+)
 - Binding configuration sections to a strongly-typed Options class
