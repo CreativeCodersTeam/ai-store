@@ -1,6 +1,6 @@
 ---
 name: angular-reviewer
-description: Performs structured code reviews on Angular 17+ projects. Reviews either uncommitted working-tree changes or committed changes on the current feature branch (vs. main). Produces a Markdown report under docs/reviews/ with severity-tagged findings ([Critical|Major|Minor|Suggestion|Nitpick][Security|Performance|Architecture|Code-Quality|Tests|Angular-Idioms]) and fix suggestions. Must NOT activate on generic "review my code" requests; other-language reviewers must not be hijacked.
+description: Use only when a structured Angular code review is explicitly requested by name — "angular-reviewer", "angular code review", or "angular review" — on an Angular 17+ project, or when invoked by the angular-dev workflow (Phase 5). Must NOT activate on generic "review my code" requests, and must not take over reviews of non-Angular code.
 ---
 
 # angular-reviewer

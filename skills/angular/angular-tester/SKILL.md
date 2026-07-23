@@ -1,6 +1,6 @@
 ---
 name: angular-tester
-description: Writes, executes, and completes unit tests for Angular/TypeScript code using Jasmine + Karma (or Jest), TestBed, and spies. Uses a second agent to identify missing test cases. Use when asked to create Angular tests or improve test coverage.
+description: Use when asked to create or extend unit tests for Angular/TypeScript code, when new Angular code (components, services, pipes, directives, guards) lacks tests, or when an existing suite is missing edge-case or error-path coverage. Covers Vitest, Jasmine + Karma, Jest, TestBed, HttpTestingController, and spies. Not for end-to-end tests (Cypress, Playwright).
 ---
 
 # Angular Tester

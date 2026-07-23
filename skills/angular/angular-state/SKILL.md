@@ -1,6 +1,6 @@
 ---
 name: angular-state
-description: Applies Angular best practices for reactive data access and client-side state management. Use when designing a store or state service, choosing between signals, RxJS, and NgRx, modeling state shape, writing selectors/derived state, optimizing change detection, handling optimistic updates and concurrency, persisting/hydrating state, or troubleshooting over-fetching and re-render performance.
+description: Use when designing a store or state service in an Angular app, choosing between signals, RxJS, and NgRx, modeling state shape, writing selectors/derived state, optimizing change detection, handling optimistic updates and concurrency conflicts, persisting/hydrating state, or troubleshooting over-fetching and re-render performance.
 ---
 
 # Angular Reactive Data & State Best Practices

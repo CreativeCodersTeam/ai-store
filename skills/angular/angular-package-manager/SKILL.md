@@ -1,6 +1,6 @@
 ---
 name: angular-package-manager
-description: Manages npm packages in Angular projects and workspaces. Use when adding, removing, or updating npm dependencies or versions. Enforces the npm/ng CLI for package operations, prefers `ng add` for Angular-aware packages and `ng update` for framework upgrades, and provides version verification workflows. Handles npm install/uninstall, npm outdated, ng add, ng update, and lockfile-consistent installs.
+description: Use when adding, removing, or updating npm packages or versions in an Angular project or workspace (npm install/uninstall, ng add, ng update, npm outdated, npm audit), upgrading Angular itself or ecosystem libraries that ship migration schematics, verifying a package version exists before bumping it, or keeping package.json and the lockfile consistent.
 ---
 
 # Angular Package Manager

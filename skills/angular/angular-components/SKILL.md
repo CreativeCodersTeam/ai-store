@@ -1,6 +1,6 @@
 ---
 name: angular-components
-description: Applies Angular best practices for building the UI/presentation layer — components, templates, routing, forms, validation, HTTP consumption, interceptors, guards, and error handling. Use when creating components, configuring the router, building reactive or template-driven forms, wiring HttpClient and interceptors, adding route guards, handling client-side errors, or structuring an Angular app. For dependency injection, the provide/config pattern, and modern TypeScript idioms, use angular-fundamentals.
+description: Use when creating Angular components, templates, or feature folders, configuring the router or lazy-loaded routes, building reactive or template-driven forms and validation, wiring HttpClient and interceptors, adding route guards or an auth/bearer-token interceptor, or handling client-side errors (ErrorHandler, HTTP error interceptor). For dependency injection, typed configuration, and modern TypeScript idioms, use angular-fundamentals.
 ---
 
 # Angular UI / Presentation Layer Best Practices

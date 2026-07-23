@@ -1,6 +1,6 @@
 ---
 name: angular-fundamentals
-description: Applies modern Angular fundamentals — dependency injection, the typed-configuration (provide) pattern, environment/runtime configuration, and modern TypeScript/Angular idioms. Use when registering providers in any Angular app or library, defining InjectionToken-based configuration, choosing a provider scope, setting up environments and runtime config, or applying standalone APIs, signals, inject(), strict null checks, and DestroyRef-based teardown.
+description: Use when registering providers in an Angular app or library (providedIn, providers, provideXxx()), choosing a provider scope, defining InjectionToken-based or typed provideXxx(config) configuration, setting up environment.ts files or runtime config loaded at bootstrap, or adopting standalone APIs, signals, inject(), strict null checks, or DestroyRef/takeUntilDestroyed teardown.
 ---
 
 # Modern Angular Fundamentals

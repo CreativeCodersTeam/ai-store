@@ -1,6 +1,6 @@
 ---
 name: angular-tsdoc
-description: Adds and reviews TSDoc/JSDoc documentation comments on Angular/TypeScript code following TSDoc and Compodoc conventions. Use when writing or reviewing TypeScript that includes public APIs, exported library symbols, complex logic, or when documentation is missing or insufficient. Covers the summary line, @param, @returns, @throws, @remarks, @example, {@link}, and {@inheritDoc}.
+description: Use when writing or reviewing TSDoc/JSDoc comments on Angular/TypeScript code — public APIs, exported library symbols, component inputs/outputs — or when doc comments are missing, insufficient, or non-standard. Covers the summary line, @param, @returns, @throws, @remarks, @example, {@link}, {@inheritDoc}, and Compodoc conventions.
 ---
 
 # Angular / TypeScript Documentation Best Practices

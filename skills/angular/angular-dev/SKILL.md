@@ -83,6 +83,15 @@ skill has fired via the `Skill` tool for this task. A binding applies whether yo
 do the work yourself or dispatch a sub-agent — self-execution never waives it,
 and a sub-agent's invocation never waives the main agent's own follow-up edits.
 
+**Arbitration with the other `angular-*` skills:** this workflow owns every
+requirement-shaped request (implement, extend, or change a feature, user story,
+or bug fix). The specialized skills fire inside it as bindings — they are used
+on their own only for pure knowledge/how-to questions, or for narrowly scoped
+tasks the user names explicitly (e.g. "write tests for X", "bump package Y",
+"run an angular review"). When a request matches both this skill and a
+specialized skill, this workflow wins and pulls the specialized skill in at its
+phase.
+
 **Tooling:** for code navigation/exploration follow the project + global rules
 (Serena first, then tokensave; built-in/`Explore` agents only in the documented
 carve-outs). Do NOT use `Explore` agents for code research when tokensave is

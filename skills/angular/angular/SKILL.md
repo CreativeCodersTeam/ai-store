@@ -38,6 +38,13 @@ orientation, not an intermediate step.
 
 ## Notes
 
+- **Arbitration with `angular-dev`:** requirement-shaped requests — implement,
+  extend, or change a feature, user story, or bug fix — belong to the
+  `angular-dev` workflow, which invokes the skills above as mandatory bindings
+  in its phases. The skills in the tables above are used directly only for pure
+  knowledge/how-to questions, or for narrowly scoped tasks the user names
+  explicitly (write tests for X, document X, bump package Y, generate a
+  library/SDK, run an angular review).
 - **`angular-reviewer` activates only on explicit name** — the phrases
   `angular-reviewer`, `angular code review`, or `angular review`. It does **not**
   trigger on generic "review my code", and the router does not trigger it

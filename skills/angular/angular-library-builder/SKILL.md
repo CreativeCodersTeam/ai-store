@@ -1,6 +1,6 @@
 ---
 name: angular-library-builder
-description: Generates complete Angular libraries / client SDKs with DI support, a provideXxx() entry point, typed HttpClient services, typed configuration, and typed errors. Use when asked to create an Angular library, build an Angular client SDK, wrap a REST API in a typed Angular service, or generate a publishable ng-packagr library. Invokes angular-tsdoc for documentation and angular-tester for tests.
+description: Use when asked to create an Angular library, build an Angular client SDK, wrap a REST API or OpenAPI/Swagger spec in a typed Angular service, or generate a publishable ng-packagr library — anything that needs a provideXxx() entry point, typed HttpClient services, typed configuration, or typed errors.
 ---
 
 # Angular Library / Client SDK Builder
