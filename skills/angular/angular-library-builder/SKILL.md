@@ -96,7 +96,7 @@ Generate all components. See [di-patterns.md](references/di-patterns.md) and [ht
 | Model types | Request/response DTO interfaces/types |
 | Public API (`public-api.ts`) | Barrel exporting only the intended public surface |
 
-**Peer dependencies (not direct deps):** `@angular/core`, `@angular/common` (for `HttpClient`), and `rxjs`. Use the `angular-package-manager` skill to add any extra dependencies; do not hand-edit `package.json`.
+**Peer dependencies (not direct deps):** `@angular/core`, `@angular/common` (for `HttpClient`), and `rxjs`. All peer version ranges (Angular and rxjs) are resolved at generation time (user-specified > workspace version > latest stable) — see [project-setup.md](references/project-setup.md); never hardcode template versions. Use the `angular-package-manager` skill to add any extra dependencies; do not hand-edit `package.json`.
 
 ### Step 8: Document the Code
 
