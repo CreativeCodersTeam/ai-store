@@ -53,8 +53,9 @@ The library's `package.json` declares Angular/RxJS as **peer** dependencies (so 
   "name": "@mycompany/github",
   "version": "1.0.0",
   "peerDependencies": {
-    "@angular/core": "^19.0.0",
-    "@angular/common": "^19.0.0",
+    // match the workspace's Angular major
+    "@angular/core": "^21.0.0",
+    "@angular/common": "^21.0.0",
     "rxjs": "^7.8.0"
   },
   "sideEffects": false

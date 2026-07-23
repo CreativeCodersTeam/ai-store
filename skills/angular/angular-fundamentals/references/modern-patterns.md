@@ -39,7 +39,7 @@ export class CartComponent {
 
 ## Signal-Based Component APIs
 
-Author public component surfaces with the signal functions, not decorators: `input()` / `input.required()`, `output()`, `model()` (two-way), and signal **queries** `viewChild()` / `viewChildren()` / `contentChild()` / `contentChildren()`. These are stable as of v20 and replace `@Input`/`@Output`/`@ViewChild`/`@ContentChild`. Mark them `readonly`.
+Author public component surfaces with the signal functions, not decorators: `input()` / `input.required()`, `output()`, `model()` (two-way), and signal **queries** `viewChild()` / `viewChildren()` / `contentChild()` / `contentChildren()`. These are stable since v19 and replace `@Input`/`@Output`/`@ViewChild`/`@ContentChild`. Mark them `readonly`.
 
 ```typescript
 export class UserProfile {
@@ -52,7 +52,7 @@ export class UserProfile {
 
 ## Change Detection: Signal-First / Zoneless
 
-Drive views from signals with `ChangeDetectionStrategy.OnPush`. The end state is **zoneless** change detection (`provideZonelessChangeDetection()`, developer preview in v20): no Zone.js, updates only from signal reads / `markForCheck` / async pipe. Adopt deliberately — verify state flows through signals, test in staging, migrate incrementally.
+Drive views from signals with `ChangeDetectionStrategy.OnPush`. The end state is **zoneless** change detection (`provideZonelessChangeDetection()`, stable since v20.2 and the default for new apps since v21): no Zone.js, updates only from signal reads / `markForCheck` / async pipe. New v21+ apps start zoneless; for existing apps adopt deliberately — verify state flows through signals, test in staging, migrate incrementally.
 
 ## `@let` Template Variables
 

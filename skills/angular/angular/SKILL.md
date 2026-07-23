@@ -52,6 +52,10 @@ orientation, not an intermediate step.
 - **Composition:** `angular-library-builder` invokes `angular-tsdoc` and
   `angular-tester`; `angular-components` and `angular-state` build on
   `angular-fundamentals`.
+- **Version baseline:** these skills are written against Angular 21 (Vitest
+  default runner, zoneless default for new apps); version-specific statements
+  name the major where the feature changed. `angular-reviewer` supports
+  Angular 17+.
 - **No package-API inspector:** the npm/Angular ecosystem has no CLI for
   querying compiled library APIs, so there is no `angular-inspect`. Use
   `angular-package-manager` for package version/metadata questions instead.

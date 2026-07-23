@@ -77,7 +77,7 @@ Show messages only after the control is touched/dirty, and keep them accessible 
 
 ## Experimental: Signal Forms
 
-Angular 20 ships **Signal Forms** (`@angular/forms/signals`) as an experimental, signal-based forms model — form state and validation expressed as signals rather than `FormGroup`/`FormControl`. It is **experimental** (API may change); keep **typed reactive forms the default** for production. Track it for greenfield, signal-first apps and evaluate before adopting widely.
+**Signal Forms** (`@angular/forms/signals`, introduced in v20) are a signal-based forms model — form state and validation expressed as signals rather than `FormGroup`/`FormControl`. They are still **experimental** as of v21 — breaking changes land in patch releases (e.g. the `Field` → `FormField` rename); keep **typed reactive forms the default** for production. Track it for greenfield, signal-first apps and evaluate before adopting widely.
 
 ## Related Skills
 

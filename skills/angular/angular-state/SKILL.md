@@ -61,7 +61,7 @@ Keep using **`HttpClient`** directly for commands/mutations (POST/PUT/DELETE), s
 - Derive with **memoized** `computed()` / NgRx selectors instead of recomputing in templates.
 - **Avoid over-fetching:** dedupe in-flight requests (`shareReplay({ bufferSize: 1, refCount: true })`), cache reads, and load only the fields/pages you need (pagination with page/size).
 - Use `async` pipe or `toSignal()` rather than manual `subscribe` to prevent leaks and redundant change detection.
-- **Zoneless change detection** (`provideZonelessChangeDetection()`, developer preview in v20) removes Zone.js and updates the view only from signal reads, `markForCheck`, and async pipe — the end state of a signal-first app. Adopt it deliberately: ensure state flows through signals/`OnPush`, test in staging, and don't flip a large production app in one step.
+- **Zoneless change detection** (`provideZonelessChangeDetection()`, stable since v20.2, default for new apps since v21) removes Zone.js and updates the view only from signal reads, `markForCheck`, and async pipe — the end state of a signal-first app; new v21+ apps start zoneless. For existing apps adopt it deliberately: ensure state flows through signals/`OnPush`, test in staging, and don't flip a large production app in one step.
 
 ## Persistence & Hydration
 
