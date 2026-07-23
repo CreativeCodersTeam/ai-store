@@ -1,0 +1,42 @@
+---
+name: dotnet-xmldocs
+description: Use when writing or reviewing C# XML documentation comments (///) — public APIs without docs, insufficient or non-Microsoft-style <summary>, <param>, <returns>, or <exception> tags, or documentation that feeds OpenAPI/Swagger or NuGet symbol output.
+---
+
+# C# Documentation Best Practices
+
+## When to Use
+
+- Writing or reviewing XML documentation comments (`///`) on C# types and members
+- Adding documentation to public APIs of a new or existing C# library
+- Reviewing missing, insufficient, or non-Microsoft-style XML docs in C# code
+- Generating documentation that feeds OpenAPI/Swagger output or NuGet symbols
+
+## General Guidelines
+
+- Public members should be documented with XML comments.
+- It is encouraged to document internal members as well, especially if they are complex or not self-explanatory.
+
+## Guidance for all APIs
+
+- Use `<summary>` to provide a brief, one sentence, description of what the type or member does. Start the summary with a present-tense, third-person verb.
+- Use `<remarks>` for additional information, which can include implementation details, usage notes, or any other relevant context.
+- Use `<see langword>` for keywords that have no type to link to: `null`, `true`, `false`, and modifiers such as `static`, `async`, `abstract`. For type keywords (`int`, `bool`, `string`, `decimal`, …) use `<see cref>` instead — they alias BCL types and should link (e.g. `<see cref="int" />` resolves to `System.Int32`).
+- Use `<c>` for inline code snippets.
+- Use `<example>` for usage examples on how to use the member.
+  - Use `<code>` for code blocks. `<code>` tags should be placed within an `<example>` tag. Add the language of the code example using the `language` attribute, for example, `<code language="csharp">`.
+- Use `<see cref>` to reference other types or members inline (in a sentence).
+- Use `<seealso>` for standalone (not in a sentence) references to other types or members in the "See also" section of the online docs.
+- Use `<inheritdoc/>` to inherit documentation from base classes or interfaces.
+  - Unless there is major behavior change, in which case you should document the differences.
+
+## Member-Specific Rules
+
+See [member-documentation-rules.md](./references/member-documentation-rules.md) for detailed wording conventions for methods (`<param>`, `<returns>`), constructors, properties (`<value>`, Gets/Sets patterns), and exceptions (`<exception cref>`) — including a canonical fully documented example that anchors all the formulas.
+
+## Related Skills
+
+- **[dotnet-sdk-builder](../dotnet-sdk-builder/SKILL.md)** — Invokes this skill in Step 8 to document generated SDKs
+- **[dotnet-aspnet](../dotnet-aspnet/SKILL.md)** — XML docs feed OpenAPI/Swagger output
+
+The full skill overview lives in the `dotnet` router skill.

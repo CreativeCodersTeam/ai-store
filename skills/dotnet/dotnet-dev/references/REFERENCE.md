@@ -1,0 +1,228 @@
+# dotnet-dev — Detailed Reference
+
+In-depth guidance per phase. Assumes a .NET / C# project. The Skill Map and the
+CRITICAL RULES in `SKILL.md` are authoritative; this document expands the *how*.
+
+---
+
+## Phase 1 — Requirement Review (Detail)
+
+### Goal
+Understand the requirement fully before any code is written, and surface every
+gap before they become rework.
+
+### Steps
+1. **Read the requirement** (issue, story, ticket, message). Identify the core
+   objective and expected outcome.
+2. **Acceptance criteria** — explicit (stated) and implicit (existing tests must
+   still pass, API contracts honored, public additions need XML docs, existing
+   conventions respected).
+3. **Gaps / contradictions / open questions** — write them down. Watch for:
+   - Scope boundaries (what is in / out).
+   - Error-handling behavior (`ProblemDetails`? typed exceptions? Result?).
+   - Backward compatibility (API surface, EF Core migrations).
+   - Target-framework / performance constraints.
+   - Contradictions between the request and existing code/conventions.
+4. **Codebase analysis** — affected `*.csproj`, host type (ASP.NET Core, Worker,
+   Console, MAUI), data layer (EF Core), cross-cutting (DI, Options, Serilog).
+   Locate existing tests (`*.Tests`) and docs. Read `Directory.Build.props`,
+   `Directory.Packages.props`, `.editorconfig`, `nuget.config`. Navigate the
+   codebase per the project's and the user's global tooling rules (CLAUDE.md).
+5. **`dotnet-inspect`** — invoke whenever an external/platform/NuGet API surface
+   must be verified (types, members, version diffs, extension methods).
+6. **Preliminary Skill Map** — from the requirement, list which bindings the
+   work will touch. It is *preliminary*: persistence (point 7) and dependencies
+   (point 8) are confirmed in Phase 2 and may add `dotnet-ef-core` /
+   `dotnet-nuget-manager`.
+
+### GATE 1 output
+Requirement restated in your words · acceptance criteria · gaps/contradictions/
+open questions · affected scope · preliminary Skill Map table. **Wait.**
+
+---
+
+## Phase 2 — Clarification (Detail)
+
+### Goal
+Resolve the 8 standard implementation dimensions, one at a time, so nothing is
+silently assumed.
+
+### Protocol
+- **One point per message.** Present point _N_: a concrete proposed default,
+  then the open question. Wait for the answer before point _N+1_.
+- **No batching, no skipping.** A point that objectively does not apply is shown
+  with `n/a — <code-referenced reason>` and still acknowledged before moving on.
+- **Pre-answered points are presented, not asked.** When the requirement or a
+  Gate-1 answer decides a point, mark it `pre-answered — <verbatim quote or
+  precise reference>` and move on; Gate 2 confirms these collectively.
+  Inference does not qualify — without a citable source the point is open.
+- Distinguish the two carefully: a **proposed default** (the source is silent,
+  you suggest) never replaces the round-trip; a **pre-answered citation** (the
+  source decides) replaces the question, never the presentation.
+
+### The 8 points (expanded prompts)
+1. **Project & folder structure** — which `*.csproj`, namespace, folder layout;
+   new projects yes/no.
+2. **Architecture & layering** — controller/service/repo vs vertical slice; DI
+   lifetimes (singleton/scoped/transient); public vs internal surface.
+3. **Naming conventions** — type/method/file/namespace names; suffixes
+   (`Service`, `Handler`, `Options`, `Async`); test naming pattern.
+4. **Public API / contracts** — DTO shape, request/response, `ProblemDetails`,
+   versioning, OpenAPI annotations.
+5. **Errors & edge cases** — exception strategy, Result vs throws, validation
+   style, logging granularity.
+6. **Test strategy** — unit and/or integration, mock boundaries, naming, fakes
+   vs real dependencies, coverage expectation.
+7. **Persistence / EF Core** — entity shape, migrations yes/no, owned types,
+   indexes, query style (LINQ vs spec). Confirms `dotnet-ef-core`.
+8. **Dependencies / NuGet** — allowed/forbidden packages, Central Package
+   Management versions. Confirms `dotnet-nuget-manager`.
+
+### GATE 2 output
+All 8 clarified decisions · the **finalized** Skill Map. **Wait.**
+
+---
+
+## Phase 3 — Task Breakdown (Detail)
+
+### Goal
+A trackable plan of discrete tasks, each self-contained.
+
+### Steps
+- Break into the smallest reasonable tasks; descriptive IDs; enough detail to
+  execute without re-reading the plan.
+- Each task addresses **production code + tests + documentation**.
+- Each task publishes its **Skill-prerequisite checklist** from the Skill Map.
+- Dependencies — common .NET order: entities → EF Core config/migrations →
+  repositories/services → controllers/endpoints; DTOs before consumers; package
+  changes before code using them.
+- Parallelization — group independent tasks for sub-agents; do not parallelize
+  migration/schema work with other EF Core work.
+
+### GATE 3 output
+Task list with per-task checklists · dependency order · parallel groups. **Wait.**
+
+---
+
+## Phase 4 — Implementation + App Smoke-Check (Detail)
+
+### Step 0 — Skill invocation (per task)
+Before any `Write`/`Edit`/code-producing `Bash` for the task, invoke each
+required binding once via the `Skill` tool. A task touching code + tests + docs
+is at least three calls (`dotnet-fundamentals` + `dotnet-tester` +
+`dotnet-xmldocs`) plus stack skills and `dotnet-nuget-manager` if packages
+change. Wait for each skill's content; follow its workflow when producing the
+artifact. Sub-agent dispatch is in addition to Step 0, not a substitute — pass
+the skills explicitly to the sub-agent (sub-agents are stateless).
+
+### Production code
+`dotnet-fundamentals` always; plus `dotnet-aspnet` (web), `dotnet-ef-core` (EF),
+`dotnet-sdk-builder` (typed SDK/HTTP client), `dotnet-inspect` (verify external
+API). Apply project conventions: the project's guard-clause style, primary constructors,
+nullable reference types, `CancellationToken` propagation, `.ConfigureAwait(false)`
+in library code (not in tests), never `.Result`/`.Wait()`/`.GetAwaiter().GetResult()`.
+
+### Tests
+`dotnet-tester` always when code is written/changed — xUnit + FakeItEasy +
+AwesomeAssertions, plus its second-agent missing-case pass. Cover new/changed
+behavior and the edge cases from Phase 1.
+
+### Documentation
+`dotnet-xmldocs` for every public API addition/change.
+
+### Build & dependencies
+`dotnet-nuget-manager` for any package add/remove/version change (enforces the
+`dotnet` CLI and `Directory.Packages.props`). Then `dotnet build` + `dotnet test`;
+fix failures before the gate.
+
+### App Smoke-Check
+- **Applies** when an executable project exists (`OutputType=Exe`, ASP.NET Core
+  Web/API, Worker Service). **`n/a`** only when library-only.
+- Start in the **background** (servers do not self-exit). Verify startup logs /
+  health endpoint / one representative request. Shut down cleanly. Never block
+  on a foreground long-running process.
+
+### GATE 4 output
+Implemented tasks · build/test result · App-Smoke-Check outcome (or `n/a`
+reason) · planned Phase-5 reviewer parameters (mode / tools / language).
+**Wait.**
+
+---
+
+## Phase 5 — Code Review (Detail)
+
+### Steps
+- Launch a code-review **sub-agent** instructed to invoke `dotnet-reviewer`;
+  also invoke `dotnet-reviewer` in the main conversation. The skill reviews
+  working-tree or branch-vs-`main` changes and writes a severity-tagged Markdown
+  report under `docs/reviews/`.
+- **Parameters travel in the prompt.** The sub-agent cannot ask the user:
+  determine mode / tools / report language before dispatch (defaults in this
+  workflow: `mode=uncommitted` — the workflow never commits —, tools `no`
+  because build/test already ran in Phase 4, language English), announce them
+  in the GATE 4 summary, and pass them explicitly in the sub-agent prompt. The
+  reviewer then runs its non-interactive mode: the Step 1 prompt is skipped and
+  the large-diff gate auto-selects strategy C (chunked) with a note in the
+  report header.
+- Review covers: correctness/completeness vs requirement, test coverage, doc
+  accuracy, code quality/bugs/security, .NET idioms, convention consistency.
+
+### Evaluate findings
+- **Critical/Major** → new tasks (each with its Skill checklist) → return to
+  Phase 4 → re-run Phase 5. If the same issue recurs after 2 cycles, consult
+  the user.
+- **Minor/Suggestion/Nitpick** → never fix or dismiss on your own: list them
+  at Gate 5 and ask the user which to fix. Selected → join the rework tasks
+  (Phase-4 rules, bindings apply). Unselected → record as user-accepted in the
+  final summary.
+
+### GATE 5 output
+Findings · report path · rework plan (Critical/Major) · ≤-Minor list with the
+user's fix/accept decisions. **Wait.**
+
+---
+
+## Phase 6 — Final Summary (Detail)
+
+1. **Requirement** restated briefly.
+2. **Files** created/modified.
+3. **Implementation details** and key design decisions.
+4. **Tests** added/updated and what they cover.
+5. **Documentation** changes (XML docs, READMEs).
+6. **Package changes** (cross-reference `Directory.Packages.props`).
+7. **Decisions / trade-offs.**
+8. **Review notes** — key `dotnet-reviewer` points + report link.
+9. **Things to check** before committing.
+10. **Skill-Invocation Log** — every task's checklist resolved to `[x]`/`[n/a]`/
+    `[!]` with evidence (see `SKILL.md`). Mandatory even when all bindings were
+    correct — it is the audit trail.
+
+End with: *All changes are ready for your review. Commit them yourself when
+satisfied, or instruct me explicitly to commit — I never commit on my own
+initiative.*
+
+---
+
+## General Guidelines
+
+### Sub-agents
+- Provide complete context (stateless). Pass the relevant `dotnet-*` skills in
+  the prompt. Use a build/test runner for `dotnet build`/`dotnet test`. Prefer
+  small focused tasks; launch independent tasks in parallel.
+- For code research, follow the project's and the user's global tooling rules
+  (CLAUDE.md).
+
+### Git
+- NEVER commit, branch, tag, or push on your own initiative. Read-only git
+  (`diff`/`status`/`log`) is always fine.
+- An explicit user instruction to commit is executed under CRITICAL RULE 1's
+  conditions: announce the scope, stage by name only (never `git add -A`/`.`),
+  refuse secret-like files (`.env`, `credentials.json`, `*.pem`), never bypass
+  hooks, and record the commit as user-directed in the final summary.
+
+### Project conventions
+- Honor `CLAUDE.md`, `AGENTS.md`, `.github/copilot-instructions.md`,
+  `.editorconfig`, `Directory.Build.props`, `Directory.Packages.props`.
+- Use the project's established guard-clause helper for argument validation;
+  default to `ArgumentNullException.ThrowIfNull` /
+  `ArgumentException.ThrowIfNullOrWhiteSpace` when the project has none.
