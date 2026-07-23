@@ -89,10 +89,9 @@ fired via the `Skill` tool for this task. A binding applies whether you do the
 work yourself or dispatch a sub-agent — self-execution never waives it, and a
 sub-agent's invocation never waives the main agent's own follow-up edits.
 
-**Tooling:** for code navigation/exploration follow the project + global rules
-(Serena first, then tokensave; built-in/`Explore` agents only in the documented
-carve-outs). Do NOT use `Explore` agents for code research when tokensave is
-available.
+**Tooling:** for code navigation/exploration, follow the project's and the
+user's global tooling rules (CLAUDE.md) — they define which tools to prefer
+and take precedence over any defaults.
 
 ---
 

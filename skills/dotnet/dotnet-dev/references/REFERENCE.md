@@ -26,9 +26,8 @@ gap before they become rework.
 4. **Codebase analysis** — affected `*.csproj`, host type (ASP.NET Core, Worker,
    Console, MAUI), data layer (EF Core), cross-cutting (DI, Options, Serilog).
    Locate existing tests (`*.Tests`) and docs. Read `Directory.Build.props`,
-   `Directory.Packages.props`, `.editorconfig`, `nuget.config`. Use Serena /
-   tokensave per project + global tooling rules — not `Explore` agents when
-   tokensave is available.
+   `Directory.Packages.props`, `.editorconfig`, `nuget.config`. Navigate the
+   codebase per the project's and the user's global tooling rules (CLAUDE.md).
 5. **`dotnet-inspect`** — invoke whenever an external/platform/NuGet API surface
    must be verified (types, members, version diffs, extension methods).
 6. **Preliminary Skill Map** — from the requirement, list which bindings the
@@ -119,7 +118,7 @@ the skills explicitly to the sub-agent (sub-agents are stateless).
 ### Production code
 `dotnet-fundamentals` always; plus `dotnet-aspnet` (web), `dotnet-ef-core` (EF),
 `dotnet-sdk-builder` (typed SDK/HTTP client), `dotnet-inspect` (verify external
-API). Apply project conventions: `Ensure.*` guards, primary constructors,
+API). Apply project conventions: the project's guard-clause style, primary constructors,
 nullable reference types, `CancellationToken` propagation, `.ConfigureAwait(false)`
 in library code (not in tests), never `.Result`/`.Wait()`/`.GetAwaiter().GetResult()`.
 
@@ -210,8 +209,8 @@ initiative.*
 - Provide complete context (stateless). Pass the relevant `dotnet-*` skills in
   the prompt. Use a build/test runner for `dotnet build`/`dotnet test`. Prefer
   small focused tasks; launch independent tasks in parallel.
-- For code research, follow the project + global tooling rules (Serena →
-  tokensave → built-in; no `Explore` agents when tokensave is available).
+- For code research, follow the project's and the user's global tooling rules
+  (CLAUDE.md).
 
 ### Git
 - NEVER commit, branch, tag, or push on your own initiative. Read-only git
@@ -224,6 +223,6 @@ initiative.*
 ### Project conventions
 - Honor `CLAUDE.md`, `AGENTS.md`, `.github/copilot-instructions.md`,
   `.editorconfig`, `Directory.Build.props`, `Directory.Packages.props`.
-- `Ensure.NotNull(...)` / `Ensure.IsNotNullOrEmpty(...)` /
-  `Ensure.IsNotNullOrWhitespace(...)` from `CreativeCoders.Core` for argument
-  guards in libraries.
+- Use the project's established guard-clause helper for argument validation;
+  default to `ArgumentNullException.ThrowIfNull` /
+  `ArgumentException.ThrowIfNullOrWhiteSpace` when the project has none.
