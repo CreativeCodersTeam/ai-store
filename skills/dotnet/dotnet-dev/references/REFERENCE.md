@@ -169,14 +169,17 @@ reason) · planned Phase-5 reviewer parameters (mode / tools / language).
   accuracy, code quality/bugs/security, .NET idioms, convention consistency.
 
 ### Evaluate findings
-- **No / minor issues** → fix directly (still invoking the required skills
-  before edits), then gate.
-- **Significant issues** → new tasks (each with its Skill checklist) → return to
-  Phase 4 → re-run Phase 5. If the same issue recurs after 2 cycles, consult the
-  user.
+- **Critical/Major** → new tasks (each with its Skill checklist) → return to
+  Phase 4 → re-run Phase 5. If the same issue recurs after 2 cycles, consult
+  the user.
+- **Minor/Suggestion/Nitpick** → never fix or dismiss on your own: list them
+  at Gate 5 and ask the user which to fix. Selected → join the rework tasks
+  (Phase-4 rules, bindings apply). Unselected → record as user-accepted in the
+  final summary.
 
 ### GATE 5 output
-Findings · report path · rework/no-rework decision. **Wait.**
+Findings · report path · rework plan (Critical/Major) · ≤-Minor list with the
+user's fix/accept decisions. **Wait.**
 
 ---
 

@@ -209,13 +209,20 @@ parameters for Phase 5 (mode, tools, report language). Wait for confirmation.
    can correct them with their Gate-4 confirmation — no extra round-trip. The
    reviewer then runs in its non-interactive mode (Step 1 prompt skipped,
    large-diff gate auto-selects chunked strategy).
-2. Evaluate findings:
-   - **Rework needed** → create new tasks (each with its own Skill checklist)
-     and return to **Phase 4**. After fixing, re-run Phase 5 (rework loop).
-   - **All good** → proceed.
+2. Evaluate findings by severity (per the reviewer's severity taxonomy):
+   - **Critical or Major** → rework: create new tasks (each with its own Skill
+     checklist) and return to **Phase 4** after Gate 5. After fixing, re-run
+     Phase 5 (rework loop).
+   - **Minor, Suggestion, or Nitpick** → never fix or dismiss these on your
+     own: present them at GATE 5 and **ask the user which of them to fix**.
+     Selected findings join the rework tasks (same Phase-4 rules, bindings
+     apply); unselected ones are recorded in the final summary as
+     user-accepted.
+   - **No findings** → proceed.
 
-**GATE 5 — STOP.** Present the review findings, the report path, and your
-rework/no-rework decision. Wait for confirmation.
+**GATE 5 — STOP.** Present the review findings, the report path, the rework
+plan for Critical/Major findings, and the list of ≤ Minor findings with the
+question which of them to fix. Wait for the user's answers and confirmation.
 
 ## Phase 6 — Final Summary
 
@@ -332,6 +339,7 @@ Reproduce each task's checklist, every entry resolved with evidence:
 | "Not a public library API, so skip `dotnet-xmldocs`" | `n/a` only for objectively internal members. Public additions/changes go through it. |
 | "User said no tests" | User preference is not a valid `n/a`. Either an objective code-referenced `n/a` exists or `dotnet-tester` is required; if the user insists, name it as a violation and let them decide. |
 | "I'll self-review the diff inline instead of `dotnet-reviewer`" | Phase 5 requires the `dotnet-reviewer` sub-agent + `docs/reviews/` report. Inline self-review does not satisfy it. |
+| "They're all just minor — I'll quickly fix them inline / silently skip them" | ≤ Minor is the **user's** call. List them at Gate 5 and ask; fix only the selected ones, via rework tasks. |
 | "I'll hand-roll it to avoid adding a package" | Avoidance-driven `n/a` is forbidden. The binding follows the natural shape of the work. |
 | "The owner told me to skip it — I'll mark those steps `n/a`" | A waiver is not an `n/a`. Honor an explicit informed waiver if given, but record it as `waived — user instruction`, never `n/a`, never silently. See *Waiver vs. `n/a`*. |
 | "They pushed back / 'nobody does this here' — the workflow is waived" | Pushback, urgency, and social proof are not waivers. Only an explicit, informed skip of a *named* step counts. Vague urgency waives nothing — run at speed. |
