@@ -25,25 +25,28 @@ app.MapOpenApi();
 
 ```csharp
 builder.Services.AddHealthChecks()
-    .AddCheck("self", () => HealthCheckResult.Healthy())
-    .AddNpgSql(connectionString, name: "database")
-    .AddRedis(redisConnectionString, name: "cache");
+    .AddNpgSql(connectionString, name: "database", tags: new[] { "ready" })
+    .AddRedis(redisConnectionString, name: "cache", tags: new[] { "ready" });
 
-app.MapHealthChecks("/health", new HealthCheckOptions
+// Liveness: is the process responsive? Runs NO checks — restarting the app
+// does not fix a downed database.
+app.MapHealthChecks("/health/live", new HealthCheckOptions
 {
-    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+    Predicate = _ => false
 });
 
+// Readiness: are the dependencies available? Runs only "ready"-tagged checks.
 app.MapHealthChecks("/health/ready", new HealthCheckOptions
 {
     Predicate = check => check.Tags.Contains("ready")
 });
 ```
 
-- Separate liveness (`/health`) and readiness (`/health/ready`) endpoints
-- Tag health checks for selective filtering
-- Use NuGet packages `AspNetCore.HealthChecks.*` for common dependencies
-- Use the `dotnet-nuget-manager` skill for adding health check packages
+- Liveness (`/health/live`) must run no dependency checks; readiness (`/health/ready`) covers the dependencies
+- Tag every dependency check `ready` — a readiness endpoint whose predicate matches zero checks evaluates nothing and always reports Healthy
+- `Degraded` maps to HTTP 200 by default — a degraded dependency still counts as ready
+- Use NuGet packages `AspNetCore.HealthChecks.*` for common dependencies (add them via the `dotnet-nuget-manager` skill)
+- For a rich JSON payload (e.g. for HealthChecks UI dashboards) add `ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse` — requires the `AspNetCore.HealthChecks.UI.Client` package and `using HealthChecks.UI.Client;`
 
 ## CORS
 
