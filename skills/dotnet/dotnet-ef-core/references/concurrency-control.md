@@ -1,6 +1,8 @@
 # Concurrency Control
 
-Use `[Timestamp]` for automatic row-version concurrency (SQL Server / PostgreSQL with `rowversion` or `xmin`):
+Row-version concurrency is provider-specific — the CLR type of the version property differs:
+
+**SQL Server** — `byte[]` mapped to a `rowversion` column:
 
 ```csharp
 public class Order
@@ -9,9 +11,23 @@ public class Order
     public string Status { get; set; } = string.Empty;
 
     [Timestamp]
-    public byte[] RowVersion { get; set; } = [];
+    public byte[] RowVersion { get; set; } = Array.Empty<byte>();
 }
 ```
+
+**PostgreSQL (Npgsql.EntityFrameworkCore.PostgreSQL 7.0+)** — `uint` mapped to the `xmin` system column (no table column is added; migrations emit nothing for it):
+
+```csharp
+public class Order
+{
+    public int Id { get; set; }
+
+    [Timestamp]
+    public uint Version { get; set; }
+}
+```
+
+On older Npgsql versions use `modelBuilder.Entity<Order>().UseXminAsConcurrencyToken();` instead. A `[Timestamp]` `byte[]` property does NOT give working concurrency on PostgreSQL — nothing ever populates the `byte[]` column.
 
 Use `[ConcurrencyCheck]` to protect individual properties without a row version column:
 
@@ -25,7 +41,7 @@ public class Product
 }
 ```
 
-Or configure via fluent API:
+Or configure via fluent API — `IsRowVersion()` applies equally to the `uint` property on Npgsql:
 
 ```csharp
 modelBuilder.Entity<Order>()
