@@ -16,7 +16,7 @@ description: Use when adding, removing, or updating npm packages or versions in 
 ## Prerequisites
 
 - Node.js and npm installed (a version compatible with the target Angular version; see the project's `engines` field and `package.json`).
-- `npm` available on your `PATH`. If the repo uses `pnpm` or `yarn`, match the existing package manager and lockfile instead.
+- `npm` available on your `PATH`. If the repo uses `pnpm` or `yarn`, match the existing package manager and lockfile instead (see *pnpm / yarn Repos* below).
 - Angular CLI (`ng`) available (via `npx ng` or a local devDependency) for `ng add` / `ng update`.
 
 ## Core Rules
@@ -56,7 +56,7 @@ When updating a version, follow these steps:
 
 3.  **Apply changes**: install via CLI, or modify the version string in the appropriate `package.json` (root or workspace member).
 
-4.  **Verify stability**: run `npm install` (reconciles the lockfile), then `npm run build` (and `ng test --watch=false` if practical). If errors occur, revert the change and investigate.
+4.  **Verify stability**: run `npm install` (reconciles the lockfile), then `ng build` (and the project's test suite if practical). If errors occur, revert the change and investigate.
 
 ### Listing Outdated Packages
 
@@ -67,6 +67,22 @@ For Angular specifically, run `ng update` with **no arguments** — it inspects 
 ### Auditing Vulnerabilities
 
 `npm audit` reports known vulnerabilities. Prefer `npm audit fix` (safe, semver-compatible) over `npm audit fix --force` (may install breaking major versions — only with explicit confirmation).
+
+### pnpm / yarn Repos
+
+Match the repo's existing package manager and lockfile. The rules above apply unchanged; translate the commands:
+
+| Operation | npm | pnpm | yarn (Berry) |
+|---|---|---|---|
+| Add | `npm install <pkg>` | `pnpm add <pkg>` | `yarn add <pkg>` |
+| Add dev-only | `npm install -D <pkg>` | `pnpm add -D <pkg>` | `yarn add -D <pkg>` |
+| Remove | `npm uninstall <pkg>` | `pnpm remove <pkg>` | `yarn remove <pkg>` |
+| Clean install (CI) | `npm ci` | `pnpm install --frozen-lockfile` | `yarn install --immutable` |
+| Outdated | `npm outdated` | `pnpm outdated` | `yarn upgrade-interactive` |
+| Audit | `npm audit` | `pnpm audit` | `yarn npm audit` |
+| Workspace target | `-w <workspace>` | `--filter <workspace>` | `yarn workspace <name> …` |
+
+`ng add` / `ng update` work regardless of the package manager — the Angular CLI detects it from the lockfile (or `cli.packageManager` in `angular.json`).
 
 ## Important Notes
 
