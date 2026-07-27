@@ -18,12 +18,11 @@ Do **not** use this skill for non-Angular test code, or for end-to-end tests (Cy
 
 ## Conventions
 
-- **Test Framework / runner**: Match the project's existing setup. New Angular projects default to **Vitest** (the CLI's default runner from v21; Karma is deprecated and frozen). **Jasmine + Karma** (older CLI default) and **Jest** remain fully supported — detect which is configured and follow it (`jest.fn()`/`vi.fn()` vs Jasmine spies). Do not switch a project's runner as a side effect of writing tests.
+- **Test framework / runner**: Detect what the project configures — the `test` builder in `angular.json`, `jest.config.*`, `vitest.config.*` — plus any test utilities in use (Spectator, ng-mocks) and follow both (`jest.fn()`/`vi.fn()` vs Jasmine spies). Only when nothing is configured: default to **Vitest** (the CLI default from v21; Karma is deprecated and frozen) — Jasmine + Karma and Jest remain fully supported. Never switch a project's runner or utility stack as a side effect of writing tests.
 - **Test bed**: `TestBed` for components/services that use DI; plain instantiation for pure classes/pipes with no dependencies.
 - **Mocking**: `jasmine.createSpyObj` / spy objects for dependencies (`jest.fn()`/`vi.fn()` under Jest/Vitest). For `HttpClient`, register `provideHttpClient()` + `provideHttpClientTesting()` and inject `HttpTestingController` (the `HttpClientTestingModule` is deprecated).
 - **Structure**: Each `it` has Arrange/Act/Assert blocks, marked with comments.
 - **Language**: English for code, comments, and test names.
-- **Style**: The stack above is the default. If the project already uses a different stack (Jest, Spectator, ng-mocks, …), match the existing convention instead of switching.
 
 ## Phase 1: Write Tests
 
@@ -130,11 +129,13 @@ describe('UserListComponent', () => {
 2. Analyze the results:
   - On **failures**: Identify the cause and fix the test or test setup
   - On **success**: Continue to Phase 3
-3. Repeat until all tests are green. Don't fakely pass tests. If a test is too complex to set up, consider if it should be refactored or if the code under test should be made more testable (e.g., extract a service, inject a dependency instead of constructing it).
+3. Repeat until all tests are green. Never force tests green by weakening assertions, skipping or commenting them out, or changing expected values to match a broken implementation — if the test describes the wrong behavior, fix the test; if the code is wrong, fix the code. If a test is too complex to set up, consider if it should be refactored or if the code under test should be made more testable (e.g., extract a service, inject a dependency instead of constructing it).
 
 ## Phase 3: Identify Missing Test Cases
 
-Start a **separate agent** that reads the production code and written tests, then returns a prioritized list of missing cases:
+Start a **separate agent** that reads the production code and written tests, then returns a prioritized list of missing cases. Dispatch it via the Agent tool (a read-only agent suffices). Sub-agents are stateless — the prompt must contain: the paths of the production file(s) and their spec file(s), the instruction to only list missing test cases (no implementation), and the expected return format below.
+
+Categories to cover:
 
 - **Edge Cases**: Null, empty strings/collections, boundary/maximum values
 - **Error Paths**: Error notifications, thrown errors, HTTP error status codes, timeouts
@@ -172,7 +173,7 @@ At the end, provide a summary:
 - Do **not write tests that only assert a component was created** (`expect(component).toBeTruthy()`) as the *only* coverage — assert behavior
 - Do **not mock simple value objects or DTOs** – create real instances
 - Test **behavior**, not implementation details (assert rendered output / emitted values, not private fields)
-- Use **descriptive test names** in the format `MethodName_Scenario_ExpectedBehavior` or a readable `should …` sentence
+- Use **descriptive test names**: a readable `should …` sentence is the default (matches the examples above); follow an existing project convention such as `MethodName_Scenario_ExpectedBehavior` if the suite already uses one
 - Always `httpMock.verify()` in `afterEach` when using `provideHttpClientTesting()`
 - Use `fakeAsync` + `tick()` for timer/async control; prefer it over real timeouts
 - Verify a spy call (`expect(spy).toHaveBeenCalledWith(...)`) sparingly – only when the call itself is the expected behavior
