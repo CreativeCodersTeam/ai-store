@@ -16,16 +16,14 @@ This reference covers detailed wording conventions for documenting TypeScript/An
 
 ## Constructors
 
-- Prefer using `inject()` over constructor injection where the project does; pure DI constructors usually need no doc comment.
+- Pure DI constructors usually need no doc comment — document the **class** instead.
 - When a constructor carries real logic, document it with the summary "Creates an instance of `ClassName`."
   - If it has meaningful parameters, document them with `@param`.
   - If overloaded, the summary should describe the specific overload.
-- Otherwise, document the **class** rather than its constructor.
 
 ## Accessors and properties
 
-- For `get`/`set` accessor pairs use "Gets or sets"; for a getter only, "Gets"; for a setter only, "Sets".
-- The summary should be a noun phrase that describes the value.
+- For `get`/`set` accessor pairs start the summary with "Gets or sets"; for a getter only, "Gets"; for a setter only, "Sets" — continued by a noun phrase describing the value (e.g. "Gets or sets the request timeout in milliseconds.").
 - For plain fields, write a noun-phrase summary describing what the field holds.
 
 ## Angular bindings
@@ -37,6 +35,6 @@ This reference covers detailed wording conventions for documenting TypeScript/An
 
 ## Errors
 
-- Use the `@throws` tag to document errors a method can throw.
-  - Reference the error type in braces using `@throws {ErrorType}`.
-  - The description should explain the conditions under which the error is thrown. Start with the word "When".
+The `@throws` rules are defined under "Methods and functions" above. In addition, for Angular/RxJS code:
+
+- `@throws` documents errors thrown **synchronously** on call. Errors delivered asynchronously — an `Observable` error notification or a rejected `Promise` — are part of the return value: document them in `@returns` or `@remarks` (e.g. "… Errors with `HttpErrorResponse` when the request fails.").
