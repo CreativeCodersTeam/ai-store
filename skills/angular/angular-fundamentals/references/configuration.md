@@ -36,6 +36,10 @@ When the same artifact must run in multiple environments (one Docker image, many
 ```typescript
 export const APP_CONFIG = new InjectionToken<AppConfig>('APP_CONFIG');
 
+// Module-level holder: written by the app initializer (which completes before
+// the app starts), read by the factory on first injection of APP_CONFIG.
+let loadedConfig: AppConfig;
+
 export function provideRuntimeConfig(): EnvironmentProviders {
   return makeEnvironmentProviders([
     { provide: APP_CONFIG, useFactory: () => structuredClone(loadedConfig) },

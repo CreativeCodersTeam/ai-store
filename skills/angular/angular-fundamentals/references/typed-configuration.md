@@ -7,8 +7,8 @@ Bind configuration to a strongly-typed object and expose it through a `provideXx
 ```typescript
 export interface SmtpConfig {
   readonly host: string;
-  readonly port: number;     // default 587
-  readonly useSsl: boolean;  // default true
+  readonly port?: number;    // default 587
+  readonly useSsl?: boolean; // default true
 }
 
 export const SMTP_CONFIG = new InjectionToken<Required<SmtpConfig>>('SMTP_CONFIG');

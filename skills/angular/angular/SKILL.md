@@ -32,7 +32,7 @@ orientation, not an intermediate step.
 | Concern | Skill |
 |---------|-------|
 | Generate an Angular library / client SDK / typed `HttpClient` wrapper | `angular-library-builder` |
-| Write/run unit tests (Jasmine + Karma or Jest, `TestBed`, spies) | `angular-tester` |
+| Write/run unit tests (Vitest, Jasmine + Karma, or Jest; `TestBed`, spies) | `angular-tester` |
 | Structured code review for Angular (explicit invocation only, see below) | `angular-reviewer` |
 | Manage npm packages, `ng add`, `ng update`, version verification | `angular-package-manager` |
 
@@ -58,7 +58,6 @@ orientation, not an intermediate step.
 - **Composition:** `angular-library-builder` invokes `angular-tsdoc` and
   `angular-tester`; `angular-components` and `angular-state` build on
   `angular-fundamentals`.
-- **Version baseline:** these skills are written against Angular 21 (Vitest
-  default runner, zoneless default for new apps); version-specific statements
-  name the major where the feature changed. `angular-reviewer` supports
-  Angular 17+.
+- **Version baseline:** these skills are written against Angular 21;
+  version-specific statements name the major where the feature changed.
+  `angular-reviewer` supports Angular 17+.

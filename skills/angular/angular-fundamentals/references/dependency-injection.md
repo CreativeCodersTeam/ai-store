@@ -28,7 +28,7 @@ export class EditorComponent {}
 
 ## Token-Based Registration
 
-A TypeScript `interface` is erased at runtime and cannot be a DI token. Depend on an `abstract class` or an `InjectionToken<T>` so the implementation stays substitutable (testing, decoration).
+A TypeScript `interface` is erased at runtime and cannot be a DI token. **When the implementation must stay substitutable** (multiple implementations, decoration, a library contract), depend on an `abstract class` or an `InjectionToken<T>`.
 
 ```typescript
 // ✅ Good — abstraction as token, swappable implementation
@@ -42,10 +42,12 @@ bootstrapApplication(App, {
 ```
 
 ```typescript
-// ❌ Bad — only ever the concrete class, not substitutable
+// ❌ Bad when substitution is required — consumers are bound to the concrete class
 @Injectable({ providedIn: 'root' })
 export class HttpOrderService { /* ... */ }
 ```
+
+For app-internal services with no substitution requirement, the concrete class itself is an idiomatic DI token — `TestBed` can still override it in tests (`{ provide: HttpOrderService, useValue: mock }`); an abstract token is not needed for mocking alone.
 
 For non-class values (config, primitives, functions), use an `InjectionToken<T>`:
 

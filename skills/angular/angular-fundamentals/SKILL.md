@@ -7,7 +7,6 @@ description: Use when registering providers in an Angular app or library (provid
 
 ## When to Use
 
-- Working with Angular/TypeScript code
 - Registering providers (`providedIn`, `providers: [...]`, `provideXxx()`) in any app, route, or component injector
 - Choosing a provider scope (root singleton, route/lazy scope, component instance)
 - Defining `InjectionToken`-based configuration and `provideXxx(config)` library APIs
