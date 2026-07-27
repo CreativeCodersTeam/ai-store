@@ -26,7 +26,9 @@ Follow these steps in order.
 
 ### Step 1 — Interactive prompt
 
-Ask the user three things:
+**Programmatic invocation** (by `angular-dev` or inside a sub-agent, which cannot prompt the user): skip the interactive prompt — the caller supplies mode, tools, and report language in the invocation; anything unspecified uses the defaults (mode `uncommitted`, all tools no, English).
+
+Otherwise, ask the user three things:
 
 1. **Mode:** `uncommitted` (working-tree vs HEAD, includes staged/unstaged/untracked) or `branch` (current branch vs a baseline branch, default `main` — capture a different baseline if the user names one).
 2. **Tools:** for each of `build`, `lint`, `test` — yes or no. Default no for all three.
