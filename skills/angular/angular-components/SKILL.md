@@ -25,7 +25,7 @@ This skill covers the **UI / presentation layer** (the client analogue of a web 
 - Mark members used **only by the template** as `protected` (keeps the component's public API minimal), and name event handlers for the **action** they perform (`saveOrder()`), not the triggering event (`onClick()`).
 - Use **typed reactive forms** for non-trivial input; prefer signals/`computed` for view state.
 - **Map errors to user-facing messages** via a global `ErrorHandler` and an HTTP error interceptor — never render raw exception text or stack traces.
-- **Interceptor order matters:** auth (attach token) → caching → retry → error mapping → logging. Order interceptors deliberately when registering them.
+- **Interceptor order matters:** base URL → auth (attach token) → caching → error mapping → retry → logging. Order interceptors deliberately when registering them.
 - Lazy-load feature routes; keep the initial bundle small. Always thread cancellation via `takeUntilDestroyed()` / unsubscribe.
 
 ## Reference Index

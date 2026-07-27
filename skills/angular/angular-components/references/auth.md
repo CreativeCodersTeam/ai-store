@@ -17,6 +17,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 };
 ```
 
+Register this after the `baseUrlInterceptor` (see [interceptors.md](interceptors.md)) — the URL check only matches once relative URLs carry the API base.
+
 ## OIDC / PKCE
 
 For SPAs, use OpenID Connect Authorization Code flow **with PKCE** (no client secret — a browser app cannot keep one; see [configuration](../../angular-fundamentals/references/configuration.md)). Use a vetted library (`angular-auth-oidc-client`) rather than hand-rolling token handling. Store tokens in memory where possible; treat refresh tokens with care.

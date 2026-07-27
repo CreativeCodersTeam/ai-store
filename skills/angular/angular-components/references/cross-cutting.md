@@ -8,7 +8,7 @@ Set the document title and meta tags per route.
 
 ```typescript
 // Per-route static title
-{ path: 'orders', title: 'Orders', loadComponent: () => import('./order-list.component') }
+{ path: 'orders', title: 'Orders', loadComponent: () => import('./order-list').then((m) => m.OrderList) }
 
 // Or dynamically
 inject(Title).setTitle(`Order #${order.id}`);
