@@ -12,7 +12,7 @@ Never overwrite — append `-2`, `-3`, … on collision. Never auto-commit.
 
 ## Skeleton
 
-```markdown
+````markdown
 # Angular Code Review — <branch> (<mode>)
 
 **Date:** YYYY-MM-DD
@@ -65,7 +65,7 @@ Never overwrite — append `-2`, `-3`, … on collision. Never auto-commit.
 
 ### ng lint
 - Skipped.
-```
+````
 
 ## Rules
 

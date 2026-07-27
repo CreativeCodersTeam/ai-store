@@ -9,7 +9,8 @@ Structured code review for Angular 17+ projects.
 
 ## When to Use This Skill
 
-A code review for an Angular 17+ project is needed.
+Only when explicitly requested by name — "angular-reviewer", "angular code review", or "angular review" — on an Angular 17+ project, or when invoked programmatically by the `angular-dev` workflow (Phase 5). Do NOT activate on generic "review my code" requests, and do not take over reviews of non-Angular code.
+
 The user may add language preferences (e.g., "in German") — apply that to the report only. The skill itself remains in English.
 
 ## Prerequisites
@@ -31,7 +32,7 @@ Ask the user three things:
 2. **Tools:** for each of `build`, `lint`, `test` — yes or no. Default no for all three.
 3. **Report language:** default English. If they want another language, capture it.
 
-Validate inputs against the whitelist. Re-prompt on invalid input.
+Validate: mode ∈ {uncommitted, branch}; each tool ∈ {yes, no}; the report language is free text. Re-prompt on an invalid mode or tool value.
 
 ### Step 2 — Detect Angular version
 
@@ -55,11 +56,11 @@ Run `scripts/collect-diff.sh --repo-root <repo> --mode <mode> --baseline main`.
 
 If `loc > 2000` OR `files > 50`, ask the user to choose:
 
-- **(B) Review everything** — note token cost in report header.
-- **(C) Prioritize** — review files matching `*.service.ts`/`*-service.ts`, `*.component.ts`, `*.store.ts`/`*-store.ts`, and (under the v20 suffix-less convention) the non-spec `.ts` files that declare a `@Component`/`@Injectable`/`@Directive`; review files without a sibling `*.spec.ts` first; summarize the rest.
-- **(D) Chunk file-by-file** — review each file independently; group findings by file.
+- **(A) Review everything** — note token cost in report header.
+- **(B) Prioritize** — review files matching `*.service.ts`/`*-service.ts`, `*.component.ts`, `*.store.ts`/`*-store.ts`, and (under the v20 suffix-less convention) the non-spec `.ts` files that declare a `@Component`/`@Injectable`/`@Directive`; review files without a sibling `*.spec.ts` first; summarize the rest.
+- **(C) Chunk file-by-file** — review each file independently; group findings by file.
 
-If C is chosen but no files match the priority heuristics, fall back to D and note the fallback transparently in the report.
+If B is chosen but no files match the priority heuristics, fall back to C and note the fallback transparently in the report.
 
 ### Step 5 — Run requested tool checks
 
