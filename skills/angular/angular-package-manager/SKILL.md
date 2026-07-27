@@ -22,7 +22,7 @@ description: Use when adding, removing, or updating npm packages or versions in 
 ## Core Rules
 
 1.  **Prefer `ng add <pkg>`** for packages that ship an Angular schematic (e.g. `@angular/material`, `@angular/pwa`, `@ngrx/store`). It installs the package **and** wires up the necessary config, providers, and imports. Use plain `npm install` only for libraries with no schematic.
-2.  **NEVER** hand-edit `package.json` to **add** or **remove** a dependency. Always use `npm install <pkg>` / `npm uninstall <pkg>` (or `ng add`) so the lockfile stays consistent.
+2.  **NEVER** hand-edit `package.json` to **add** or **remove** a dependency. Always use `npm install <pkg>` / `npm uninstall <pkg>` (or `ng add`) so the lockfile stays consistent. **Exception:** `peerDependencies` (and `sideEffects`) in a **library's own** `package.json` (`projects/*/package.json`) are edited directly — they describe the published artifact, not the workspace installation, have no lockfile, and npm has no `--save-peer`.
 3.  **DIRECT EDITING** of a version range in `package.json` is permitted only for **changing the version of an existing dependency** — and must be followed immediately by `npm install` to update the lockfile.
 4.  **NEVER hand-bump `@angular/*` versions.** Angular core/CLI/Material upgrades MUST go through `ng update`, which runs the version-specific migration schematics. Manually editing Angular versions skips migrations and breaks the workspace.
 5.  **VERSION UPDATES** must follow the mandatory workflow below.

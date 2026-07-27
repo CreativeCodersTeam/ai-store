@@ -73,6 +73,8 @@ numbers from this template:
 }
 ```
 
+This library `package.json` is maintained **by hand** (npm has no `--save-peer`) — the hand-edit ban in `angular-package-manager` explicitly exempts it. Packages that must be *installed* in the workspace go through the `angular-package-manager` skill instead.
+
 Build and publish:
 
 ```bash
