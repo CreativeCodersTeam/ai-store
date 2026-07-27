@@ -1,6 +1,6 @@
 ---
 name: angular
-description: Entry point and router for Angular and TypeScript front-end work — directs you to the right specialized Angular skill. Use when a request mentions Angular in general but the specific tool is not obvious, or to get an overview of the available Angular skills. Routes to knowledge skills (angular-fundamentals, angular-components, angular-state, angular-tsdoc) and workflow skills (angular-library-builder, angular-tester, angular-reviewer, angular-package-manager). When the matching skill is already clear, invoke that skill directly instead.
+description: Entry point and router for Angular and TypeScript front-end work — directs you to the right specialized Angular skill. Use when a request mentions Angular in general but the specific tool is not obvious, or to get an overview of the available Angular skills. Routes to knowledge skills (angular-fundamentals, angular-components, angular-state, angular-tsdoc) and workflow skills (angular-library-builder, angular-tester, angular-reviewer, angular-package-manager), and the angular-dev implementation workflow. When the matching skill is already clear, invoke that skill directly instead.
 ---
 
 # Angular Skill Router
@@ -36,6 +36,12 @@ orientation, not an intermediate step.
 | Structured code review for Angular (explicit invocation only, see below) | `angular-reviewer` |
 | Manage npm packages, `ng add`, `ng update`, version verification | `angular-package-manager` |
 
+### Orchestration skill
+
+| Concern | Skill |
+|---------|-------|
+| End-to-end implementation of a feature, user story, requirement, or bug fix (gated workflow; invokes the skills above as bindings) | `angular-dev` |
+
 ## Notes
 
 - **Arbitration with `angular-dev`:** requirement-shaped requests — implement,
@@ -56,6 +62,3 @@ orientation, not an intermediate step.
   default runner, zoneless default for new apps); version-specific statements
   name the major where the feature changed. `angular-reviewer` supports
   Angular 17+.
-- **No package-API inspector:** the npm/Angular ecosystem has no CLI for
-  querying compiled library APIs, so there is no `angular-inspect`. Use
-  `angular-package-manager` for package version/metadata questions instead.

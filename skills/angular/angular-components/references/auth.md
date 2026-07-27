@@ -19,7 +19,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
 ## OIDC / PKCE
 
-For SPAs, use OpenID Connect Authorization Code flow **with PKCE** (no client secret — a browser app cannot keep one; see angular-fundamentals/configuration). Use a vetted library (`angular-auth-oidc-client`) rather than hand-rolling token handling. Store tokens in memory where possible; treat refresh tokens with care.
+For SPAs, use OpenID Connect Authorization Code flow **with PKCE** (no client secret — a browser app cannot keep one; see [configuration](../../angular-fundamentals/references/configuration.md)). Use a vetted library (`angular-auth-oidc-client`) rather than hand-rolling token handling. Store tokens in memory where possible; treat refresh tokens with care.
 
 ## Route Guards
 
@@ -51,8 +51,3 @@ export const routes: Routes = [
 ```
 
 Mirror authorization in the template (`@if (auth.hasRole('Admin'))`) to hide controls — but never rely on it for security; the server enforces access.
-
-## Related Skills
-
-- **[angular-fundamentals](../../angular-fundamentals/SKILL.md)** — Auth services and tokens are provided via DI; secrets never ship to the browser
-- **[angular-components](../SKILL.md)** — Core Angular UI skill

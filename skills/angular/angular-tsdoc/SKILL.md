@@ -50,3 +50,4 @@ See [member-documentation-rules.md](./references/member-documentation-rules.md) 
 - **[angular-components](../angular-components/SKILL.md)** — Component inputs/outputs (`input()`/`output()`/`model()`) and public methods are documented with these conventions
 - **[angular-library-builder](../angular-library-builder/SKILL.md)** — Invokes this skill to document generated Angular libraries
 - **[angular-reviewer](../angular-reviewer/SKILL.md)** — Code-quality checklist references these conventions for public-API docs
+- **[angular-dev](../angular-dev/SKILL.md)** — Gated end-to-end implementation workflow that invokes this skill as a mandatory binding

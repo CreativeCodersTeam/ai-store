@@ -98,7 +98,7 @@ describe('UserListComponent', () => {
 });
 ```
 
-**Parameterized cases** (Jasmine has no `[Theory]` — loop over a data array):
+**Parameterized cases** — loop over a data array:
 
 ```typescript
 ([
@@ -184,3 +184,4 @@ At the end, provide a summary:
 - **[angular-reviewer](../angular-reviewer/SKILL.md)** — Test-quality checks during code review
 - **[angular-library-builder](../angular-library-builder/SKILL.md)** — Invoked by it to generate tests for new Angular libraries
 - **[angular-components](../angular-components/SKILL.md)** — Unit and integration tests for components, forms, and routed views
+- **[angular-dev](../angular-dev/SKILL.md)** — Gated end-to-end implementation workflow that invokes this skill as a mandatory binding

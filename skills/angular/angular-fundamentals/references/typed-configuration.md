@@ -80,8 +80,3 @@ Use distinct tokens for multiple named instances:
 export const SMTP_PRIMARY = new InjectionToken<SmtpConfig>('SMTP_PRIMARY');
 export const SMTP_BACKUP  = new InjectionToken<SmtpConfig>('SMTP_BACKUP');
 ```
-
-## Related Skills
-
-- **[angular-components](../../angular-components/SKILL.md)** — Binds HTTP/base-URL and feature config consumed by components and interceptors
-- **[angular-library-builder](../../angular-library-builder/SKILL.md)** — Generates typed `XxxConfig` + `provideXxx()` following this pattern

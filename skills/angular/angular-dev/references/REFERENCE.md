@@ -62,10 +62,9 @@ silently assumed.
 2. **Architecture & layering** — smart/dumb component split; state approach
    (signals / RxJS service / NgRx); DI scopes (root/route/component); public vs
    internal surface.
-3. **Naming conventions** — file/class/selector names; the project's suffix
-   convention — legacy `*.component.ts` / `OrderListComponent`, or the v20
-   suffix-less style (`order-list.ts` / class `OrderList`); spec naming. Match the
-   existing project convention; don't mix.
+3. **Naming conventions** — file/class/selector and spec naming per the
+   Phase-2 table in `SKILL.md`; match the project's existing suffix convention
+   (details: angular-components → `references/project-and-components.md`).
 4. **Public API / contracts** — signal `input()`/`output()`/`model()` shape
    (decorators only for legacy interop), exported library surface, DTO shape,
    route params/data, OpenAPI mapping for clients.

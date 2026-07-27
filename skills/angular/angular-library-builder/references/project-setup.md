@@ -81,8 +81,3 @@ cd dist/github && npm publish
 ```
 
 `sideEffects: false` keeps the library tree-shakable; `provideXxx()` is the only entry point and pulls in only what is used.
-
-## Related Skills
-
-- **[angular-fundamentals](../../angular-fundamentals/SKILL.md)** — `provideXxx()` and typed-config conventions for the generated project
-- **[angular-library-builder](../../angular-library-builder/SKILL.md)** — Parent skill

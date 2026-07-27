@@ -4,7 +4,7 @@ Idioms for modern, null-safe, expressive Angular code.
 
 ## Standalone APIs
 
-Prefer standalone components, directives, and pipes over NgModules. Bootstrap with `bootstrapApplication` and compose providers with `provideХxx()` functions.
+Prefer standalone components, directives, and pipes over NgModules. Bootstrap with `bootstrapApplication` and compose providers with `provideXxx()` functions.
 
 ```typescript
 @Component({
@@ -93,7 +93,7 @@ function rate(d: Discount): number {
 }
 ```
 
-## Teardown (the `CancellationToken` analogue)
+## Teardown
 
 Angular cancels async work by **unsubscribing**. Tie subscription lifetime to the component/service with `takeUntilDestroyed()`, and use `DestroyRef` for imperative cleanup. Outstanding `HttpClient` requests are aborted automatically when you unsubscribe.
 
@@ -111,8 +111,3 @@ export class FeedComponent {
 ```
 
 For non-RxJS async (e.g. `fetch`), pass an `AbortSignal` and abort it from `DestroyRef.onDestroy(...)`.
-
-## Related Skills
-
-- **[angular-components](../../angular-components/SKILL.md)** — Applies these idioms in components, guards, and interceptors
-- **[angular-library-builder](../../angular-library-builder/SKILL.md)** — Emits library code using these modern patterns

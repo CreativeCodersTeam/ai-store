@@ -73,7 +73,7 @@ export class OrderFacade {
 
 ## Multiple Implementations
 
-When you need several implementations of the same token, use **multi providers** and inject the array, or use distinct `InjectionToken`s (Angular's analogue to keyed services).
+When you need several implementations of the same token, use **multi providers** and inject the array, or use distinct `InjectionToken`s.
 
 ```typescript
 export const NOTIFIER = new InjectionToken<Notifier>('NOTIFIER');
@@ -110,9 +110,3 @@ export class OrderProcessor {
 ```
 
 (`Injector.get` / `runInInjectionContext` are legitimate in framework plumbing and dynamic-component factories — not in ordinary services.)
-
-## Related Skills
-
-- **[angular-components](../../angular-components/SKILL.md)** — Consumes these DI patterns for components, route guards, and interceptors
-- **[angular-library-builder](../../angular-library-builder/SKILL.md)** — Generates `provideXxx()` functions following these registration patterns
-- **[angular-state](../../angular-state/SKILL.md)** — Registers stores and reactive services via these scopes

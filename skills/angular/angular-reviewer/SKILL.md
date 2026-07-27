@@ -76,11 +76,7 @@ Walk the diff against:
 4. `references/review-checklist-architecture.md`.
 5. `references/review-checklist-code-quality.md`.
 
-Fold tool findings into the issue list using the severity mapping defined in `references/severity-taxonomy.md`:
-- `ng build` errors → Critical
-- `ng build` warnings → Minor
-- `ng test` failures → Critical
-- `ng lint` violations → Suggestion
+Fold tool findings into the issue list using the "Mapping from Tool Outputs" table in `references/severity-taxonomy.md`.
 
 Each finding MUST include a fix suggestion as a code block (`typescript` fenced) — no auto-patching.
 
@@ -135,3 +131,4 @@ Output to chat: the file path and a one-line summary (e.g., `"Wrote review with 
 - **[angular-state](../angular-state/SKILL.md)** — State/data findings reference these best practices
 - **[angular-components](../angular-components/SKILL.md)** — UI/accessibility/routing findings reference this skill's conventions
 - **[angular-package-manager](../angular-package-manager/SKILL.md)** — Surfaced outdated/vulnerable packages are addressed via this skill
+- **[angular-dev](../angular-dev/SKILL.md)** — Gated end-to-end implementation workflow that invokes this skill as a mandatory binding

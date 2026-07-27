@@ -54,8 +54,3 @@ this.api.rename(id, name, etag).pipe(
 ```
 
 Surface the conflict to the user when an automatic merge isn't safe (show both values and let them choose) rather than silently overwriting.
-
-## Related Skills
-
-- **[angular-state](../SKILL.md)** — Core Angular state skill
-- **[angular-components](../../angular-components/SKILL.md)** — Surfaces conflict prompts and error messages in the UI

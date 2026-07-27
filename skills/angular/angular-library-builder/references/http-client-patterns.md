@@ -73,8 +73,3 @@ export function toRepository(dto: { id: number; full_name: string }): Repository
   return { id: dto.id, fullName: dto.full_name };
 }
 ```
-
-## Related Skills
-
-- **[angular-fundamentals](../../angular-fundamentals/SKILL.md)** — Typed config and DI used by typed services
-- **[angular-tester](../../angular-tester/SKILL.md)** — Tests generated clients with `HttpTestingController`

@@ -72,7 +72,7 @@ For Angular specifically, run `ng update` with **no arguments** — it inspects 
 
 - **Lockfile is source of truth for CI.** Use `npm ci` (not `npm install`) for clean, reproducible installs from `package-lock.json`; use `npm install` when intentionally changing dependencies.
 - Commit `package.json` **and** the lockfile together.
-- npm has **no central package-version manifest**. In a monorepo, dependency versions are deduplicated by the lockfile and can be aligned via workspace root dependencies — there is no separate central-version file to edit.
+- In a monorepo, dependency versions are deduplicated by the lockfile and aligned via workspace root dependencies — there is no separate central-version file to edit.
 
 ## Related Skills
 
@@ -81,3 +81,4 @@ For Angular specifically, run `ng update` with **no arguments** — it inspects 
 - **[angular-state](../angular-state/SKILL.md)** — Adds RxJS, NgRx, or component-store packages (`ng add @ngrx/store`)
 - **[angular-library-builder](../angular-library-builder/SKILL.md)** — Invokes this skill to add library runtime/peer dependencies
 - **[angular-reviewer](../angular-reviewer/SKILL.md)** — Used when a review surfaces outdated or vulnerable packages
+- **[angular-dev](../angular-dev/SKILL.md)** — Gated end-to-end implementation workflow that invokes this skill as a mandatory binding

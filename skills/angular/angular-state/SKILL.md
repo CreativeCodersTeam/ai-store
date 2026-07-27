@@ -97,7 +97,7 @@ See [concurrency-control.md](./references/concurrency-control.md) for optimistic
 
 - Test stores/services by asserting emitted state after actions — assert **behavior/output**, not internal fields.
 - Use marble testing (`TestScheduler`) for non-trivial RxJS operator chains.
-- Mock HTTP with `provideHttpClient()` + `provideHttpClientTesting()` and inject `HttpTestingController` (the `HttpClientTestingModule` is deprecated); mock dependencies with spies.
+- Mock HTTP with `provideHttpClient()` + `provideHttpClientTesting()` and inject `HttpTestingController`; mock dependencies with spies.
 - For NgRx, test reducers as pure functions, selectors with `projector`, and effects with `provideMockActions`.
 - Use the `angular-tester` skill for generating unit tests after state changes.
 
@@ -108,3 +108,4 @@ See [concurrency-control.md](./references/concurrency-control.md) for optimistic
 - **[angular-components](../angular-components/SKILL.md)** — Consumes state via signals/async pipe; wires HTTP and interceptors
 - **[angular-reviewer](../angular-reviewer/SKILL.md)** — Reviews state/data code for performance and correctness issues
 - **[angular-package-manager](../angular-package-manager/SKILL.md)** — Adds RxJS, NgRx, or component-store packages
+- **[angular-dev](../angular-dev/SKILL.md)** — Gated end-to-end implementation workflow that invokes this skill as a mandatory binding

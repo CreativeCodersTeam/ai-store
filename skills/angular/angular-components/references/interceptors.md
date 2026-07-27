@@ -57,8 +57,3 @@ export const loggingInterceptor: HttpInterceptorFn = (req, next) => {
 ## Reactive Reads (`httpResource`)
 
 `httpResource()` (signal-driven GETs, see [angular-state](../../angular-state/SKILL.md)) is built on `HttpClient`, so it flows through **this same interceptor chain** — auth, base URL, caching, retry, and error mapping all apply. Use `httpResource` for reactive reads; keep `HttpClient` for mutations and streaming.
-
-## Related Skills
-
-- **[angular-fundamentals](../../angular-fundamentals/SKILL.md)** — Interceptors resolve config/services via `inject()`
-- **[angular-components](../SKILL.md)** — Core Angular UI skill

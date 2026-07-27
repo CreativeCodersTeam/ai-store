@@ -48,3 +48,4 @@ Detailed patterns and code samples live in `references/`:
 - **[angular-package-manager](../angular-package-manager/SKILL.md)** — Invoked for adding router, forms, HTTP, and UI packages (often via `ng add`)
 - **[angular-library-builder](../angular-library-builder/SKILL.md)** — Generates typed `HttpClient` services for consuming APIs
 - **[angular-reviewer](../angular-reviewer/SKILL.md)** — Reviews Angular UI code for accessibility, performance, and architecture issues
+- **[angular-dev](../angular-dev/SKILL.md)** — Gated end-to-end implementation workflow that invokes this skill as a mandatory binding
