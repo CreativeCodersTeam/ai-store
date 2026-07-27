@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # collect-diff.sh — collect a unified diff in uncommitted or branch mode.
 # Output JSON: {loc, files, file_list, diff}
-# Exit codes: 0 ok (incl. empty diff), 1 usage, 2 not git, 3 baseline missing.
+# Exit codes: 0 ok (incl. empty diff), 1 usage, 2 not git, 3 baseline missing (branch mode), 4 no commits yet (uncommitted mode).
 
 set -u
 
@@ -24,6 +24,7 @@ Exit codes:
   1  usage error
   2  not a git repository
   3  baseline branch not found (branch mode only)
+  4  repository has no commits yet (uncommitted mode only)
 EOF
 }
 
@@ -54,7 +55,7 @@ fi
 # Guard: uncommitted mode against an empty repo (no HEAD yet) — abort cleanly.
 if [[ "$MODE" == "uncommitted" ]] && ! git rev-parse --verify --quiet HEAD -- >/dev/null; then
   echo "repository has no commits yet (HEAD missing)" >&2
-  exit 3
+  exit 4
 fi
 
 # pathspec exclusions on top of .gitignore

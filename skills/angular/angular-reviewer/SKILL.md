@@ -15,7 +15,7 @@ The user may add language preferences (e.g., "in German") — apply that to the 
 
 ## Prerequisites
 
-- `git` repo with `main` branch (for branch mode).
+- `git` repo with a baseline branch (default `main`) for branch mode.
 - Node.js + npm and the Angular CLI (`ng`, via `npx` or a local devDependency) if any of build/lint/test will run.
 - `bash` 3.2+ available (macOS default works).
 - `python3` available (used by scripts for safe JSON encoding).
@@ -28,7 +28,7 @@ Follow these steps in order.
 
 Ask the user three things:
 
-1. **Mode:** `uncommitted` (working-tree vs HEAD, includes staged/unstaged/untracked) or `branch` (current branch vs `main`).
+1. **Mode:** `uncommitted` (working-tree vs HEAD, includes staged/unstaged/untracked) or `branch` (current branch vs a baseline branch, default `main` — capture a different baseline if the user names one).
 2. **Tools:** for each of `build`, `lint`, `test` — yes or no. Default no for all three.
 3. **Report language:** default English. If they want another language, capture it.
 
@@ -45,12 +45,13 @@ Run `scripts/detect-angular-version.sh --repo-root <repo>`.
 
 ### Step 3 — Collect diff
 
-Run `scripts/collect-diff.sh --repo-root <repo> --mode <mode> --baseline main`.
+Run `scripts/collect-diff.sh --repo-root <repo> --mode <mode> --baseline <baseline>` (default `main`).
 
 - Exit 0 with `files == 0`: report "no changes to review" and exit.
 - Exit 0 with `files > 0`: continue.
 - Exit 2: not a git repo — abort.
-- Exit 3 (branch mode, missing `main`): abort, tell user.
+- Exit 3 (branch mode, baseline not found): tell the user, ask for the correct baseline branch, and re-run.
+- Exit 4 (uncommitted mode, repo has no commits yet): abort, tell user.
 
 ### Step 4 — Large-diff strategy gate
 
@@ -64,7 +65,7 @@ If B is chosen but no files match the priority heuristics, fall back to C and no
 
 ### Step 5 — Run requested tool checks
 
-For each tool the user selected, invoke `scripts/run-checks.sh --repo-root <repo>` with the appropriate flag(s). Parse JSON.
+For each tool the user selected, invoke `scripts/run-checks.sh --repo-root <repo>` with the appropriate flag(s). Parse JSON. The script detects the configured test runner (Karma/Jest/Vitest) from `angular.json` and applies runner-specific flags itself (e.g. `--browsers` only for Karma).
 
 If a tool isn't installed/configured, the script reports the failure inside the JSON — log "X not available, skipping" and continue. Don't abort.
 

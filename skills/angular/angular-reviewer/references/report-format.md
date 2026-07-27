@@ -20,7 +20,7 @@ Never overwrite — append `-2`, `-3`, … on collision. Never auto-commit.
 **Detected Angular:** 17.x | 18.x | …
 **Workspace projects:** app, my-lib, …
 **Tools run:** build=Y/N · lint=Y/N · test=Y/N
-**Exclusions:** .gitignore, *.min.js, dist/**
+**Exclusions:** .gitignore, *.min.js, dist/**, package-lock.json
 **Review strategy:** full | prioritized | chunked
 **Diff size:** <files> files, <loc> changed LOC
 
