@@ -4,11 +4,11 @@ The client-side counterparts to a web API's cross-cutting concerns (OpenAPI, hea
 
 ## Title & Meta (SEO)
 
-Set the document title and meta tags per route — the discoverability analogue of OpenAPI documentation.
+Set the document title and meta tags per route.
 
 ```typescript
 // Per-route static title
-{ path: 'orders', title: 'Orders', loadComponent: () => import('./order-list.component') }
+{ path: 'orders', title: 'Orders', loadComponent: () => import('./order-list').then((m) => m.OrderList) }
 
 // Or dynamically
 inject(Title).setTitle(`Order #${order.id}`);
@@ -63,8 +63,3 @@ provideClientHydration(withIncrementalHydration(), withEventReplay());
 
 - **Incremental hydration** hydrates parts of the page on demand (e.g. on viewport/interaction via `@defer` triggers) rather than all at once — smaller, faster initial work.
 - **Event replay** captures user events fired before hydration completes and replays them afterward, so early clicks aren't lost.
-
-## Related Skills
-
-- **[angular-fundamentals](../../angular-fundamentals/SKILL.md)** — Cross-cutting services registered via DI
-- **[angular-components](../SKILL.md)** — Core Angular UI skill

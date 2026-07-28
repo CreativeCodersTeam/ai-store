@@ -29,8 +29,8 @@ gap before it becomes rework.
    approach (signals / RxJS / NgRx), cross-cutting (DI, interceptors, guards).
    Locate existing specs (`*.spec.ts`) and docs. Read `angular.json`,
    `tsconfig*.json`, `.editorconfig`, eslint/prettier config, `package.json`.
-   Use Serena / tokensave per project + global tooling rules — not `Explore`
-   agents when tokensave is available.
+   Follow the project's and the user's global tooling rules for code
+   navigation.
 5. **Preliminary Skill Map** — from the requirement, list which bindings the
    work will touch. It is *preliminary*: state (point 7) and dependencies
    (point 8) are confirmed in Phase 2 and may add `angular-state` /
@@ -49,12 +49,10 @@ Resolve the 8 standard implementation dimensions, one at a time, so nothing is
 silently assumed.
 
 ### Protocol
-- **One point per message.** Present point _N_: a concrete proposed default,
-  then the open question. Wait for the answer before point _N+1_.
-- **No batching, no skipping.** A point that objectively does not apply is shown
-  with `n/a — <code-referenced reason>` and still acknowledged before moving on.
-- Pre-filling a sensible default is encouraged — it lets the user reply "ok"
-  fast — but the default never replaces the round-trip.
+The protocol (one point per message, no batching/skipping, `n/a` handling) is
+normative in `SKILL.md` Phase 2. Additionally: pre-filling a sensible default is
+encouraged — it lets the user reply "ok" fast — but the default never replaces
+the round-trip.
 
 ### The 8 points (expanded prompts)
 1. **Project & folder structure** — which project/library, feature folder,
@@ -62,10 +60,9 @@ silently assumed.
 2. **Architecture & layering** — smart/dumb component split; state approach
    (signals / RxJS service / NgRx); DI scopes (root/route/component); public vs
    internal surface.
-3. **Naming conventions** — file/class/selector names; the project's suffix
-   convention — legacy `*.component.ts` / `OrderListComponent`, or the v20
-   suffix-less style (`order-list.ts` / class `OrderList`); spec naming. Match the
-   existing project convention; don't mix.
+3. **Naming conventions** — file/class/selector and spec naming per the
+   Phase-2 table in `SKILL.md`; match the project's existing suffix convention
+   (details: angular-components → `references/project-and-components.md`).
 4. **Public API / contracts** — signal `input()`/`output()`/`model()` shape
    (decorators only for legacy interop), exported library surface, DTO shape,
    route params/data, OpenAPI mapping for clients.
@@ -137,17 +134,15 @@ inputs/outputs, exported library members).
 
 ### Build & dependencies
 `angular-package-manager` for any package add/remove/version change (enforces the
-`npm`/`ng` CLI, `ng add`/`ng update`). Then `ng build` + `ng test --watch=false`;
-fix failures before the gate.
+`npm`/`ng` CLI, `ng add`/`ng update`). Then `ng build` + the test suite
+(runner-appropriate command per `angular-tester` Phase 2); fix failures before
+the gate.
 
 ### App Run-Check
-- **Applies** when an application project exists (`projectType: "application"` in
-  `angular.json`). **`n/a`** only when library-only — a clean `ng build <lib>`
-  is the run equivalent there.
-- Start `ng serve` in the **background** (it does not self-exit). Verify it
-  compiles without errors and serves (a representative route renders / no console
-  errors). Shut down cleanly. A clean `ng build` is an acceptable substitute when
-  serving is impractical. Never block on a foreground long-running process.
+Applicability, the library-only `n/a`, and the accepted substitutes are
+normative in `SKILL.md` (Phase 4, point 4). Operationally: start the dev server
+as a background task, watch its output for a successful compile and verify a
+representative route, then terminate it cleanly.
 
 ### GATE 4 output
 Implemented tasks · build/test result · App-Run-Check outcome (or `n/a` reason).
@@ -159,19 +154,21 @@ Implemented tasks · build/test result · App-Run-Check outcome (or `n/a` reason
 
 ### Steps
 - Launch a code-review **sub-agent** instructed to invoke `angular-reviewer`;
-  also invoke `angular-reviewer` in the main conversation. The skill reviews
-  working-tree or branch-vs-`main` changes and writes a severity-tagged Markdown
-  report under `docs/reviews/`.
+  also invoke `angular-reviewer` in the main conversation. Sub-agents cannot
+  prompt the user — pass mode, tools, and report language explicitly in the
+  sub-agent prompt (programmatic defaults: uncommitted, no tools, English). The
+  skill reviews working-tree or branch-vs-baseline changes and writes a
+  severity-tagged Markdown report under `docs/reviews/`.
 - Review covers: correctness/completeness vs requirement, test coverage, doc
   accuracy, code quality/bugs/security, Angular idioms, accessibility, bundle/
   change-detection performance, convention consistency.
 
 ### Evaluate findings
-- **No / minor issues** → fix directly (still invoking the required skills
-  before edits), then gate.
-- **Significant issues** → new tasks (each with its Skill checklist) → return to
-  Phase 4 → re-run Phase 5. If the same issue recurs after 2 cycles, consult the
-  user.
+- **Only Minor/Suggestion/Nitpick findings** → fix directly (still invoking the
+  required skills before edits), then gate.
+- **Critical/Major findings** → new tasks (each with its Skill checklist) →
+  return to Phase 4 → re-run Phase 5. If the same issue recurs after 2 cycles,
+  consult the user.
 
 ### GATE 5 output
 Findings · report path · rework/no-rework decision. **Wait.**
@@ -204,8 +201,7 @@ satisfied — this workflow creates no commits.*
 - Provide complete context (stateless). Pass the relevant `angular-*` skills in
   the prompt. Use a build/test runner for `ng build`/`ng test`. Prefer small
   focused tasks; launch independent tasks in parallel.
-- For code research, follow the project + global tooling rules (Serena →
-  tokensave → built-in; no `Explore` agents when tokensave is available).
+- For code research, follow the project's and the user's global tooling rules.
 
 ### Git
 - NEVER `git commit`, `git add -A`/`.`, branch, tag, or push. Read-only git

@@ -67,7 +67,7 @@ export function uniqueEmail(api: UserApi): AsyncValidatorFn {
 
 ## Displaying Errors
 
-Show messages only after the control is touched/dirty, and keep them accessible (`aria-describedby`, `role="alert"`). This is the client equivalent of returning `ValidationProblemDetails`.
+Show messages only after the control is touched/dirty, and keep them accessible (`aria-describedby`, `role="alert"`).
 
 ```html
 @if (form.controls.customerName.touched && form.controls.customerName.invalid) {
@@ -77,9 +77,4 @@ Show messages only after the control is touched/dirty, and keep them accessible 
 
 ## Experimental: Signal Forms
 
-Angular 20 ships **Signal Forms** (`@angular/forms/signals`) as an experimental, signal-based forms model — form state and validation expressed as signals rather than `FormGroup`/`FormControl`. It is **experimental** (API may change); keep **typed reactive forms the default** for production. Track it for greenfield, signal-first apps and evaluate before adopting widely.
-
-## Related Skills
-
-- **[angular-fundamentals](../../angular-fundamentals/SKILL.md)** — Typed config validated at bootstrap uses the same fail-fast mindset
-- **[angular-components](../SKILL.md)** — Core Angular UI skill
+**Signal Forms** (`@angular/forms/signals`, introduced in v20) are a signal-based forms model — form state and validation expressed as signals rather than `FormGroup`/`FormControl`. They are still **experimental** as of v21 — breaking changes land in patch releases (e.g. the `Field` → `FormField` rename); keep **typed reactive forms the default** for production. Track it for greenfield, signal-first apps and evaluate before adopting widely.

@@ -26,6 +26,10 @@ workflow as a subsystem — at speed, never collapsed.
 
 1. **NO COMMITS.** Never run `git commit`, `git add -A`/`.`, branch, tag, or
    push. The user commits manually. If asked to commit, skip it and say so.
+   Commits are exempt from the waiver mechanism (see *Waiver vs. `n/a`*): the
+   commit is the human's acceptance of the result and is not delegable. If the
+   user explicitly asks for a commit, explain this and provide the ready
+   staging list instead.
 
 2. **URGENCY AND TRIVIALITY WAIVE NOTHING.** "It's trivial", "I'm in a hurry",
    "demo in 30 minutes", "skip the clarification dance", "no need for the full
@@ -83,10 +87,17 @@ skill has fired via the `Skill` tool for this task. A binding applies whether yo
 do the work yourself or dispatch a sub-agent — self-execution never waives it,
 and a sub-agent's invocation never waives the main agent's own follow-up edits.
 
-**Tooling:** for code navigation/exploration follow the project + global rules
-(Serena first, then tokensave; built-in/`Explore` agents only in the documented
-carve-outs). Do NOT use `Explore` agents for code research when tokensave is
-available.
+**Arbitration with the other `angular-*` skills:** this workflow owns every
+requirement-shaped request (implement, extend, or change a feature, user story,
+or bug fix). The specialized skills fire inside it as bindings — they are used
+on their own only for pure knowledge/how-to questions, or for narrowly scoped
+tasks the user names explicitly (e.g. "write tests for X", "bump package Y",
+"run an angular review"). When a request matches both this skill and a
+specialized skill, this workflow wins and pulls the specialized skill in at its
+phase.
+
+**Tooling:** for code navigation/exploration follow the tooling rules of the
+project and the user's global configuration.
 
 ---
 
@@ -161,7 +172,8 @@ For each task (or parallel group):
 2. Implement production code (`angular-fundamentals` + UI/state skill), tests
    (`angular-tester`), TSDoc (`angular-tsdoc`), package changes
    (`angular-package-manager`).
-3. Run `ng build` and the test suite (`ng test --watch=false`). Fix failures.
+3. Run `ng build` and the test suite via the runner-appropriate command from
+   `angular-tester` (Phase 2). Fix failures.
 4. **App Run-Check** — if a runnable application exists, verify it actually
    builds and runs:
    - **Applies when** the workspace has an application project (`projectType:
@@ -181,12 +193,18 @@ App-Run-Check outcome (or its `n/a` reason). Wait for confirmation.
 
 1. Launch a code-review **sub-agent** that uses `angular-reviewer`. Invoke
    `angular-reviewer` via the `Skill` tool in the main conversation **and** pass
-   it to the sub-agent prompt. Inline self-review does NOT satisfy this phase —
-   `angular-reviewer` produces a severity-tagged Markdown report under
+   it to the sub-agent prompt. Sub-agents cannot ask the user — pass the
+   reviewer's inputs (mode, tools, report language) explicitly in the sub-agent
+   prompt; unspecified values use the reviewer's programmatic defaults
+   (uncommitted, no tools, English). Inline self-review does NOT satisfy this
+   phase — `angular-reviewer` produces a severity-tagged Markdown report under
    `docs/reviews/`.
-2. Evaluate findings:
-   - **Rework needed** → create new tasks (each with its own Skill checklist)
-     and return to **Phase 4**. After fixing, re-run Phase 5 (rework loop).
+2. Evaluate findings (severities per angular-reviewer's taxonomy):
+   - **Critical/Major findings** → create new tasks (each with its own Skill
+     checklist) and return to **Phase 4**. After fixing, re-run Phase 5
+     (rework loop).
+   - **Only Minor/Suggestion/Nitpick findings** → may be fixed directly without
+     new tasks — the skill bindings still apply before every edit; then gate.
    - **All good** → proceed.
 
 **GATE 5 — STOP.** Present the review findings, the report path, and your
@@ -253,6 +271,8 @@ silently collapses.
   3. **Some steps still run regardless.** Invoking the relevant `angular-*`
      skills before writing code costs the user nothing and keeps the code
      matching repo conventions — keep them even under a waiver.
+  4. **Commits are exempt.** A waiver can skip steps of this workflow, but
+     never authorizes a commit — see CRITICAL RULE 1.
 
 - **Objective `n/a`** — the work is empty for a code-referenced reason (see
   `n/a` Criteria). This is the only state that requires no user sign-off.

@@ -23,7 +23,7 @@ Apply when `detect-angular-version.sh` reports an Angular major `>= 17`.
 
 ## API Idioms
 
-- **`provideХxx()` functions** over `forRoot()` NgModule patterns for configuration in new libraries.
+- **`provideXxx()` functions** over `forRoot()` NgModule patterns for configuration in new libraries.
 - **Functional guards/interceptors/resolvers** (`CanActivateFn`, `HttpInterceptorFn`, `ResolveFn`) over the deprecated class-based forms.
 - **`HttpClient`** for all HTTP — flag `fetch`/`XMLHttpRequest` in app code (breaks interceptors, testing, SSR).
 

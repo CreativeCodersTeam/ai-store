@@ -36,6 +36,10 @@ When the same artifact must run in multiple environments (one Docker image, many
 ```typescript
 export const APP_CONFIG = new InjectionToken<AppConfig>('APP_CONFIG');
 
+// Module-level holder: written by the app initializer (which completes before
+// the app starts), read by the factory on first injection of APP_CONFIG.
+let loadedConfig: AppConfig;
+
 export function provideRuntimeConfig(): EnvironmentProviders {
   return makeEnvironmentProviders([
     { provide: APP_CONFIG, useFactory: () => structuredClone(loadedConfig) },
@@ -55,8 +59,3 @@ Precedence pattern: bundled `environment` defaults, overridden by the runtime `c
 - Keep secrets on a backend; the Angular app calls the backend, which holds the credentials.
 - Use OAuth/OIDC (PKCE) for auth — the browser holds short-lived, user-scoped tokens, not application secrets.
 - "Public" keys meant for client use (e.g. a publishable Stripe key, a Maps API key restricted by referrer) are fine; restrict them at the provider.
-
-## Related Skills
-
-- **[angular-components](../../angular-components/SKILL.md)** — Reads base-URL / feature config for routing, interceptors, and HTTP setup
-- **[angular-fundamentals](../SKILL.md)** — Core fundamentals that build on this configuration foundation

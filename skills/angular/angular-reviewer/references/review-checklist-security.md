@@ -28,6 +28,8 @@
 
 - No known-vulnerable packages (`npm audit`). Flag high/critical advisories introduced by the change (A06).
 - New runtime dependencies are justified; avoid pulling large/unmaintained packages for trivial needs.
+- External scripts/styles loaded from CDNs carry Subresource Integrity (`integrity` + `crossorigin`) attributes (A08).
+- Dependencies come from the registry via the lockfile — flag git/http package sources and new postinstall scripts introduced by the change (A08).
 
 ## HTTP & Data
 
@@ -45,5 +47,6 @@ When reporting, reference the OWASP Top 10 category in parentheses:
 - A05 Security Misconfiguration
 - A06 Vulnerable & Outdated Components
 - A07 Identification & Auth Failures
+- A08 Software & Data Integrity Failures
 - A09 Security Logging Failures
 - A10 SSRF

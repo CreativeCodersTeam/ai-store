@@ -1,6 +1,6 @@
 ---
 name: angular-state
-description: Applies Angular best practices for reactive data access and client-side state management. Use when designing a store or state service, choosing between signals, RxJS, and NgRx, modeling state shape, writing selectors/derived state, optimizing change detection, handling optimistic updates and concurrency, persisting/hydrating state, or troubleshooting over-fetching and re-render performance.
+description: Use when designing a store or state service in an Angular app, choosing between signals, RxJS, and NgRx, modeling state shape, writing selectors/derived state, optimizing change detection, handling optimistic updates and concurrency conflicts, persisting/hydrating state, or troubleshooting over-fetching and re-render performance.
 ---
 
 # Angular Reactive Data & State Best Practices
@@ -61,7 +61,7 @@ Keep using **`HttpClient`** directly for commands/mutations (POST/PUT/DELETE), s
 - Derive with **memoized** `computed()` / NgRx selectors instead of recomputing in templates.
 - **Avoid over-fetching:** dedupe in-flight requests (`shareReplay({ bufferSize: 1, refCount: true })`), cache reads, and load only the fields/pages you need (pagination with page/size).
 - Use `async` pipe or `toSignal()` rather than manual `subscribe` to prevent leaks and redundant change detection.
-- **Zoneless change detection** (`provideZonelessChangeDetection()`, developer preview in v20) removes Zone.js and updates the view only from signal reads, `markForCheck`, and async pipe — the end state of a signal-first app. Adopt it deliberately: ensure state flows through signals/`OnPush`, test in staging, and don't flip a large production app in one step.
+- **Zoneless change detection** (`provideZonelessChangeDetection()`, stable since v20.2, default for new apps since v21) removes Zone.js and updates the view only from signal reads, `markForCheck`, and async pipe — the end state of a signal-first app; new v21+ apps start zoneless. For existing apps adopt it deliberately: ensure state flows through signals/`OnPush`, test in staging, and don't flip a large production app in one step.
 
 ## Persistence & Hydration
 
@@ -97,7 +97,7 @@ See [concurrency-control.md](./references/concurrency-control.md) for optimistic
 
 - Test stores/services by asserting emitted state after actions — assert **behavior/output**, not internal fields.
 - Use marble testing (`TestScheduler`) for non-trivial RxJS operator chains.
-- Mock HTTP with `provideHttpClient()` + `provideHttpClientTesting()` and inject `HttpTestingController` (the `HttpClientTestingModule` is deprecated); mock dependencies with spies.
+- Mock HTTP with `provideHttpClient()` + `provideHttpClientTesting()` and inject `HttpTestingController`; mock dependencies with spies.
 - For NgRx, test reducers as pure functions, selectors with `projector`, and effects with `provideMockActions`.
 - Use the `angular-tester` skill for generating unit tests after state changes.
 
@@ -108,3 +108,4 @@ See [concurrency-control.md](./references/concurrency-control.md) for optimistic
 - **[angular-components](../angular-components/SKILL.md)** — Consumes state via signals/async pipe; wires HTTP and interceptors
 - **[angular-reviewer](../angular-reviewer/SKILL.md)** — Reviews state/data code for performance and correctness issues
 - **[angular-package-manager](../angular-package-manager/SKILL.md)** — Adds RxJS, NgRx, or component-store packages
+- **[angular-dev](../angular-dev/SKILL.md)** — Gated end-to-end implementation workflow that invokes this skill as a mandatory binding

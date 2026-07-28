@@ -20,6 +20,8 @@ export class GitHubClient {
 
 Prefer relative URLs + a `baseUrlInterceptor` when the consuming app already centralizes its API base; use absolute `baseUrl` from config when the library targets a fixed external API.
 
+A token stored in the immutable config suits **static API keys** only. For user tokens that rotate or refresh (OIDC), accept a `tokenProvider: () => string | Promise<string>` in the config — or ship an opt-in interceptor — instead of a fixed `token` string, so each request reads the current token.
+
 ## Resilience
 
 Add retry-with-backoff and a timeout via RxJS. Only retry idempotent calls / transient statuses.
@@ -73,8 +75,3 @@ export function toRepository(dto: { id: number; full_name: string }): Repository
   return { id: dto.id, fullName: dto.full_name };
 }
 ```
-
-## Related Skills
-
-- **[angular-fundamentals](../../angular-fundamentals/SKILL.md)** — Typed config and DI used by typed services
-- **[angular-tester](../../angular-tester/SKILL.md)** — Tests generated clients with `HttpTestingController`

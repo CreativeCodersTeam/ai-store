@@ -7,8 +7,8 @@ Bind configuration to a strongly-typed object and expose it through a `provideXx
 ```typescript
 export interface SmtpConfig {
   readonly host: string;
-  readonly port: number;     // default 587
-  readonly useSsl: boolean;  // default true
+  readonly port?: number;    // default 587
+  readonly useSsl?: boolean; // default true
 }
 
 export const SMTP_CONFIG = new InjectionToken<Required<SmtpConfig>>('SMTP_CONFIG');
@@ -80,8 +80,3 @@ Use distinct tokens for multiple named instances:
 export const SMTP_PRIMARY = new InjectionToken<SmtpConfig>('SMTP_PRIMARY');
 export const SMTP_BACKUP  = new InjectionToken<SmtpConfig>('SMTP_BACKUP');
 ```
-
-## Related Skills
-
-- **[angular-components](../../angular-components/SKILL.md)** — Binds HTTP/base-URL and feature config consumed by components and interceptors
-- **[angular-library-builder](../../angular-library-builder/SKILL.md)** — Generates typed `XxxConfig` + `provideXxx()` following this pattern

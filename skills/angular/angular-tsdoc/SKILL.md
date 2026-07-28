@@ -1,6 +1,6 @@
 ---
 name: angular-tsdoc
-description: Adds and reviews TSDoc/JSDoc documentation comments on Angular/TypeScript code following TSDoc and Compodoc conventions. Use when writing or reviewing TypeScript that includes public APIs, exported library symbols, complex logic, or when documentation is missing or insufficient. Covers the summary line, @param, @returns, @throws, @remarks, @example, {@link}, and {@inheritDoc}.
+description: Use when writing or reviewing TSDoc/JSDoc comments on Angular/TypeScript code — public APIs, exported library symbols, component inputs/outputs — or when doc comments are missing, insufficient, or non-standard. Covers the summary line, @param, @returns, @throws, @remarks, @example, {@link}, {@inheritDoc}, and Compodoc conventions.
 ---
 
 # Angular / TypeScript Documentation Best Practices
@@ -50,3 +50,4 @@ See [member-documentation-rules.md](./references/member-documentation-rules.md) 
 - **[angular-components](../angular-components/SKILL.md)** — Component inputs/outputs (`input()`/`output()`/`model()`) and public methods are documented with these conventions
 - **[angular-library-builder](../angular-library-builder/SKILL.md)** — Invokes this skill to document generated Angular libraries
 - **[angular-reviewer](../angular-reviewer/SKILL.md)** — Code-quality checklist references these conventions for public-API docs
+- **[angular-dev](../angular-dev/SKILL.md)** — Gated end-to-end implementation workflow that invokes this skill as a mandatory binding

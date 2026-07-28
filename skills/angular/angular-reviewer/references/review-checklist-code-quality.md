@@ -46,7 +46,7 @@
 
 ## Tests (cross-cutting)
 
-See the `angular-tester` skill for AAA layout, `Method_Condition_Expected` (or readable `should …`) naming, `TestBed`/spy conventions, and edge-case coverage. Reviewer-specific hook: flag any new public behavior shipped without at least one meaningful test, a test asserting only `toBeTruthy()` on creation, and any test body containing conditional logic (`if`/`for`).
+See the `angular-tester` skill for AAA layout, `should …` naming (or an existing project convention such as `MethodName_Scenario_ExpectedBehavior`), `TestBed`/spy conventions, and edge-case coverage. Reviewer-specific hook: flag any new public behavior shipped without at least one meaningful test, a test asserting only `toBeTruthy()` on creation, and any test body containing conditional logic (`if`/`for`).
 
 ## Logging
 

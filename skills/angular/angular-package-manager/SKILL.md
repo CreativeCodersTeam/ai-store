@@ -1,6 +1,6 @@
 ---
 name: angular-package-manager
-description: Manages npm packages in Angular projects and workspaces. Use when adding, removing, or updating npm dependencies or versions. Enforces the npm/ng CLI for package operations, prefers `ng add` for Angular-aware packages and `ng update` for framework upgrades, and provides version verification workflows. Handles npm install/uninstall, npm outdated, ng add, ng update, and lockfile-consistent installs.
+description: Use when adding, removing, or updating npm packages or versions in an Angular project or workspace (npm install/uninstall, ng add, ng update, npm outdated, npm audit), upgrading Angular itself or ecosystem libraries that ship migration schematics, verifying a package version exists before bumping it, or keeping package.json and the lockfile consistent.
 ---
 
 # Angular Package Manager
@@ -16,13 +16,13 @@ description: Manages npm packages in Angular projects and workspaces. Use when a
 ## Prerequisites
 
 - Node.js and npm installed (a version compatible with the target Angular version; see the project's `engines` field and `package.json`).
-- `npm` available on your `PATH`. If the repo uses `pnpm` or `yarn`, match the existing package manager and lockfile instead.
+- `npm` available on your `PATH`. If the repo uses `pnpm` or `yarn`, match the existing package manager and lockfile instead (see *pnpm / yarn Repos* below).
 - Angular CLI (`ng`) available (via `npx ng` or a local devDependency) for `ng add` / `ng update`.
 
 ## Core Rules
 
 1.  **Prefer `ng add <pkg>`** for packages that ship an Angular schematic (e.g. `@angular/material`, `@angular/pwa`, `@ngrx/store`). It installs the package **and** wires up the necessary config, providers, and imports. Use plain `npm install` only for libraries with no schematic.
-2.  **NEVER** hand-edit `package.json` to **add** or **remove** a dependency. Always use `npm install <pkg>` / `npm uninstall <pkg>` (or `ng add`) so the lockfile stays consistent.
+2.  **NEVER** hand-edit `package.json` to **add** or **remove** a dependency. Always use `npm install <pkg>` / `npm uninstall <pkg>` (or `ng add`) so the lockfile stays consistent. **Exception:** `peerDependencies` (and `sideEffects`) in a **library's own** `package.json` (`projects/*/package.json`) are edited directly — they describe the published artifact, not the workspace installation, have no lockfile, and npm has no `--save-peer`.
 3.  **DIRECT EDITING** of a version range in `package.json` is permitted only for **changing the version of an existing dependency** — and must be followed immediately by `npm install` to update the lockfile.
 4.  **NEVER hand-bump `@angular/*` versions.** Angular core/CLI/Material upgrades MUST go through `ng update`, which runs the version-specific migration schematics. Manually editing Angular versions skips migrations and breaks the workspace.
 5.  **VERSION UPDATES** must follow the mandatory workflow below.
@@ -56,7 +56,7 @@ When updating a version, follow these steps:
 
 3.  **Apply changes**: install via CLI, or modify the version string in the appropriate `package.json` (root or workspace member).
 
-4.  **Verify stability**: run `npm install` (reconciles the lockfile), then `npm run build` (and `ng test --watch=false` if practical). If errors occur, revert the change and investigate.
+4.  **Verify stability**: run `npm install` (reconciles the lockfile), then `ng build` (and the project's test suite if practical). If errors occur, revert the change and investigate.
 
 ### Listing Outdated Packages
 
@@ -68,11 +68,27 @@ For Angular specifically, run `ng update` with **no arguments** — it inspects 
 
 `npm audit` reports known vulnerabilities. Prefer `npm audit fix` (safe, semver-compatible) over `npm audit fix --force` (may install breaking major versions — only with explicit confirmation).
 
+### pnpm / yarn Repos
+
+Match the repo's existing package manager and lockfile. The rules above apply unchanged; translate the commands:
+
+| Operation | npm | pnpm | yarn (Berry) |
+|---|---|---|---|
+| Add | `npm install <pkg>` | `pnpm add <pkg>` | `yarn add <pkg>` |
+| Add dev-only | `npm install -D <pkg>` | `pnpm add -D <pkg>` | `yarn add -D <pkg>` |
+| Remove | `npm uninstall <pkg>` | `pnpm remove <pkg>` | `yarn remove <pkg>` |
+| Clean install (CI) | `npm ci` | `pnpm install --frozen-lockfile` | `yarn install --immutable` |
+| Outdated | `npm outdated` | `pnpm outdated` | `yarn upgrade-interactive` |
+| Audit | `npm audit` | `pnpm audit` | `yarn npm audit` |
+| Workspace target | `-w <workspace>` | `--filter <workspace>` | `yarn workspace <name> …` |
+
+`ng add` / `ng update` work regardless of the package manager — the Angular CLI detects it from the lockfile (or `cli.packageManager` in `angular.json`).
+
 ## Important Notes
 
 - **Lockfile is source of truth for CI.** Use `npm ci` (not `npm install`) for clean, reproducible installs from `package-lock.json`; use `npm install` when intentionally changing dependencies.
 - Commit `package.json` **and** the lockfile together.
-- npm has **no central package-version manifest**. In a monorepo, dependency versions are deduplicated by the lockfile and can be aligned via workspace root dependencies — there is no separate central-version file to edit.
+- In a monorepo, dependency versions are deduplicated by the lockfile and aligned via workspace root dependencies — there is no separate central-version file to edit.
 
 ## Related Skills
 
@@ -81,3 +97,4 @@ For Angular specifically, run `ng update` with **no arguments** — it inspects 
 - **[angular-state](../angular-state/SKILL.md)** — Adds RxJS, NgRx, or component-store packages (`ng add @ngrx/store`)
 - **[angular-library-builder](../angular-library-builder/SKILL.md)** — Invokes this skill to add library runtime/peer dependencies
 - **[angular-reviewer](../angular-reviewer/SKILL.md)** — Used when a review surfaces outdated or vulnerable packages
+- **[angular-dev](../angular-dev/SKILL.md)** — Gated end-to-end implementation workflow that invokes this skill as a mandatory binding

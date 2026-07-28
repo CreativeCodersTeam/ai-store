@@ -1,6 +1,6 @@
 # Error Handling
 
-Catch errors centrally and surface a friendly message — never render raw exception text or stack traces to users (the client analogue of mapping exceptions to ProblemDetails).
+Catch errors centrally and surface a friendly message — never render raw exception text or stack traces to users.
 
 ## Global ErrorHandler
 
@@ -54,8 +54,3 @@ readonly orders = toSignal(
   { initialValue: [] as Order[] },
 );
 ```
-
-## Related Skills
-
-- **[angular-fundamentals](../../angular-fundamentals/SKILL.md)** — Error handler and interceptors resolve logging/notification via DI
-- **[angular-components](../SKILL.md)** — Core Angular UI skill

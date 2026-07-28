@@ -1,6 +1,6 @@
 ---
 name: angular-library-builder
-description: Generates complete Angular libraries / client SDKs with DI support, a provideXxx() entry point, typed HttpClient services, typed configuration, and typed errors. Use when asked to create an Angular library, build an Angular client SDK, wrap a REST API in a typed Angular service, or generate a publishable ng-packagr library. Invokes angular-tsdoc for documentation and angular-tester for tests.
+description: Use when asked to create an Angular library, build an Angular client SDK, wrap a REST API or OpenAPI/Swagger spec in a typed Angular service, or generate a publishable ng-packagr library — anything that needs a provideXxx() entry point, typed HttpClient services, typed configuration, or typed errors.
 ---
 
 # Angular Library / Client SDK Builder
@@ -30,7 +30,7 @@ Determine what the input is:
 1. Read the workspace `package.json` and `angular.json`.
 2. Note the Angular major version (drives standalone/`provideXxx` APIs, signals, control flow).
 3. Confirm `strict` mode in `tsconfig.json`; if off, enable strict null checks for the library's own `tsconfig`.
-4. Confirm the workspace is set up for libraries (an Angular CLI workspace with `projects`). If not, create one (`ng new <ws> --create-application=false`).
+4. Confirm the workspace is set up for libraries (an Angular CLI workspace with `projects`). If not, **ask the user before creating one** (`ng new <ws> --create-application=false`) — state the workspace name and where it will be created.
 
 ### Step 3: Determine Target Library Project
 
@@ -96,7 +96,7 @@ Generate all components. See [di-patterns.md](references/di-patterns.md) and [ht
 | Model types | Request/response DTO interfaces/types |
 | Public API (`public-api.ts`) | Barrel exporting only the intended public surface |
 
-**Peer dependencies (not direct deps):** `@angular/core`, `@angular/common` (for `HttpClient`), and `rxjs`. Use the `angular-package-manager` skill to add any extra dependencies; do not hand-edit `package.json`.
+**Peer dependencies (not direct deps):** `@angular/core`, `@angular/common` (for `HttpClient`), and `rxjs`. All peer version ranges (Angular and rxjs) are resolved at generation time (user-specified > workspace version > latest stable) — see [project-setup.md](references/project-setup.md); never hardcode template versions. Declare them by editing the **library's own** `projects/<lib>/package.json` directly — a library's peer dependencies are part of the published artifact and are maintained by hand (npm has no `--save-peer`). Use the `angular-package-manager` skill for packages that must be **installed** in the workspace (root `package.json` + lockfile); never hand-edit that one.
 
 ### Step 8: Document the Code
 
@@ -104,7 +104,7 @@ After generating all source files, invoke the `angular-tsdoc` skill to add TSDoc
 
 ### Step 9: Write Tests
 
-After documentation is complete, invoke the `angular-tester` skill to generate unit tests for the library (using `provideHttpClient()` + `provideHttpClientTesting()` and `HttpTestingController`; the `HttpClientTestingModule` is deprecated).
+After documentation is complete, invoke the `angular-tester` skill to generate unit tests for the library (using `provideHttpClient()` + `provideHttpClientTesting()` and `HttpTestingController`).
 
 ## Key Design Principles
 
@@ -129,3 +129,4 @@ After documentation is complete, invoke the `angular-tester` skill to generate u
 - **[angular-tester](../angular-tester/SKILL.md)** — Invoked in Step 9 to generate unit tests
 - **[angular-package-manager](../angular-package-manager/SKILL.md)** — Invoked in Step 7 to add library dependencies
 - **[angular-components](../angular-components/SKILL.md)** — Consumes the generated typed clients from components and interceptors
+- **[angular-dev](../angular-dev/SKILL.md)** — Gated end-to-end implementation workflow that invokes this skill as a mandatory binding

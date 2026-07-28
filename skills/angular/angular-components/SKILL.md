@@ -1,6 +1,6 @@
 ---
 name: angular-components
-description: Applies Angular best practices for building the UI/presentation layer — components, templates, routing, forms, validation, HTTP consumption, interceptors, guards, and error handling. Use when creating components, configuring the router, building reactive or template-driven forms, wiring HttpClient and interceptors, adding route guards, handling client-side errors, or structuring an Angular app. For dependency injection, the provide/config pattern, and modern TypeScript idioms, use angular-fundamentals.
+description: Use when creating Angular components, templates, or feature folders, configuring the router or lazy-loaded routes, building reactive or template-driven forms and validation, wiring HttpClient and interceptors, adding route guards or an auth/bearer-token interceptor, or handling client-side errors (ErrorHandler, HTTP error interceptor). For dependency injection, typed configuration, and modern TypeScript idioms, use angular-fundamentals.
 ---
 
 # Angular UI / Presentation Layer Best Practices
@@ -25,7 +25,7 @@ This skill covers the **UI / presentation layer** (the client analogue of a web 
 - Mark members used **only by the template** as `protected` (keeps the component's public API minimal), and name event handlers for the **action** they perform (`saveOrder()`), not the triggering event (`onClick()`).
 - Use **typed reactive forms** for non-trivial input; prefer signals/`computed` for view state.
 - **Map errors to user-facing messages** via a global `ErrorHandler` and an HTTP error interceptor — never render raw exception text or stack traces.
-- **Interceptor order matters:** auth (attach token) → caching → retry → error mapping → logging. Order interceptors deliberately when registering them.
+- **Interceptor order matters:** base URL → auth (attach token) → caching → error mapping → retry → logging. Order interceptors deliberately when registering them.
 - Lazy-load feature routes; keep the initial bundle small. Always thread cancellation via `takeUntilDestroyed()` / unsubscribe.
 
 ## Reference Index
@@ -48,3 +48,4 @@ Detailed patterns and code samples live in `references/`:
 - **[angular-package-manager](../angular-package-manager/SKILL.md)** — Invoked for adding router, forms, HTTP, and UI packages (often via `ng add`)
 - **[angular-library-builder](../angular-library-builder/SKILL.md)** — Generates typed `HttpClient` services for consuming APIs
 - **[angular-reviewer](../angular-reviewer/SKILL.md)** — Reviews Angular UI code for accessibility, performance, and architecture issues
+- **[angular-dev](../angular-dev/SKILL.md)** — Gated end-to-end implementation workflow that invokes this skill as a mandatory binding

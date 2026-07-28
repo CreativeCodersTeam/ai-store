@@ -36,7 +36,7 @@ Pick the **dominant** concern. If two apply, pick the higher-severity area.
 
 ## Examples
 
-```
+````
 [Critical][Security] src/app/feature/comment.component.ts:42
 Untrusted comment HTML is passed through bypassSecurityTrustHtml.
 
@@ -49,4 +49,4 @@ this.html = this.sanitizer.bypassSecurityTrustHtml(comment.body);
 // after — let Angular sanitize
 // template: <div [innerHTML]="comment.body"></div>
 ```
-```
+````

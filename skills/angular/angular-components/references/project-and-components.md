@@ -105,9 +105,3 @@ Use a functional resolver to fetch required data before activation, so the view 
 export const orderResolver: ResolveFn<Order> = (route) =>
   inject(OrderService).get(Number(route.paramMap.get('id')));
 ```
-
-## Related Skills
-
-- **[angular-fundamentals](../../angular-fundamentals/SKILL.md)** — DI and the `provide` pattern for component/route services
-- **[angular-state](../../angular-state/SKILL.md)** — Data and state behind components
-- **[angular-tester](../../angular-tester/SKILL.md)** — Testing components and routed views
