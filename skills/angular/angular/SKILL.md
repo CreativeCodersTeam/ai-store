@@ -1,6 +1,6 @@
 ---
 name: angular
-description: Entry point and router for Angular and TypeScript front-end work — directs you to the right specialized Angular skill. Use when a request mentions Angular in general but the specific tool is not obvious, or to get an overview of the available Angular skills. Routes to knowledge skills (angular-fundamentals, angular-components, angular-state, angular-tsdoc) and workflow skills (angular-library-builder, angular-tester, angular-reviewer, angular-package-manager), and the angular-dev implementation workflow. When the matching skill is already clear, invoke that skill directly instead.
+description: Entry point and router for Angular and TypeScript front-end work — directs you to the right specialized Angular skill. Use when a request mentions Angular in general but the specific tool is not obvious, or to get an overview of the available Angular skills. Routes to knowledge skills (angular-fundamentals, angular-components, angular-state, angular-rxjs, angular-tsdoc) and workflow skills (angular-library-builder, angular-tester, angular-reviewer, angular-package-manager), and the angular-dev implementation workflow. When the matching skill is already clear, invoke that skill directly instead.
 ---
 
 # Angular Skill Router
@@ -24,7 +24,8 @@ orientation, not an intermediate step.
 |---------|-------|
 | Dependency Injection, providers, injection tokens, `inject()`, standalone bootstrap, environments/configuration, modern TypeScript idioms (for any Angular app) | `angular-fundamentals` |
 | Components, templates, control flow, routing, forms, model binding, validation, guards, interceptors, `HttpClient` consumption, project structure | `angular-components` |
-| Reactive data & state: services, RxJS, signals, NgRx/component store, change detection, `OnPush`, optimistic updates and concurrency | `angular-state` |
+| Reactive data & state: services, signals, NgRx/component store, change detection, `OnPush`, optimistic updates and concurrency | `angular-state` |
+| RxJS stream code: Observable consumption in components, operator choice (`switchMap` & co.), error handling in streams, `toSignal`/`toObservable` interop, resource APIs, testing RxJS in zoneless/Vitest projects | `angular-rxjs` |
 | TSDoc / JSDoc documentation comments (`@param`, `@returns`, `@remarks`, Compodoc) | `angular-tsdoc` |
 
 ### Workflow skills (active tools, scripts, agents)
@@ -56,8 +57,11 @@ orientation, not an intermediate step.
   trigger on generic "review my code", and the router does not trigger it
   automatically.
 - **Composition:** `angular-library-builder` invokes `angular-tsdoc` and
-  `angular-tester`; `angular-components` and `angular-state` build on
-  `angular-fundamentals`.
+  `angular-tester`; `angular-components`, `angular-state`, and `angular-rxjs`
+  build on `angular-fundamentals`.
+- **`angular-state` vs. `angular-rxjs`:** choosing the state approach and
+  designing stores is `angular-state`; writing or fixing the streams themselves
+  (operators, error handling, interop, stream tests) is `angular-rxjs`.
 - **Version baseline:** these skills are written against Angular 21;
   version-specific statements name the major where the feature changed.
   `angular-reviewer` supports Angular 17+.
