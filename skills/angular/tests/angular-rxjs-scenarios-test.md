@@ -66,5 +66,29 @@ Per-Source-catchError in forkJoin mit Fallback-Wert ('Unknown customer') + äuß
 ### S5 Resource-API — BESTANDEN
 Benennt sicher: developer preview in 21, stabil ab Angular 22 (Mai 2026). Empfehlung (httpResource heute, Risiko explizit pinnen, Mutationen klassisch) deckungsgleich mit Skill. Übernimmt die Common-Mistake-Regel wörtlich.
 
+## Zweitmodell-Läufe: Opus 4.8
+
+### Opus-Baseline S1 Typeahead — BESTANDEN (inkl. Fehlerbehandlung!)
+Inneres catchError mit SearchState-Statusobjekt + startWith('loading') bereits ohne Skill, korrekte Begründung der Platzierung. Kleinere Warze: unnötig komplexe Typannotation (ReturnType<typeof of<SearchState>> | any). Erwähnt rxResource als Alternative mit korrekter Einordnung.
+→ Die catchError-Lücke streut offenbar je nach Modell/Lauf; Fable-Baseline 0/2, Opus-Baseline S1 1/1.
+
+### Opus-Baseline S2 Leak-Fix — TEILWEISE
+Struktur gut (switchMap + forkJoin + Dedup), aber: (a) nutzt rxResource — eine Developer-Preview-API — ohne den Preview-Status auch nur zu erwähnen (genau der Common-Mistake aus dem Skill); (b) Fehlerbehandlung nur global über resource.error() — ein einziger fehlgeschlagener getCustomer-Call verwirft alle Ergebnisse (all-or-nothing statt per-Source-Fallback), ohne diese Entscheidung zu benennen.
+
+### Opus-Baseline S5 Resource-API — TEILWEISE (Wissensgrenze bestätigt)
+Operativ stark (Service-Seam, .d.ts-grep als Ground-Truth-Check, Upgrade-Checkliste), aber Versionsfakten unsicher: Angular-21-Status nur "medium/low confidence … plausible-but-unverified", Angular 22 "no knowledge … anyone telling you v22's stability badge from memory is guessing". Exakt die Lücke, die der Skill pinnt.
+
+### Opus-GREEN S1 Typeahead — BESTANDEN
+Inneres catchError mit Statusobjekt, wörtliche Skill-Begründung ("catchError after switchMap would … silently kill the typeahead"). Konform.
+
+### Opus-GREEN S5 Resource-API — BESTANDEN
+Versionstabelle exakt (developer preview in 21, stabil ab 22 inkl. Semver-Bedeutung), Empfehlung httpResource hinter Service-Factory, Mutationen klassisch, Iron-Rule-Verweis im Fallback-Code, Testing-Hinweise (kein fakeAsync, TestBed.tick() vor expectOne bei httpResource, Error-Survival-Test). Geht inhaltlich sauber über den Skill hinaus, ohne ihm zu widersprechen.
+
+### Opus-GREEN S2 Leak-Fix — BESTANDEN (klarer Skill-Effekt ggü. Opus-Baseline)
+Per-Source-catchError in forkJoin mit 'Unknown customer'-Fallback + äußeres catchError, bewusste Wahl der klassischen Form mit explizitem Hinweis: rxResource/httpResource developer preview in 21, stabil ab 22. Beide Baseline-Schwächen von Opus-S2 adressiert.
+
 ### Fazit
 Alle drei zuvor lückenhaften Szenarien bestehen mit Skill; keine neuen Fehlinterpretationen beobachtet → REFACTOR ohne Befund. S3/S4 bestanden bereits die Baseline; die Skill-Inhalte zu Interop/Testing decken sich mit deren Baseline-Verhalten (kein Degradationsrisiko erkennbar), daher nicht erneut gelaufen.
+
+### Gesamtfazit Zweitmodell Opus 4.8
+GREEN 3/3 bestanden, keine Widersprüche zum Skill, keine neuen Fehlinterpretationen. Baseline-Vergleich: S1 bestand Opus schon ohne Skill (catchError-Lücke streut je Modell/Lauf), S2 und S5 zeigten ohne Skill genau die vom Skill adressierten Fehler — Preview-API unerwähnt eingesetzt bzw. all-or-nothing-Fehlerbehandlung (S2) und unsichere Versionsfakten zu 21/22 (S5). Der Skill wirkt damit modellübergreifend (Fable 5 und Opus 4.8); sein stabiler Mehrwert sind die Fehlerbehandlungs-Disziplin und die verifizierten Versionsfakten.
