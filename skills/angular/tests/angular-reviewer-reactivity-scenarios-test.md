@@ -381,4 +381,23 @@ Decoy `config$`: sauber ✓.
 
 ## Ergebnisse mit Skill (GREEN)
 
-_(wird nach den GREEN-Läufen ausgefüllt)_
+### R1 Haiku 4.5 — BESTANDEN (9/9, Baseline war 6/9)
+
+Alle drei Baseline-Lücken geschlossen: A2 ([Major][Reactivity], "ngOnDestroy never calls destroy$.next() … leak!"), C1 ([Major][Reactivity], switchMap-Fix mit Stale-Response-Begründung), C2 ([Major], exhaustMap-Action-Stream-Fix). Alle übrigen Seeds weiterhin gefunden, Severity durchgängig Major/Critical (D2 [Critical] NG0600). Decoys sauber.
+Warzen (nicht detektionsrelevant): C2 als [Code-Quality] statt [Reactivity] getaggt; einzelne Fix-Snippets nutzen `takeUntilDestroyed()` außerhalb eines Injection-Context (Fix-Qualität ist Sache von `angular-rxjs`, nicht dieser Checkliste).
+
+## REFACTOR-Fazit
+
+GREEN 4/4 bestanden (R1+R2 × Fable 5 + Haiku 4.5): alle 14 Seeds modellübergreifend gefunden, Severity-Vorgaben greifen (Leaks/Races Major, NG0600 Critical), alle Decoys sauber — kein False Positive durch die neuen "Flag"-Regeln. Einziger beobachteter Ausreißer: Haiku taggte 1 von ~10 Reactivity-Befunden als [Code-Quality]; Detektion und Severity stimmten, die Tag-Regel steht bereits im Checklisten-Kopf → kein Checklisten-Umbau nötig, keine neuen Fehlinterpretationen beobachtet. Der stabile Mehrwert der Checkliste: der aktive Detection Sweep (Token → Frage) schließt die Haiku-Baseline-Lücken (A2, C1, C2, B3, D3), die Severity-Defaults korrigieren die Fable-Fehlkalibrierungen (C2, C3, B3), und der `Reactivity`-Tag macht die vier Zielkategorien im Report identifizierbar.
+
+### R1 Fable 5 — BESTANDEN (9/9, Severity-Kalibrierung korrigiert)
+
+Alle Seeds gefunden; die Baseline-Fehlkalibrierungen sind behoben: C2 Doppel-Submit jetzt [Major][Reactivity] (vorher [Suggestion]), C3 Last-write-wins jetzt [Major][Reactivity] (vorher [Minor]). D2 [Critical] (Render-Pfad wirft). Reactivity-Tag durchgängig; der Report zitiert die "Do NOT flag"-Grenzen explizit — der Baseline-Nitpick zu `initialValue: undefined` ist verschwunden. Wertvolle Zusatzbefunde (verlorene Erst-Emission des `Subject` bei Deep-Links, fehlendes `catchError` im Export-Stream — deckungsgleich mit der Iron Rule aus `angular-rxjs`).
+
+### R2 Fable 5 — BESTANDEN (5/5, alle als [Major][Reactivity])
+
+B3 jetzt als Memory-Leak mit Bound/Eviction-Fix (vorher [Suggestion]-Invalidierungsthema), D3 mit allen drei Subscriptions gezählt, D5 inkl. Feedback-Loop-Analyse. Decoy `config$` sauber.
+
+### R2 Haiku 4.5 — BESTANDEN (5/5, Baseline war 3/5)
+
+Beide Baseline-Lücken geschlossen: B3 ([Major][Reactivity], explizit "memory leak" mit LRU/TTL-Fix), D3 ([Major], "two async pipe bindings … two HTTP requests" mit shareReplay-Fix). A3 jetzt korrekt als Leak geframt statt als Stil-Inkonsistenz. C4 und D5 weiterhin gefunden ([Major][Reactivity], D5 mit `onCleanup`). Decoy `config$` sauber.
