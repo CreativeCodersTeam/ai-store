@@ -7,7 +7,7 @@ Every finding is tagged `[Severity][Area]` followed by `path:line`.
 | Severity | When to use | Examples |
 |---|---|---|
 | **Critical** | Ship-blocker. Production correctness, security, data loss, or a failing test. | XSS via `bypassSecurityTrust*`, unhandled `null`/`undefined` deref on a render path, failing test, build error. |
-| **Major** | Will hurt users or maintainers but not a ship-blocker. | Missing input validation on a public form/API client, memory leak from un-torn-down subscription, broken `@Input`/`@Output` contract. |
+| **Major** | Will hurt users or maintainers but not a ship-blocker. | Missing input validation on a public form/API client, memory leak from un-torn-down subscription, race condition (double-submit, last-write-wins), broken `@Input`/`@Output` contract. |
 | **Minor** | Real issue, low impact, deserves a fix in this PR. | Build warning, swallowed observable error, missing log context, dead code. |
 | **Suggestion** | Improvement worth considering. Author can accept or reject. | Refactor opportunity, alternative idiom, better naming, lint violation. |
 | **Nitpick** | Cosmetic. Author should ignore unless trivial. | Whitespace, comment phrasing, minor style preference. |
@@ -19,7 +19,8 @@ Pick the **dominant** concern. If two apply, pick the higher-severity area.
 | Tag | Scope |
 |---|---|
 | `Security` | XSS/sanitization, authn/authz (guards), input validation, secrets in bundle, untrusted HTML/URLs, dependency CVEs. |
-| `Performance` | Change detection (`OnPush`, signals), `@for` `track`, bundle size, over-fetching, leak-free subscriptions, unnecessary recomputation. |
+| `Performance` | Change detection (`OnPush`, signals), `@for` `track`, bundle size, over-fetching, unnecessary recomputation. |
+| `Reactivity` | Subscription/observable leaks, memory leaks (listeners, timers, unbounded caches), race conditions (operator misuse, multi-writer state, double-submit), side effects in pure contexts (`map`, `computed`), `effect()` cleanup. |
 | `Architecture` | Layer/dependency direction, smart/dumb split, DI scope misuse, state-approach consistency, coupling. |
 | `Code-Quality` | Naming, complexity, null safety, teardown, dead code, error strategy. |
 | `Tests` | Missing coverage, flaky tests, weak assertions (`toBeTruthy()` only), test maintenance smell. |
@@ -48,5 +49,21 @@ this.html = this.sanitizer.bypassSecurityTrustHtml(comment.body);
 
 // after — let Angular sanitize
 // template: <div [innerHTML]="comment.body"></div>
+```
+````
+
+````
+[Major][Reactivity] src/app/orders/orders.component.ts:31
+takeUntil(this.destroy$) never tears down: ngOnDestroy does not call destroy$.next()/complete(), so every guarded subscription leaks.
+
+```typescript
+// before
+ngOnDestroy(): void {}
+
+// after — or drop destroy$ entirely for takeUntilDestroyed()
+ngOnDestroy(): void {
+  this.destroy$.next();
+  this.destroy$.complete();
+}
 ```
 ````

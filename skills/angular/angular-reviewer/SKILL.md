@@ -75,10 +75,11 @@ If a tool isn't installed/configured, the script reports the failure inside the 
 
 Walk the diff against:
 1. The Angular idioms checklist (`references/review-checklist-angular.md`).
-2. `references/review-checklist-security.md`.
-3. `references/review-checklist-performance.md`.
-4. `references/review-checklist-architecture.md`.
-5. `references/review-checklist-code-quality.md`.
+2. `references/review-checklist-reactivity.md` — leaks, race conditions, side effects; run its Detection Sweep actively over the diff, don't just read it.
+3. `references/review-checklist-security.md`.
+4. `references/review-checklist-performance.md`.
+5. `references/review-checklist-architecture.md`.
+6. `references/review-checklist-code-quality.md`.
 
 Fold tool findings into the issue list using the "Mapping from Tool Outputs" table in `references/severity-taxonomy.md`.
 
@@ -114,6 +115,7 @@ Output to chat: the file path and a one-line summary (e.g., `"Wrote review with 
 - `references/severity-taxonomy.md`
 - `references/report-format.md`
 - `references/review-checklist-angular.md`
+- `references/review-checklist-reactivity.md` — observable/subscription leaks, memory leaks, race conditions, side effects
 - `references/review-checklist-security.md`
 - `references/review-checklist-performance.md`
 - `references/review-checklist-architecture.md`
@@ -130,6 +132,7 @@ Output to chat: the file path and a one-line summary (e.g., `"Wrote review with 
 ## Related Skills
 
 - **[angular-fundamentals](../angular-fundamentals/SKILL.md)** — Review findings reference DI scopes, the `provide`/config pattern, and modern idioms
+- **[angular-rxjs](../angular-rxjs/SKILL.md)** — Fix patterns for Reactivity findings (operator choice, error-surviving streams, signal interop)
 - **[angular-tsdoc](../angular-tsdoc/SKILL.md)** — Code-quality checklist references TSDoc documentation conventions
 - **[angular-tester](../angular-tester/SKILL.md)** — Test-quality findings reference this skill's expectations
 - **[angular-state](../angular-state/SKILL.md)** — State/data findings reference these best practices

@@ -34,7 +34,7 @@ gap before it becomes rework.
 5. **Preliminary Skill Map** — from the requirement, list which bindings the
    work will touch. It is *preliminary*: state (point 7) and dependencies
    (point 8) are confirmed in Phase 2 and may add `angular-state` /
-   `angular-package-manager`.
+   `angular-rxjs` / `angular-package-manager`.
 
 ### GATE 1 output
 Requirement restated in your words · acceptance criteria · gaps/contradictions/
@@ -68,10 +68,12 @@ the round-trip.
    route params/data, OpenAPI mapping for clients.
 5. **Errors & edge cases** — error strategy (`ErrorHandler` / interceptor /
    `catchError`), validation style, user-facing messages, logging granularity.
+   Stream-level error handling confirms `angular-rxjs`.
 6. **Test strategy** — unit and/or integration, `TestBed` usage, spies vs real
    deps, `HttpTestingController`, naming, coverage expectation.
 7. **State / data** — state shape, store vs signals, persistence/hydration,
-   `HttpClient` usage, caching, optimistic updates. Confirms `angular-state`.
+   `HttpClient` usage, caching, optimistic updates. Confirms `angular-state`
+   and — for Observable/stream code — `angular-rxjs`.
 8. **Dependencies / npm** — allowed/forbidden packages, `ng add` vs
    `npm install`, version constraints. Confirms `angular-package-manager`.
 
@@ -107,7 +109,8 @@ Task list with per-task checklists · dependency order · parallel groups. **Wai
 Before any `Write`/`Edit`/code-producing `Bash` for the task, invoke each
 required binding once via the `Skill` tool. A task touching code + tests + docs
 is at least three calls (`angular-fundamentals` + `angular-tester` +
-`angular-tsdoc`) plus stack skills (`angular-components` / `angular-state`) and
+`angular-tsdoc`) plus stack skills (`angular-components` / `angular-state` /
+`angular-rxjs`) and
 `angular-package-manager` if packages change. Wait for each skill's content;
 follow its workflow when producing the artifact. Sub-agent dispatch is in
 addition to Step 0, not a substitute — pass the skills explicitly to the
@@ -115,8 +118,8 @@ sub-agent (sub-agents are stateless).
 
 ### Production code
 `angular-fundamentals` always; plus `angular-components` (UI layer),
-`angular-state` (reactive data/state), `angular-library-builder` (typed
-client/library). Apply project conventions: standalone components, `inject()`,
+`angular-state` (reactive data/state), `angular-rxjs` (RxJS stream code),
+`angular-library-builder` (typed client/library). Apply project conventions: standalone components, `inject()`,
 signals, `OnPush` change detection, strict null checks, `takeUntilDestroyed()`
 for teardown, `track` in `@for`. Never leave subscriptions un-torn-down; prefer
 `async` pipe / `toSignal()` over manual `subscribe`.

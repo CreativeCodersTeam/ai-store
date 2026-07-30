@@ -14,8 +14,8 @@
 
 ## Subscriptions & Memory
 
-- No subscription without a teardown path — use `async` pipe, `toSignal()`, or `takeUntilDestroyed()`. Flag manual `.subscribe()` in components without unsubscription (memory leak).
-- Avoid nested subscribes; use higher-order operators (`switchMap`/`mergeMap`/`concatMap`/`exhaustMap`).
+Leak, race, and side-effect review lives in `review-checklist-reactivity.md` (teardown, `shareReplay` refCount, nested subscribes, operator choice for correctness). Performance-only concern here:
+
 - `shareReplay({ bufferSize: 1, refCount: true })` to dedupe shared streams; flag duplicate identical HTTP requests.
 
 ## Network & Data
@@ -39,5 +39,6 @@ A path is "hot" if any of:
 
 ## RxJS Operator Choice
 
-- `switchMap` to cancel superseded requests (typeahead); `exhaustMap` to ignore while busy (submit); `concatMap` to preserve order; `mergeMap` only when concurrency is intended and bounded.
-- Flag `mergeMap` over a user-sized source with no concurrency bound.
+Correctness-driven operator choice (stale-response and double-submit races) is in `review-checklist-reactivity.md`. Performance-only concern here:
+
+- Flag `mergeMap` over a user-sized source with no concurrency bound (unbounded parallel requests).

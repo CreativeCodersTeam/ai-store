@@ -73,7 +73,8 @@ Phase 6: Final Summary
 |---|---|---|---|
 | Core Angular / DI / typed config / modern TS idioms | `angular-fundamentals` | Phase 4 | always, for production code |
 | UI layer (components, templates, routing, forms, interceptors, guards, error handling) | `angular-components` | Phase 4 | when the UI/presentation layer is touched |
-| Reactive data & state (RxJS, signals, NgRx, change detection) | `angular-state` | Phase 4 | when state/data access is touched |
+| Reactive data & state (signals, NgRx, stores, change detection) | `angular-state` | Phase 4 | when state/data access is touched |
+| RxJS stream code (Observable consumption, operator choice, error handling in streams, toSignal/toObservable interop, resource APIs) | `angular-rxjs` | Phase 4 | when Observable/stream code is written or changed |
 | Angular library / typed client generation | `angular-library-builder` | Phase 4 | when building a library / client SDK |
 | Tests | `angular-tester` | Phase 4 | always, when code is written or changed |
 | TSDoc documentation | `angular-tsdoc` | Phase 4 | for any public/exported API addition/change |
@@ -230,6 +231,7 @@ codebase, never the user:
 - ✅ `n/a — no npm package added/removed/version-changed` — `angular-package-manager`
 - ✅ `n/a — workspace is library-only, no application project` — App Run-Check
 - ✅ `n/a — scanned changed files; no store/observable/signal/HttpClient state` — `angular-state`
+- ✅ `n/a — scanned changed files; no Observable/stream code touched` — `angular-rxjs`
 - ❌ NOT valid: `n/a — user said no tests`
 - ❌ NOT valid: `n/a — too small / trivial / one-liner / just a binding`
 - ❌ NOT valid: `n/a — single http.get, doesn't need the skill`
@@ -318,6 +320,7 @@ Reproduce each task's checklist, every entry resolved with evidence:
 | "Ambiguities aren't blocking — I'll state assumptions instead of asking" | Stating assumptions ≠ clarifying. Present each point and wait for the answer. |
 | "I'll batch all phases / ask one combined confirmation" | Batching is a gate violation. One phase → one summary → one wait. |
 | "This is a single http.get — `angular-state` isn't needed" | Touching reactive data/state triggers the binding regardless of how simple. Invoke it. |
+| "It's just one switchMap / one subscribe — `angular-rxjs` isn't needed" | Touching Observable/stream code triggers the binding regardless of size. Invoke it. |
 | "Not a library API, so skip `angular-tsdoc`" | `n/a` only for objectively internal members. Public/exported additions/changes go through it. |
 | "User said no tests" | User preference is not a valid `n/a`. Either an objective code-referenced `n/a` exists or `angular-tester` is required; if the user insists, name it as a violation and let them decide. |
 | "I'll self-review the diff inline instead of `angular-reviewer`" | Phase 5 requires the `angular-reviewer` sub-agent + `docs/reviews/` report. Inline self-review does not satisfy it. |

@@ -35,4 +35,4 @@ Apply when `detect-angular-version.sh` reports an Angular major `>= 17`.
 
 ## Non-version-specific checks
 
-For framework-neutral pitfalls (subscription leaks, allocation hot spots, etc.) see `review-checklist-performance.md` and `review-checklist-code-quality.md`. This file covers only modern-Angular-specific idioms.
+For subscription/memory leaks, race conditions, and side effects see `review-checklist-reactivity.md`; for allocation hot spots and other framework-neutral pitfalls see `review-checklist-performance.md` and `review-checklist-code-quality.md`. This file covers only modern-Angular-specific idioms.
