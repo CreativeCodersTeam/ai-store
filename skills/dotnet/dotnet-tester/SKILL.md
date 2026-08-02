@@ -191,6 +191,7 @@ At the end, provide a summary:
 
 ## Related Skills
 
+- **[dotnet-fundamentals](../dotnet-fundamentals/SKILL.md)** — Modern C# idioms apply to test code too: `CancellationToken` handling in async tests, `required`/`init` properties in fixtures and test-data builders
 - **[dotnet-ef-core](../dotnet-ef-core/SKILL.md)** — DbContext-backed test patterns (SQLite in-memory, Testcontainers)
 - **[dotnet-sdk-builder](../dotnet-sdk-builder/SKILL.md)** — Invoked by it in Step 9 to generate tests for new SDK libraries
 

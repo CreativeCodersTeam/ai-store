@@ -22,7 +22,7 @@
 
 ## Dependency Injection
 
-See the `dotnet-aspnet` skill (Dependency Injection + Configuration sections) for lifetime rules and the Options pattern. Reviewer-specific hook: flag DI changes that capture a `Scoped` service inside a `Singleton`, call `BuildServiceProvider()` during composition, or register `IOptions<T>` without `ValidateOnStart()`.
+See the `dotnet-fundamentals` skill for the underlying conventions: `references/dependency-injection.md` (registration, lifetime rules, anti-patterns) and `references/options-pattern.md` (Options pattern, validation). `dotnet-aspnet` covers only the HTTP layer and delegates DI/configuration there. Reviewer-specific hook: flag DI changes that capture a `Scoped` service inside a `Singleton`, call `BuildServiceProvider()` during composition, or register `IOptions<T>` without `ValidateOnStart()`.
 
 ## Pattern Consistency
 

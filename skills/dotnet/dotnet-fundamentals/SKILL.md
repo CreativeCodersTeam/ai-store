@@ -1,6 +1,6 @@
 ---
 name: dotnet-fundamentals
-description: Use when registering services in any .NET host (ASP.NET Core, Worker Service, Console, MAUI), choosing DI lifetimes, binding configuration to IOptions<T>, setting up appsettings.json / User Secrets / environment variables, or applying modern C# idioms such as primary constructors, required properties, nullable reference types, and CancellationToken propagation.
+description: Use when registering services in any .NET host (ASP.NET Core, Worker Service, Console, MAUI), choosing DI lifetimes, binding configuration to IOptions<T>, setting up appsettings.json / User Secrets / environment variables, or applying modern C# idioms such as primary constructors, required properties, nullable reference types, and CancellationToken propagation. Also use as the baseline whenever any C# production code is written or modified — dotnet-aspnet, dotnet-ef-core, and dotnet-sdk-builder build on it; load it alongside them, not instead of them.
 ---
 
 # Modern .NET Fundamentals

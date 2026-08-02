@@ -25,8 +25,8 @@ app.MapOpenApi();
 
 ```csharp
 builder.Services.AddHealthChecks()
-    .AddNpgSql(connectionString, name: "database", tags: new[] { "ready" })
-    .AddRedis(redisConnectionString, name: "cache", tags: new[] { "ready" });
+    .AddNpgSql(connectionString, name: "database", tags: ["ready"])
+    .AddRedis(redisConnectionString, name: "cache", tags: ["ready"]);
 
 // Liveness: is the process responsive? Runs NO checks — restarting the app
 // does not fix a downed database.
