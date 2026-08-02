@@ -61,6 +61,23 @@ public async Task<Order?> GetByIdAsync(Guid id, CancellationToken ct = default)
 - In ASP.NET Core, `HttpContext.RequestAborted` is automatically bound to action parameters of type `CancellationToken`.
 - Never swallow `OperationCanceledException` — let it bubble. The host treats it as expected cancellation.
 
+## `ConfigureAwait(false)`
+
+**Rule:** in library code (NuGet packages, SDKs, reusable class libraries), call `.ConfigureAwait(false)` on every `await`. In application code (ASP.NET Core endpoints and services, Worker Services, console apps, tests), do not.
+
+```csharp
+// Library method — every await opts out of context capture
+public async Task<Repository> GetRepositoryAsync(string owner, CancellationToken ct = default)
+{
+    var response = await _httpClient.GetAsync($"repos/{owner}", ct).ConfigureAwait(false);
+    return await ParseAsync(response, ct).ConfigureAwait(false);
+}
+```
+
+- **Why libraries opt out:** a library can be consumed from contexts that install a `SynchronizationContext` (UI frameworks, legacy ASP.NET). Continuing on that captured context costs scheduling and can deadlock consumers that block on the returned task (sync-over-async). The library itself never needs the caller's context.
+- **Why applications don't bother:** ASP.NET Core and the Generic Host have no `SynchronizationContext` — there is nothing to capture, so `.ConfigureAwait(false)` is inert noise there. Test code counts as application code.
+- Apply it consistently within a library: one context-capturing `await` in a call chain is enough to reintroduce the risk.
+
 ## File-Scoped Namespaces (C# 10)
 
 ```csharp

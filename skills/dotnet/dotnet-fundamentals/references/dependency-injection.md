@@ -76,3 +76,5 @@ public static class MyFeatureServiceCollectionExtensions
     }
 }
 ```
+
+> **SDK libraries deviate deliberately:** when consumers configure options via an `Action<TOptions>` delegate in `AddXxx(...)` — the shape `dotnet-sdk-builder` generates — `required`/`init` options do not fit (a configure delegate cannot satisfy `required` members or assign `init` setters), and the delegate replaces `BindConfiguration` as the configuration source. See the documented deviation in `dotnet-sdk-builder` (`references/di-patterns.md`): mutable properties + `IValidateOptions<T>` + `ValidateOnStart()`.

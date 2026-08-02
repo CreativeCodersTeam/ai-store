@@ -74,7 +74,7 @@ internal sealed class GitHubClient : IGitHubClient
 **Rules:**
 - Mark the class `internal sealed` — consumers use the interface.
 - Inject `HttpClient` (configured by `IHttpClientFactory`) and `IOptions<T>`.
-- Use `ConfigureAwait(false)` on all awaits.
+- Use `ConfigureAwait(false)` on all awaits — SDK clients are library code (rationale: `dotnet-fundamentals`, modern-patterns.md).
 - Validate parameters with `ArgumentException.ThrowIfNullOrWhiteSpace` (.NET 7+) or `ArgumentNullException.ThrowIfNull`.
 - All error mapping goes through a single `EnsureSuccessAsync` helper.
 
