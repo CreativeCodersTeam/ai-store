@@ -23,7 +23,7 @@ Query .NET library APIs — the same commands work across NuGet packages, platfo
 - **What implements this interface?** → `implements` (concrete types)
 - **What does this depend on?** → `depends` (type hierarchy, `--package` deps, or library refs); `--mermaid` for a diagram
 - **What version/metadata does this have?** → `package` / `library`; `Foo --version` (cache-first), `Foo --latest-version` (always NuGet), `Foo --versions` (list all)
-- **What TFMs are available?** → `package Foo --tfms`, then `type --package Foo --tfm net8.0`
+- **What TFMs are available?** → `package Foo --tfms`, then `type --package Foo --tfm net10.0`
 - **What metadata fields exist?** → `-S Section --fields "PDB*"` (structured query, no DSL)
 - **Show me something cool** → `demo` (curated showcase queries)
 

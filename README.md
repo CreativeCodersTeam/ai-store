@@ -8,7 +8,7 @@ The repository currently contains **36 skills** in five categories:
 
 | Category | Skills | Focus |
 |---|---|---|
-| [Angular](skills/angular) | 11 | Angular 17+ development, testing, reviews, libraries |
+| [Angular](skills/angular) | 11 | Angular development, testing, reviews, libraries |
 | [.NET](skills/dotnet) | 11 | .NET/C# development, ASP.NET Core, EF Core, NuGet |
 | [General](skills/general) | 8 | Language-agnostic workflows: reviews, refactoring, BDD, docs |
 | [Java](skills/java) | 4 | Spring Boot, JUnit 5, Javadoc |

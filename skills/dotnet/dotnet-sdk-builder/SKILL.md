@@ -27,11 +27,14 @@ Determine what the input is:
 
 ### Step 2: Determine .NET Version
 
-1. Find all `.csproj` files in the solution.
-2. Extract the `<TargetFramework>` (or `<TargetFrameworks>`) value.
-3. If all projects use the same version → use that version.
-4. If versions differ → ask the user which version to target.
-5. Enable nullable reference types (available since C# 8 / .NET Core 3.0 — every target this skill generates for):
+1. Resolve the target framework with the cascade in
+   [target-framework.md](../dotnet-fundamentals/references/target-framework.md): explicit user
+   directive → repo directive (`global.json`, `Directory.Build.props`, `*.csproj`) → latest LTS,
+   currently .NET 10. When adding to an existing project, that project's own TFM wins. If projects
+   disagree, take the highest and say which projects were surveyed.
+2. Record where the version came from (`user` / `repo:<file>` / `default-lts`) and state it when
+   reporting what was generated.
+3. Enable nullable reference types (available since C# 8 / .NET Core 3.0 — every target this skill generates for):
    - New project: `<Nullable>enable</Nullable>` in the `.csproj` — already part of the project template (see [project-setup.md](references/project-setup.md)).
    - Existing project with nullable disabled: add `#nullable enable` at the top of each **new** source file; do not change the project-wide setting, and never suppress nullable warnings with `#pragma warning disable` — fix them.
 

@@ -19,6 +19,8 @@ Never overwrite — append `-2`, `-3`, … on collision. Never auto-commit.
 **Mode:** uncommitted | branch (vs. main)
 **Detected SDK:** 10.0.x
 **Target Framework(s):** net10.0, …
+**Version origin:** repo:global.json | repo:src/Api/Api.csproj | user | default-lts | unknown (malformed <file>)
+**Checklist:** review-checklist-net10.md | general checklists only (no checklist for net8.0)
 **Tools run:** build=Y/N · format=Y/N · test=Y/N
 **Exclusions:** .gitignore, *.min.js, wwwroot/lib/**
 **Review strategy:** full | prioritized | chunked
@@ -69,6 +71,8 @@ Never overwrite — append `-2`, `-3`, … on collision. Never auto-commit.
 
 ## Rules
 
+- **`Version origin:` is mandatory** — it names where the reviewed target framework came from, using the same vocabulary as the mode/tools/language origins: `user` (explicit directive), `repo:<file>`, `default-lts` (repo declared none), or `unknown (malformed <file>)`. See `dotnet-fundamentals/references/target-framework.md`.
+- **`Checklist:` is mandatory** — name the version-specific checklist actually used, or state that the review ran on the general checklists only and why. A silent substitution is a defect.
 - **Every finding MUST include a fix suggestion** as a code block. If the fix is structural (no single-snippet rewrite), describe the steps in prose and provide the most-affected snippet.
 - Do not paste raw diff content. Reference `path:line` instead.
 - File paths are repo-relative.

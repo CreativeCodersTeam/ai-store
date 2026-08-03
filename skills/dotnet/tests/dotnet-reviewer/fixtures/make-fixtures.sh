@@ -51,7 +51,7 @@ echo 'vendor' > "$NET10/wwwroot/lib/vendor.js"
 # Add an uncommitted change for uncommitted-mode tests
 echo 'public class New { }' > "$NET10/src/New.cs"
 
-# 2. repo-net8 — pre-10 SDK
+# 2. repo-net8 — below the LTS baseline; detected, not rejected
 NET8="$ROOT/repo-net8"
 reset_dir "$NET8"
 git_init_at "$NET8"
@@ -101,5 +101,32 @@ make_global_json "$EMPTY/global.json" "10.0.100"
 make_csproj "$EMPTY/App.csproj" "net10.0"
 echo 'public class Empty { }' > "$EMPTY/Empty.cs"
 ( cd "$EMPTY" && git add -A && git commit -q -m "initial" )
+
+# 7. repo-no-project — no *.csproj and no global.json; the cascade falls through to latest LTS
+NOPROJ="$ROOT/repo-no-project"
+reset_dir "$NOPROJ"
+git_init_at "$NOPROJ"
+echo '# not a .NET project' > "$NOPROJ/README.md"
+( cd "$NOPROJ" && git add -A && git commit -q -m "initial" )
+
+# 8. repo-props-tfm — TFM inherited from Directory.Build.props, not the csproj
+PROPS="$ROOT/repo-props-tfm"
+reset_dir "$PROPS"
+git_init_at "$PROPS"
+cat > "$PROPS/Directory.Build.props" <<'EOF'
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+  </PropertyGroup>
+</Project>
+EOF
+cat > "$PROPS/App.csproj" <<'EOF'
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+</Project>
+EOF
+( cd "$PROPS" && git add -A && git commit -q -m "initial" )
 
 echo "Fixtures built under $ROOT"

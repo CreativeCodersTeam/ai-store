@@ -21,7 +21,7 @@ Dem stehen ein kritischer Versionskonflikt im Kern-Workflow, einige falsche bzw.
 
 ### Kritisch
 
-#### K-1 — `dotnet-dev` erzwingt `dotnet-reviewer`, der auf .NET < 10 abbricht
+#### K-1 — `dotnet-dev` erzwingt `dotnet-reviewer`, der auf .NET < 10 abbricht ✅ behoben (2026-08-03)
 
 **Dateien:** `dotnet-dev/SKILL.md` (Skill Map: „Code review | dotnet-reviewer | always"; Phase 5), `dotnet-reviewer/SKILL.md` (Step 2: „Exit 4 (SDK < 10 or none): abort")
 
@@ -32,6 +32,8 @@ Der Konflikt zieht sich durch die Suite: `dotnet-sdk-builder` generiert im Templ
 **Empfehlung (eine der beiden):**
 1. `dotnet-reviewer` auf .NET 8+ öffnen (Checklisten existieren bereits versionsneutral; nur `review-checklist-net10.md` ist versionsspezifisch — ein `review-checklist-net8.md`/`-net9.md` oder ein „General only"-Fallback genügt), **oder**
 2. in `dotnet-dev` Phase 5 einen definierten Pfad für < .NET 10 ergänzen (z. B. dokumentierter Review-Fallback mit denselben Checklisten, als solcher im Report ausgewiesen).
+
+**Behoben (2026-08-03)** — Empfehlung 1 umgesetzt, plus die zugrunde liegende Ursache: Die Suite hat jetzt **eine** Versionsregel, kanonisch in `dotnet-fundamentals/references/target-framework.md` (explizite User-Vorgabe → Repo-Vorgabe → aktuelles LTS, derzeit .NET 10). `detect-dotnet-version.sh` hat beide Versions-Gates verloren und liefert stattdessen `resolved_from`; Exit 4 bedeutet nur noch „kein .NET-Projekt gefunden" und führt zum LTS-Fallback statt zum Abbruch. `dotnet-reviewer` Step 2 nutzt die Version zur Checklisten-Auswahl, nicht als Eintrittsbedingung — Phase 5 ist damit auf jedem Ziel abschließbar. Die divergierenden Einzelangaben (`net9.0`-Template, „.NET 8.0 SDK or later", `net8.0`-Beispiel) sind auf Hooks reduziert; Feature-Marker heißen jetzt einheitlich `(since .NET 8)` und sind ausdrücklich keine Zielangabe. Nachweis: `skills/dotnet/tests/version-cascade-test.md`, `tests/dotnet-reviewer/unit/test-detect-version.sh`.
 
 ---
 
@@ -120,11 +122,13 @@ Jede Phase endet in einem harten Gate („STOP … wait for confirmation"), Phas
 
 „Start a **separate agent** …" — in Umgebungen ohne Subagent-Fähigkeit (Claude.ai, eingeschränkte Harnesses) ist Phase 3 nicht ausführbar; ein Inline-Fallback („führe die Analyse selbst mit demselben Prompt-Template aus, akzeptiere den Verlust der Unabhängigkeit") fehlt.
 
-#### M-7 — Versionsspezifische Checkliste existiert nur für net10; `net<N>`-Mechanik undefiniert für künftige Versionen
+#### M-7 — Versionsspezifische Checkliste existiert nur für net10; `net<N>`-Mechanik undefiniert für künftige Versionen ✅ behoben (2026-08-03)
 
 **Dateien:** `dotnet-reviewer/SKILL.md` (Step 6.1), `references/review-checklist-net10.md`
 
 Step 6 verweist generisch auf `review-checklist-net<N>.md`, vorhanden ist nur `-net10`. Sobald `net11.0` als Target auftaucht, ist das Verhalten undefiniert (Datei fehlt; kein dokumentierter Fallback wie „nimm die höchste vorhandene ≤ N"). Ein Satz genügt.
+
+**Behoben (2026-08-03)** — Step 6.1 definiert die Auswahl explizit: exakte Datei → sonst höchste vorhandene `net<M>` mit `M ≤ N` (Substitution im Report benannt) → sonst nur die versionsneutralen Checklisten (ebenfalls benannt). `review-checklist-net10.md` beschreibt seine Geltung jetzt als „höchster Major ≥ 10". Stillschweigende Substitution steht unter „Things This Skill Never Does".
 
 #### M-8 — `error-handling.md`: defekter `type`-URI und fehlende `IProblemDetailsService`-Integration
 
@@ -177,14 +181,14 @@ Testcode profitiert unmittelbar von den fundamentals-Idiomen (CancellationToken 
 | `dotnet-xmldocs` | Sehr gut | Präzise Microsoft-Formeln, kanonisches Beispiel mit Präzedenzregel — vorbildlich |
 | `dotnet-sdk-builder` | Sehr gut | Klarer Workflow mit Nutzer-Entscheidungspunkten, dokumentierte Abweichung vom Fundamentals-Pattern, vollständige Codebeispiele |
 | `dotnet-tester` | Gut | „Never Fake a Green Test" ist herausragend; Subagent-Abhängigkeit ohne Fallback (M-6) |
-| `dotnet-reviewer` | Gut | Skripte, Exit-Code-Verträge, Non-Interactive-Modus, eigene Testsuite; .NET-10-Beschränkung erzeugt K-1, falscher Querverweis (H-1), net\<N\>-Fallback fehlt (M-7) |
+| `dotnet-reviewer` | Gut | Skripte, Exit-Code-Verträge, Non-Interactive-Modus, eigene Testsuite; .NET-10-Beschränkung (K-1) und fehlender net\<N\>-Fallback (M-7) ✅ behoben 2026-08-03, falscher Querverweis (H-1) ✅ behoben |
 | `dotnet-inspect` | Gut | Exzellente Decision-Tree-Struktur; `dnx`-Voraussetzung undokumentiert (H-4) |
 | `dotnet-nuget-manager` | Gut | Klare Core Rules mit begründetem Hand-Edit-Fallback, CPM/VersionOverride-Falle abgedeckt |
 | `dotnet-dev` | Gut (mit Vorbehalt) | Konsequentes Anti-Rationalisierungs-Design (Waiver vs. n/a vs. silent skip ist stark); K-1, keine Non-Interactive-Fähigkeit (M-5). Die hohe MUST-/Gate-Dichte ist erkennbar bewusst gewählt, steht aber in Spannung zur Skill-Writing-Leitlinie „explain the why in lieu of heavy-handed MUSTs" — bei Kleinstaufgaben ist mit Nutzer-Reibung zu rechnen (8 Roundtrips vor der ersten Codezeile) |
 
 ## 4. Empfohlene Reihenfolge der Behebung
 
-1. **K-1** — Versionskonflikt `dotnet-dev` ↔ `dotnet-reviewer` auflösen (blockiert den Kern-Workflow für .NET 8/9).
+1. **K-1** — Versionskonflikt `dotnet-dev` ↔ `dotnet-reviewer` auflösen (blockiert den Kern-Workflow für .NET 8/9). ✅ erledigt (2026-08-03), zusammen mit **M-7**
 2. **H-1** — Querverweis in der Architektur-Checkliste korrigieren (Ein-Zeilen-Fix, faktisch falsch). ✅ erledigt (2026-08-02)
 3. **H-2, M-9** — Router vervollständigen (`dotnet-dev` + Vorrangregel; sdk-builder-Komposition).
 4. **H-3** — Primary-Constructors-Inhalt in `modern-patterns.md` nachliefern.

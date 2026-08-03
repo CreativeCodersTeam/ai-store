@@ -25,6 +25,9 @@ gap before they become rework.
    - Contradictions between the request and existing code/conventions.
 4. **Codebase analysis** — affected `*.csproj`, host type (ASP.NET Core, Worker,
    Console, MAUI), data layer (EF Core), cross-cutting (DI, Options, Serilog).
+   Resolve the target framework via the cascade in
+   `dotnet-fundamentals/references/target-framework.md` (explicit user directive →
+   repo directive → latest LTS) and record its origin.
    Locate existing tests (`*.Tests`) and docs. Read `Directory.Build.props`,
    `Directory.Packages.props`, `.editorconfig`, `nuget.config`. Navigate the
    codebase per the project's and the user's global tooling rules (CLAUDE.md).

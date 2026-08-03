@@ -62,6 +62,11 @@ orientation, not an intermediate step.
 - **`angular-state` vs. `angular-rxjs`:** choosing the state approach and
   designing stores is `angular-state`; writing or fixing the streams themselves
   (operators, error handling, interop, stream tests) is `angular-rxjs`.
-- **Version baseline:** these skills are written against Angular 21;
-  version-specific statements name the major where the feature changed.
-  `angular-reviewer` supports Angular 17+.
+- **Version baseline:** the target version resolves explicit user directive → repo
+  directive (installed `@angular/core`, then `package.json`) → latest stable,
+  resolved at runtime with `npm view @angular/core dist-tags.latest`. The rule is
+  canonical in
+  [`angular-fundamentals/references/angular-version.md`](../angular-fundamentals/references/angular-version.md);
+  no skill hardcodes a version of its own. These skills' examples are written
+  against **Angular 21**, which is also the offline fallback; version-specific
+  statements name the major where the feature changed and never select a target.

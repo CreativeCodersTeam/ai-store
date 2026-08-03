@@ -15,7 +15,7 @@ description: Use when adding, removing, or updating NuGet package references or 
 
 ## Prerequisites
 
-- .NET SDK installed (typically .NET 8.0 SDK or later, or a version compatible with the target solution).
+- .NET SDK installed — the version the repo pins, otherwise the latest LTS (currently .NET 10). See [target-framework.md](../dotnet-fundamentals/references/target-framework.md) for the resolution cascade.
 - `dotnet` CLI available on your `PATH`.
 - `jq` (JSON processor) — Linux/macOS; OR
 - PowerShell (`pwsh`) — Windows/cross-platform; required for version verification using `dotnet package search`.

@@ -2,7 +2,7 @@
 
 Conventions for code written against current .NET. Use these consistently in new code; match existing project style if it predates these features.
 
-## Primary Constructors (C# 12)
+## Primary Constructors (since C# 12)
 
 - For middleware, inject scoped services via `InvokeAsync` parameters, not the primary constructor.
 
@@ -79,7 +79,7 @@ public async Task<Repository> GetRepositoryAsync(string owner, CancellationToken
 - **GUI apps sit in between:** WPF, WinForms, MAUI, and Avalonia install a `SynchronizationContext` on the UI thread, so `ConfigureAwait(false)` genuinely matters there. Use it on every `await` whose continuation does not touch the UI (services, helpers, I/O paths); omit it where the code after the `await` updates controls or view state — that continuation must resume on the UI thread. The same captured context is why blocking with `.Result`/`.Wait()` on the UI thread deadlocks.
 - Apply it consistently within a library: one context-capturing `await` in a call chain is enough to reintroduce the risk.
 
-## File-Scoped Namespaces (C# 10)
+## File-Scoped Namespaces (since C# 10)
 
 ```csharp
 namespace MyCompany.MyProduct.Orders;

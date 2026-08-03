@@ -12,7 +12,7 @@ builder.Services.AddProblemDetails(options =>
 });
 ```
 
-## Global Exception Handling (.NET 8+)
+## Global Exception Handling (since .NET 8)
 
 ```csharp
 public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
@@ -38,7 +38,7 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 ```
 
-- Use `IExceptionHandler` (.NET 8+) instead of custom exception middleware
+- Use `IExceptionHandler` (since .NET 8) instead of custom exception middleware
 - Map domain exceptions to appropriate HTTP status codes
 - Never expose internal exception details in production responses
 - Use `app.UseStatusCodePages()` for consistent responses on empty status codes (404, 405, etc.)

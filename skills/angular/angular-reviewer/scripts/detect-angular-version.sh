@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 # detect-angular-version.sh — Detect the Angular version and workspace projects in a repo.
 # Outputs JSON: {version, projects[], project_files[]}
-# Exit codes: 0 ok, 1 usage, 2 not a directory, 4 Angular<17 or none, 5 malformed package.json/angular.json.
+#
+# The script never invents a version: when the workspace declares none it exits 4 and the calling
+# skill applies the latest-stable fallback, recording origin "default-latest".
+# See angular-fundamentals/references/angular-version.md for the full cascade.
+#
+# Exit codes: 0 ok, 1 usage, 2 not a directory, 4 no Angular workspace found, 5 malformed package.json/angular.json.
 
 set -u
 
@@ -16,7 +21,7 @@ Exit codes:
   0  success
   1  usage error
   2  not a directory
-  4  Angular below 17 or no Angular detected
+  4  no Angular workspace found (no package.json, or no @angular/core dependency)
   5  malformed package.json or angular.json
 EOF
 }
@@ -74,11 +79,6 @@ fi
 if ! [[ "$VERSION" =~ ^[0-9]+$ ]]; then
   echo "could not parse @angular/core version from $PKG" >&2
   exit 5
-fi
-
-if [[ "$VERSION" -lt 17 ]]; then
-  echo "Angular major $VERSION detected; this skill targets Angular 17+" >&2
-  exit 4
 fi
 
 # --- collect workspace project names + their root paths from angular.json (optional) ---

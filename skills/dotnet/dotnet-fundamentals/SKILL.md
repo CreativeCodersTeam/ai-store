@@ -9,7 +9,8 @@ description: Use when registering services in any .NET host (ASP.NET Core, Worke
 
 - Writing or modifying any C# production code — this is the baseline skill; `dotnet-aspnet`, `dotnet-ef-core`, and `dotnet-sdk-builder` build on top of it, so load this skill alongside them, not instead of them
 - Registering services in any `IServiceCollection` (ASP.NET Core, Worker Service, Console app, MAUI, library DI extension methods)
-- Choosing a DI lifetime (Transient, Scoped, Singleton) or registering keyed services (.NET 8+)
+- Choosing a DI lifetime (Transient, Scoped, Singleton) or registering keyed services (since .NET 8)
+- Deciding which .NET version to target — scaffolding a new project, generating a `.csproj`, or naming a target framework in output
 - Binding configuration sections to a strongly-typed Options class
 - Setting up `appsettings.json`, environment-specific overrides, User Secrets, or environment variables
 - Adopting primary constructors, `required` properties, nullable reference types, or `CancellationToken` propagation in new code
@@ -17,6 +18,7 @@ description: Use when registering services in any .NET host (ASP.NET Core, Worke
 ## Core Principles
 
 - This skill is **technology-agnostic across .NET hosts**. ASP.NET Core, EF Core, and SDK builders all sit on top of these fundamentals.
+- **One version rule** — the target framework resolves explicit user directive → repo directive → latest LTS (currently .NET 10). Never hardcode a version in generated output. See [target-framework.md](references/target-framework.md).
 - **Interface-first registration** — register services via their abstraction (`AddScoped<IFoo, Foo>()`), not the concrete type. Enables substitution and testing.
 - **No service locator** — never inject `IServiceProvider` into business logic. Constructor-inject the dependencies you actually need.
 - **Options over constructor parameters for configuration** — bind config sections to `IOptions<T>`, do not pass raw `IConfiguration` values around.
@@ -26,6 +28,7 @@ description: Use when registering services in any .NET host (ASP.NET Core, Worke
 
 ## Reference Index
 
+- **[target-framework.md](references/target-framework.md)** — the version resolution cascade (explicit user directive → repo directive → latest LTS, currently .NET 10); canonical for the whole .NET family
 - **[dependency-injection.md](references/dependency-injection.md)** — `IServiceCollection` registration, lifetimes, keyed services, interface-based registration, anti-service-locator
 - **[options-pattern.md](references/options-pattern.md)** — `IOptions<T>` vs `IOptionsMonitor<T>` vs `IOptionsSnapshot<T>`, `BindConfiguration`, `ValidateDataAnnotations`, `ValidateOnStart`
 - **[configuration.md](references/configuration.md)** — `appsettings.json` and environment overrides, User Secrets, environment variables, production secret stores

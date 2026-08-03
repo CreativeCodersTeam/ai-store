@@ -1,6 +1,8 @@
 # Review Checklist — .NET 10
 
-Apply when `detect-dotnet-version.sh` reports `target_frameworks` containing `net10.0`.
+Apply when the highest major resolved in Step 2 is **≥ 10** — either `net10.0` itself, or a newer
+target for which no dedicated checklist exists yet (see the selection rule in Step 6.1 of
+`SKILL.md`). Below major 10 this file does not apply; the general checklists carry the review.
 
 ## Language Idioms
 

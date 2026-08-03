@@ -2,7 +2,7 @@
 
 ## OpenAPI / Swagger
 
-- Use the built-in OpenAPI support (.NET 9+) or Swashbuckle/NSwag for earlier versions:
+- Use the built-in OpenAPI support (since .NET 9) or Swashbuckle/NSwag for earlier versions:
 
 ```csharp
 builder.Services.AddOpenApi();
@@ -65,7 +65,7 @@ builder.Services.AddCors(options =>
 app.UseCors("AllowFrontend");
 ```
 
-## Rate Limiting (.NET 7+)
+## Rate Limiting (since .NET 7)
 
 ```csharp
 builder.Services.AddRateLimiter(options =>
@@ -83,7 +83,7 @@ app.UseRateLimiter();
 
 - Apply per-endpoint with `[EnableRateLimiting("api")]` or `.RequireRateLimiting("api")`
 
-## Output Caching (.NET 7+)
+## Output Caching (since .NET 7)
 
 ```csharp
 builder.Services.AddOutputCache(options =>

@@ -7,7 +7,7 @@ working directory.
 ## Prerequisites
 
 - [ ] `bash skills/dotnet/tests/dotnet-reviewer/run-tests.sh` passes (all unit tests green).
-- [ ] `dotnet --version` reports 10.x (or use the mocked path on a machine without SDK).
+- [ ] A `dotnet` SDK able to build the fixture TFMs is on `PATH` (or use the mocked path on a machine without SDK).
 - [ ] You have a Copilot-compatible client that loads skills from this directory.
 
 ## Activation
@@ -26,8 +26,16 @@ working directory.
 
 ## Version Detection
 
-- [ ] On `repo-net10`: SDK detected as `10.0.100`, target framework `net10.0`.
-- [ ] On `repo-net8`: skill aborts with "this skill targets .NET 10+".
+- [ ] On `repo-net10`: SDK detected as `10.0.100`, target framework `net10.0`, report header shows
+      `Version origin: repo:App.csproj` and `Checklist: review-checklist-net10.md`.
+- [ ] On `repo-net8`: skill does **not** abort — it reviews with the general checklists and the
+      header states `Checklist: general checklists only (no checklist for net8.0)`.
+- [ ] On `repo-props-tfm`: target framework `net10.0` resolved from `Directory.Build.props`, header
+      shows `Version origin: repo:Directory.Build.props`.
+- [ ] On `repo-no-project`: skill falls back to the latest LTS and states
+      `Version origin: default-lts` — it does not abort.
+- [ ] Explicit directive ("review it as net8.0") in `repo-net10` overrides detection and the header
+      shows `Version origin: user`.
 - [ ] On `repo-malformed-csproj`: skill prompts whether to proceed without version awareness.
 
 ## Diff Collection
@@ -44,7 +52,7 @@ working directory.
 - [ ] Choosing D: report is grouped by file under `## Findings — <file>` subheaders.
 - [ ] Choosing B: header notes "full review under high token cost".
 
-## Tool Integration (with real `dotnet` 10)
+## Tool Integration (with a real `dotnet` SDK)
 
 - [ ] Build only: report appendix lists `dotnet build` summary.
 - [ ] Format only: violations appear as `Suggestion` findings.

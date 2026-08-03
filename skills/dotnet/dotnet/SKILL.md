@@ -33,7 +33,7 @@ orientation, not an intermediate step.
 |---------|-------|
 | Generate a .NET SDK / client library / typed HTTP client | `dotnet-sdk-builder` |
 | Write/run unit tests (xUnit, FakeItEasy, AwesomeAssertions) | `dotnet-tester` |
-| Structured code review for .NET 10+ (explicit invocation only, see below) | `dotnet-reviewer` |
+| Structured code review of a .NET project (explicit invocation only, see below) | `dotnet-reviewer` |
 | Query .NET APIs in NuGet packages, platform libraries, or local files | `dotnet-inspect` |
 | Manage NuGet packages (add/remove/update, `--outdated`, Central Package Management) | `dotnet-nuget-manager` |
 
@@ -46,3 +46,10 @@ orientation, not an intermediate step.
   it automatically.
 - **Composition:** `dotnet-sdk-builder` invokes `dotnet-xmldocs` and `dotnet-tester`;
   `dotnet-aspnet` and `dotnet-ef-core` build on `dotnet-fundamentals`.
+- **Version baseline:** target frameworks resolve explicit user directive → repo
+  directive (`global.json`, `Directory.Build.props`, `*.csproj`) → latest LTS,
+  currently **.NET 10**. The rule is canonical in
+  [`dotnet-fundamentals/references/target-framework.md`](../dotnet-fundamentals/references/target-framework.md);
+  no skill hardcodes a version of its own. Version-specific statements are written
+  `(since .NET 8)` / `(since C# 12)` and name when a feature appeared — they never
+  select a target.

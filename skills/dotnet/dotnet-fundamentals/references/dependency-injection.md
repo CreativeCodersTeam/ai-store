@@ -29,7 +29,7 @@ var host = builder.Build();
 
 Both ASP.NET Core and `Host.CreateApplicationBuilder` enable scope validation (`ValidateScopes` / `ValidateOnBuild`) by default in the Development environment. Only a bare `new HostBuilder()` (or a custom service-provider factory) applies no defaults — there, enable it explicitly via `UseDefaultServiceProvider` / `ServiceProviderOptions`.
 
-## Keyed Services (.NET 8+)
+## Keyed Services (since .NET 8)
 
 Use keyed services when multiple implementations of the same interface need to coexist and be selected by key:
 

@@ -7,7 +7,7 @@ relative to the repository root.
 
 - `helpers.sh` — assertion helpers sourced by every unit test.
 - `run-tests.sh` — entry point. Builds fixtures if missing, runs every `unit/test-*.sh`.
-- `fixtures/make-fixtures.sh` — generates the six fixture repos. Idempotent.
+- `fixtures/make-fixtures.sh` — generates the eight fixture repos. Idempotent.
 - `clean-fixtures.sh` — removes generated `repo-*/` directories. Auto-rebuilt on next `run-tests.sh`.
 - `unit/test-*.sh` — one file per script under test.
 - `unit/mock-dotnet/dotnet` — mock `dotnet` binary, behavior controlled via `MOCK_DOTNET_MODE`.
