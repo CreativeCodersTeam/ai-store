@@ -51,7 +51,10 @@ orientation, not an intermediate step.
   in its phases. The skills in the tables above are used directly only for pure
   knowledge/how-to questions, or for narrowly scoped tasks the user names
   explicitly (write tests for X, document X, bump package Y, generate a
-  library/SDK, run an angular review).
+  library/SDK, run an angular review). `angular-dev` is **interactive-only** —
+  it has no non-interactive mode and stops after Phase 1 when no user is
+  reachable (see its *Precondition — Interactive User Required*). Do not route
+  a headless or sub-agent run into it.
 - **`angular-reviewer` activates only on explicit name** — the phrases
   `angular-reviewer`, `angular code review`, or `angular review`. It does **not**
   trigger on generic "review my code", and the router does not trigger it

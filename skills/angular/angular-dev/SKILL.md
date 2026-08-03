@@ -54,6 +54,55 @@ workflow as a subsystem — at speed, never collapsed.
    task does NOT count. Invocation must shape the artifact, not certify it
    afterward.
 
+## Precondition — Interactive User Required
+
+**This workflow has no non-interactive mode.** `angular-reviewer` defines
+documented defaults for sub-agent dispatch (its *Programmatic invocation*
+clause); this workflow
+deliberately does not. Five gates need a real confirmation and Phase 2 needs
+eight answers, and what they decide — architecture, contracts, the post-review
+rework decision — is the user's call, not something derivable from the repo.
+Defaulting those would replace a missing answer with a fabricated one.
+
+**Check the precondition before Phase 1.** Judge **the run, not your own message
+channel.** It is unmet only when the whole run has no user behind it: you were
+dispatched by something other than this workflow, or the run is headless (CI,
+cron, scheduled agent), or the top-level `angular-dev` run's final output is
+consumed by a program rather than read by a person. A sub-agent *this* workflow
+dispatches has no user channel of its own, yet its run does have a user — the
+one answering the main agent's gates — so the precondition is met for it.
+
+**When it is unmet:** run **Phase 1 only** — it is read-only and needs no
+answers — then STOP at Gate 1 and emit a `Blocked — interactive user required`
+handoff *instead of* the request for confirmation. Do not enter Phase 2. Do not
+`Write` or `Edit` any file, and do not run code-producing `Bash`, at any point —
+the handoff is your reply, not a file you create. The handoff is the normal
+Phase-1 output plus a block naming exactly what a user must supply to resume:
+the Gate-1 confirmation, the eight Phase-2 answers, and the Gate 2–5
+confirmations including the post-review rework decision. See
+[references/REFERENCE.md](references/REFERENCE.md) for the handoff template.
+
+**Not the same thing** — three cases that are *not* a missing user channel:
+
+- **"Don't ask me / no questions / just do it"** from a reachable user. The
+  channel exists; the user declined to use it. That is the waiver machinery
+  (*Waiver vs. `n/a` vs. silent skip*) — state the cost, obtain the explicit
+  informed waiver, log it as `waived`. Never relabel it as a headless run. A
+  **pre-emptive** "don't ask me" is not yet an informed waiver: it was said
+  before the cost was named, so it costs you exactly one round-trip — state
+  what the skipped steps protect, ask which named steps they are electing to
+  skip, and wait. That round-trip is not itself waivable.
+- **Urgency, "nobody's around right now", slow replies.** Still interactive.
+  Wait.
+- **Sub-agents this workflow itself dispatches** (Phase-4 task agents, the
+  Phase-5 reviewer). Their run has a user — the one answering the main agent's
+  gates — so the precondition is satisfied for them. They run individual skills
+  and proceed normally.
+
+**Never self-answer.** Adopting the Phase-2 proposed defaults and continuing is
+the failure this section exists to prevent: it invents an undocumented
+non-interactive mode per run, and the code it produces is out of contract.
+
 ## Phase Flow
 
 ```
@@ -197,7 +246,10 @@ App-Run-Check outcome (or its `n/a` reason). Wait for confirmation.
    it to the sub-agent prompt. Sub-agents cannot ask the user — pass the
    reviewer's inputs (mode, tools, report language) explicitly in the sub-agent
    prompt; unspecified values use the reviewer's programmatic defaults
-   (uncommitted, no tools, English). Inline self-review does NOT satisfy this
+   (uncommitted, no tools, English). Those defaults belong to
+   `angular-reviewer`, not to this workflow — they do not imply that
+   `angular-dev` itself may run without a user (see *Precondition — Interactive
+   User Required*). Inline self-review does NOT satisfy this
    phase — `angular-reviewer` produces a severity-tagged Markdown report under
    `docs/reviews/`.
 2. Evaluate findings (severities per angular-reviewer's taxonomy):
@@ -332,6 +384,9 @@ Reproduce each task's checklist, every entry resolved with evidence:
 | "The sub-agent invoked it — covers my own edits" | It does not. Re-invoke before your own follow-up Write/Edit. |
 | "I'll log the `Skill(...)` call even though I ran it after the Write" | Evidence must be a real ordered turn. After-the-fact is `[!]`, not `[x]`. |
 | "No application project, but I'll skip the App-Run-Check anyway" | Decide it explicitly: run it (or `ng build` the lib), or mark `n/a — library-only`. Don't drop it silently. |
+| "No user is reachable — I'll adopt my proposed defaults and run end-to-end" | This workflow has no non-interactive mode. Run Phase 1, then stop with the `Blocked — interactive user required` handoff. Code produced this way is out of contract. |
+| "The user said 'don't ask me' — that's a non-interactive run" | No. A reachable user declining questions is a **waiver**, not a missing channel. State the cost, take the explicit waiver, log it as `waived`. |
+| "They said 'don't ask me anything' up front — that IS the waiver, I'll start coding" | Not yet. A waiver is informed only after the cost is named. Spend the one round-trip: state what the skipped steps protect, ask which named steps they skip, wait. |
 
 ---
 
