@@ -104,11 +104,13 @@ Die Regel („in Library-Code ja, in Application-/Testcode nein") steht dreimal 
 
 Beide zeigen das Library-Registrierungs-Pattern; fundamentals mit `BindConfiguration` + `ValidateDataAnnotations`, sdk-builder mit `IValidateOptions<T>` + `Configure`. Die Options-Klassen-Abweichung (`required/init` vs. `get; set;`) ist in sdk-builder vorbildlich begründet — fundamentals kennt die Gegenrichtung aber nicht: Wer nur fundamentals liest, hält `required` + `BindConfiguration` für das einzige Muster. Ein Satz in `dependency-injection.md` („für SDK-Libraries mit `Action<T>`-Konfiguration siehe die dokumentierte Abweichung in `dotnet-sdk-builder`") schließt die Lücke.
 
-#### M-4 — `dotnet-ef-core`: vage „Consider …"-Bullets ohne Handlungsanleitung
+#### M-4 — `dotnet-ef-core`: vage „Consider …"-Bullets ohne Handlungsanleitung ✅ behoben (2026-08-03)
 
 **Datei:** `dotnet-ef-core/SKILL.md`
 
 Mehrere Bullets sind nicht aktionabel: „Consider using transactions for multiple operations" (wann? Wie verhält sich das zum eigenen „SaveChanges once per unit of work"?), „Consider database functions for complex operations", „Consider snapshot testing for model changes", „Consider data encryption for sensitive information". Andere Bullets im selben File zeigen, wie es geht (Pagination, Chunked-Save — mit Bedingung, Code, Begründung). Zudem doppelt „Use parameterized queries" (Security, Zeile 71) das präzisere Raw-SQL-Bullet zwei Zeilen darunter. Das Test-Artefakt `efcore-bullet-actionability-test.md` zeigt, dass das Problem bekannt ist — der Rest-Bestand sollte nachgezogen werden.
+
+**Behoben (2026-08-03)** — Full sweep über alle 8 Sektionen: 29 Bullets auf das E-1-Muster (Regel → Bedingung → Konsequenz) umgeschrieben. Beide Dubletten entfernt (`Use parameterized queries` gegen den Raw-SQL-Bullet; zusätzlich gefunden: `Use AsNoTracking()` gegen die präzisere Tracking-Regel). Der von M-4 nicht benannte Widerspruch `Use migrations to manage database user permissions` ↔ Least-Privilege-Bullet ist zugunsten der Gewaltenteilung aufgelöst. Transaktionstiefe liegt jetzt in `references/transactions.md`, weil der alte Bullet der `SaveChanges`-once-Regel zwei Zeilen darüber widersprach (`SaveChanges` ist bereits atomar). Fragwürdige Empfehlungen (Specifications-Pattern, Compiled Queries) haben Kriterien statt Pauschalaussagen. Zwei REFACTOR-Runden nach Subagent-Probes — die erste Fassung war *aktionabel, aber fachlich falsch* (u. a. nicht existierendes `migrations add --dry-run`, `EF.Functions.Contains` als Collection-Containment, erfundene Migrations-History-Begründung); das Retry-Beispiel in `transactions.md` enthielt selbst den Fehler, den es erklären sollte. Nachweis: `skills/dotnet/tests/efcore-bullet-actionability-test.md` (M-4-Runde).
 
 #### M-5 — `dotnet-dev` hat keinen nicht-interaktiven Modus
 
@@ -177,7 +179,7 @@ Testcode profitiert unmittelbar von den fundamentals-Idiomen (CancellationToken 
 | `dotnet` (Router) | Gut | Klare Zwei-Kategorien-Struktur; Lücke: `dotnet-dev` fehlt (H-2), Kompositions-Notiz unvollständig (M-9) |
 | `dotnet-fundamentals` | Gut | Starke Referenzen (DI, Options, Config); Primary-Constructors-Stub (H-3), Description zu eng (N-2) |
 | `dotnet-aspnet` | Gut | Saubere Abgrenzung zum Fundamentals-Skill, starkes auth.md; middleware.md zu dünn (M-1), Integrationstests fehlen (H-5), error-handling nicht integriert (M-8) |
-| `dotnet-ef-core` | Befriedigend | Fachlich korrekt, gute Testing-/Pagination-/Security-Teile; etliche vage Bullets (M-4), Strukturausreißer (N-1) |
+| `dotnet-ef-core` | Gut | Fachlich korrekt, gute Testing-/Pagination-/Security-Teile; vage Bullets (M-4) ✅ behoben 2026-08-03 — alle 8 Sektionen aktionabel, Transaktionen in `references/transactions.md`; Strukturausreißer (N-1) offen |
 | `dotnet-xmldocs` | Sehr gut | Präzise Microsoft-Formeln, kanonisches Beispiel mit Präzedenzregel — vorbildlich |
 | `dotnet-sdk-builder` | Sehr gut | Klarer Workflow mit Nutzer-Entscheidungspunkten, dokumentierte Abweichung vom Fundamentals-Pattern, vollständige Codebeispiele |
 | `dotnet-tester` | Gut | „Never Fake a Green Test" ist herausragend; Subagent-Abhängigkeit ohne Fallback (M-6) |

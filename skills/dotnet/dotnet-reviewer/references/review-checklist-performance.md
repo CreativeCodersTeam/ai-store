@@ -26,7 +26,7 @@
 
 ## EF Core
 
-See the `dotnet-ef-core` skill (Performance section) for the full list of EF Core performance pitfalls. Reviewer-specific hook: flag any new query against a `DbContext` that is missing `.AsNoTracking()` on a read-only path, that calls `.ToList()` before a filter, or that uses `foreach` to iterate parent entities while issuing per-row child queries (N+1).
+See the `dotnet-ef-core` skill for the full list of EF Core performance pitfalls — its Performance section (N+1, cartesian explosion, projection, compiled queries) and its Change Tracking &amp; Saving section (tracking on write paths only, one `SaveChanges` per unit of work). Reviewer-specific hook: flag any new query against a `DbContext` that is missing `.AsNoTracking()` on a read-only path, that calls `.ToList()` before a filter, or that uses `foreach` to iterate parent entities while issuing per-row child queries (N+1).
 
 ## Hot-Path Heuristics
 
