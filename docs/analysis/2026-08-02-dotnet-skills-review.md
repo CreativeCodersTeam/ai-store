@@ -148,9 +148,11 @@ Das Beispiel setzt `Type = "https://httpstatuses.com/500"` — die Domain ist se
 
 ### Niedrig
 
-#### N-1 — Router-Label „Knowledge skills (best practices, `references/` only)" trifft auf `dotnet-ef-core` nicht zu
+#### N-1 — Router-Label „Knowledge skills (best practices, `references/` only)" trifft auf `dotnet-ef-core` nicht zu ✅ behoben (2026-08-03)
 
 `dotnet-ef-core` hält fast den gesamten Inhalt in der SKILL.md (nur Concurrency ist ausgelagert) — bei `dotnet-aspnet`/`dotnet-fundamentals` ist es umgekehrt. Entweder Label präzisieren oder ef-core strukturell angleichen. Rein kosmetisch, kann aber die Erwartung „Details stehen immer in references/" enttäuschen.
+
+**Behoben (2026-08-03)** — Variante „strukturell angleichen", im Anschluss an M-4. Alle acht Sektionen wurden **wortgleich** nach `references/` verschoben (`model-design.md`, `querying-and-performance.md`, `migrations.md`, `change-tracking.md`, `security.md`, `testing.md`, dazu die bestehenden `concurrency-control.md` und `transactions.md`). `SKILL.md` folgt jetzt dem `dotnet-fundamentals`-Archetyp — When to Use + 12 Core Principles + Reference Index — und ist von ~2900 auf 772 Wörter geschrumpft. Eine dritte Subagent-Probe hat geprüft, ob die Verdichtung die E-1-Truisms zurückbringt: 0 von 12 Principles delegieren die Entscheidung, 12 von 12 sind flaggable; fünf Verdichtungsfehler wurden in REFACTOR 3 korrigiert. Nachweis: `skills/dotnet/tests/efcore-bullet-actionability-test.md` (Abschnitt „Structural Split").
 
 #### N-2 — `dotnet-fundamentals`-Description transportiert die Baseline-Rolle nicht ✅ behoben (2026-08-02)
 
@@ -179,7 +181,7 @@ Testcode profitiert unmittelbar von den fundamentals-Idiomen (CancellationToken 
 | `dotnet` (Router) | Gut | Klare Zwei-Kategorien-Struktur; Lücke: `dotnet-dev` fehlt (H-2), Kompositions-Notiz unvollständig (M-9) |
 | `dotnet-fundamentals` | Gut | Starke Referenzen (DI, Options, Config); Primary-Constructors-Stub (H-3), Description zu eng (N-2) |
 | `dotnet-aspnet` | Gut | Saubere Abgrenzung zum Fundamentals-Skill, starkes auth.md; middleware.md zu dünn (M-1), Integrationstests fehlen (H-5), error-handling nicht integriert (M-8) |
-| `dotnet-ef-core` | Gut | Fachlich korrekt, gute Testing-/Pagination-/Security-Teile; vage Bullets (M-4) ✅ behoben 2026-08-03 — alle 8 Sektionen aktionabel, Transaktionen in `references/transactions.md`; Strukturausreißer (N-1) offen |
+| `dotnet-ef-core` | Gut | Fachlich korrekt; vage Bullets (M-4) ✅ behoben 2026-08-03 — alle 8 Sektionen aktionabel; Strukturausreißer (N-1) ✅ behoben — SKILL.md auf Core Principles + Reference Index reduziert, Tiefe in 8 `references/` |
 | `dotnet-xmldocs` | Sehr gut | Präzise Microsoft-Formeln, kanonisches Beispiel mit Präzedenzregel — vorbildlich |
 | `dotnet-sdk-builder` | Sehr gut | Klarer Workflow mit Nutzer-Entscheidungspunkten, dokumentierte Abweichung vom Fundamentals-Pattern, vollständige Codebeispiele |
 | `dotnet-tester` | Gut | „Never Fake a Green Test" ist herausragend; Subagent-Abhängigkeit ohne Fallback (M-6) |

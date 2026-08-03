@@ -1,0 +1,10 @@
+# EF Core Security
+
+- Run the application under a least-privilege database account — no DDL rights for the app user; migrations run under a separate, privileged deployment identity
+- Raw SQL only via `FromSqlInterpolated` (EF Core 7+: `FromSql`) or `FromSqlRaw` with `{0}`-placeholders plus parameter arguments — never string concatenation; `FromSqlRaw($"…{userInput}")` is SQL injection
+- Do not accept TDE as an answer to "this column is sensitive" — it encrypts the files at rest and defends against a stolen backup or disk, and nothing else. A compromised application or a privileged DBA reads the values unchanged. Columns that need protection *from* the database need a column-level mechanism: SQL Server Always Encrypted, whose deterministic mode still supports equality and indexing (randomized supports neither)
+- An EF value converter is the fallback when the provider offers nothing, and its failure mode is silence rather than an error. Equality **does** translate (EF converts the parameter), so `Where(x => x.Ssn == value)` compiles, runs, and — with a random IV — matches nothing. `OrderBy` and range comparisons also translate, and sort or compare the **ciphertext**. `LIKE` usually fails to translate outright, and no index on that column is useful. Restrict converters to columns you only ever read back whole. Connection strings and key material are configuration secrets, not model concerns — see [`dotnet-fundamentals`](../../dotnet-fundamentals/references/configuration.md)
+- Grant management (`GRANT`, `CREATE USER`, role membership) belongs in ops/DDL scripts, not in EF migrations. Principal names differ per environment, so a `migrationBuilder.Sql("GRANT …")` either hardcodes one environment or grows conditionals; and separation of duties is the point — who may access the data is an operations decision with its own review path, not something that ships inside an application artifact
+
+The least-privilege rule is why `Database.Migrate()` must not run at application startup — see
+[migrations.md](./migrations.md).

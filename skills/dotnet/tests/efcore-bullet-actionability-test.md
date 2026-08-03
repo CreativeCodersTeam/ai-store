@@ -195,11 +195,74 @@ rewrite was *actionable but factually wrong*, which is the more dangerous
 failure: E-1's bullets deferred judgment, M-4's first draft asserted confidently
 and incorrectly, and a reviewer quotes the justification.
 
-`SKILL.md` grew 814 → ~2900 words. Every bullet earns its length, but the file
-is now far larger than its peers (`dotnet-fundamentals` 508,
-`dotnet-aspnet` 379); if it grows again, Migrations and Performance are the
-sections to move into `references/`.
-
 Re-run **both** probes whenever these bullets or `transactions.md` change, and
 re-check the version-gated claims (EF 8/9/10 feature availability) when the
 family's target framework moves — they are the parts that go stale.
+
+---
+
+# Structural Split (2026-08-03) — also closes N-1
+
+The M-4 sweep left `SKILL.md` at ~2900 words against peers at 379–508, and
+Finding **N-1** already recorded the same defect from the other direction:
+`dotnet-ef-core` held nearly all content in `SKILL.md` while
+`dotnet-aspnet`/`dotnet-fundamentals` hold it in `references/`.
+
+All eight sections moved into `references/` **verbatim** — the bullets had been
+probe-verified twice and were not re-edited in the move. `SKILL.md` was rebuilt
+to the `dotnet-fundamentals` archetype: When to Use + 12 Core Principles +
+Reference Index + Related Skills, 772 words.
+
+New: `model-design.md`, `querying-and-performance.md`, `migrations.md`,
+`change-tracking.md`, `security.md`, `testing.md`, joining the existing
+`concurrency-control.md` and `transactions.md`.
+
+## Verify — probe 3, 2026-08-03
+
+The risk this split creates is specific: compressing 49 verified bullets into 12
+one-line principles is exactly how the E-1 truisms were born. A fresh subagent
+was given the 12 principles, told about the historical failure mode, and asked
+per principle whether it *prescribes* or *defers*.
+
+**No regression: 0 of 12 defer, 12 of 12 flaggable** — the verifier constructed a
+concrete offending line of C# for every one. On principle 6, the direct
+descendant of E-1's "Use appropriate change tracking strategies": *"it now names
+the API."*
+
+Content preservation checked mechanically: all 49 distinctive bullet phrases
+from the pre-split `SKILL.md` are present in `references/`.
+
+## REFACTOR 3 — 2026-08-03
+
+Compression damaged five principles, all repaired:
+
+- **N+1 (worst).** The compressed line implied N+1 persists when lazy loading is
+  off and that the failure is always silent. Both wrong: without lazy loading
+  there is no N+1, and a `null` reference navigation throws loudly. The headline
+  "in one round trip" also read as a ban on `AsSplitQuery()`, the recommended fix
+  for the adjacent cartesian-explosion problem. Rewritten around the observable
+  act — do not dereference a navigation inside a loop over parents — with the
+  remedy named. The full bullet in `querying-and-performance.md` was already
+  correct and was not touched.
+- **`SaveChanges` atomicity** — qualified "on a relational provider" (not true on
+  Cosmos) and linked to the concurrency-token principle, since atomicity is not
+  isolation and a reader could otherwise think one covers the other.
+- **In-Memory provider** — the stated reason ("enforces no constraints") was both
+  too strong (it does enforce PK uniqueness) and missed the decisive one (not a
+  relational store, so untranslatable queries pass). Corrected in the principle
+  **and** in `testing.md`, where the imprecision predated M-4.
+- **Fluent API** — "no rule is ever expressed twice" was unfalsifiable; now "no
+  property configured by both an attribute and the fluent API".
+- **`IQueryable`** — "compose shared filters inside the layer" had no decidable
+  test; now "no public member returns `IQueryable<T>`".
+
+Cheap additions from the same probe: the script command on the migration-review
+principle, `EnsureCreated()` beside `Database.Migrate()`, and the replacement
+named where a principle was purely prohibitive.
+
+## Result
+
+`SKILL.md` 2900 → 772 words, in line with the family. Nine references, each
+loadable on its own. N-1 closed. Re-run probe 3 whenever the Core Principles are
+reworded — that section is a compression of rules verified elsewhere, and
+compression is where this skill has now twice introduced errors.
