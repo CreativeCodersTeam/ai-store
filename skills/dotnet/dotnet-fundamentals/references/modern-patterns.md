@@ -63,7 +63,7 @@ public async Task<Order?> GetByIdAsync(Guid id, CancellationToken ct = default)
 
 ## `ConfigureAwait(false)`
 
-**Rule:** in library code (NuGet packages, SDKs, reusable class libraries), call `.ConfigureAwait(false)` on every `await`. In application code (ASP.NET Core endpoints and services, Worker Services, console apps, tests), do not.
+**Rule:** in library code (NuGet packages, SDKs, reusable class libraries), call `.ConfigureAwait(false)` on every `await`. In server and headless application code (ASP.NET Core endpoints and services, Worker Services, console apps, tests), do not. In GUI application code (WPF, WinForms, MAUI, Avalonia), it depends on what follows the `await` — see below.
 
 ```csharp
 // Library method — every await opts out of context capture
@@ -75,7 +75,8 @@ public async Task<Repository> GetRepositoryAsync(string owner, CancellationToken
 ```
 
 - **Why libraries opt out:** a library can be consumed from contexts that install a `SynchronizationContext` (UI frameworks, legacy ASP.NET). Continuing on that captured context costs scheduling and can deadlock consumers that block on the returned task (sync-over-async). The library itself never needs the caller's context.
-- **Why applications don't bother:** ASP.NET Core and the Generic Host have no `SynchronizationContext` — there is nothing to capture, so `.ConfigureAwait(false)` is inert noise there. Test code counts as application code.
+- **Why server/headless apps don't bother:** ASP.NET Core, the Generic Host, and plain console apps have no `SynchronizationContext` — there is nothing to capture, so `.ConfigureAwait(false)` is inert noise there. Test code counts as application code.
+- **GUI apps sit in between:** WPF, WinForms, MAUI, and Avalonia install a `SynchronizationContext` on the UI thread, so `ConfigureAwait(false)` genuinely matters there. Use it on every `await` whose continuation does not touch the UI (services, helpers, I/O paths); omit it where the code after the `await` updates controls or view state — that continuation must resume on the UI thread. The same captured context is why blocking with `.Result`/`.Wait()` on the UI thread deadlocks.
 - Apply it consistently within a library: one context-capturing `await` in a call chain is enough to reintroduce the risk.
 
 ## File-Scoped Namespaces (C# 10)

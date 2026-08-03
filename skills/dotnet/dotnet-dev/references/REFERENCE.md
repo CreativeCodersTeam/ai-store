@@ -120,7 +120,7 @@ the skills explicitly to the sub-agent (sub-agents are stateless).
 `dotnet-sdk-builder` (typed SDK/HTTP client), `dotnet-inspect` (verify external
 API). Apply project conventions: the project's guard-clause style, primary constructors,
 nullable reference types, `CancellationToken` propagation, `.ConfigureAwait(false)`
-in library code only (rule + rationale: `dotnet-fundamentals`, modern-patterns.md),
+per the `dotnet-fundamentals` rule (modern-patterns.md),
 never `.Result`/`.Wait()`/`.GetAwaiter().GetResult()`.
 
 ### Tests

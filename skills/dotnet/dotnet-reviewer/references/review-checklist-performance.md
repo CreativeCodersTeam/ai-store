@@ -5,7 +5,7 @@
 - No `.Result`, `.Wait()`, `GetAwaiter().GetResult()` in async code paths.
 - `async void` only on event handlers.
 - `Task.Run` not used to "fake async" over CPU-bound work that already runs on a worker thread (e.g., inside an existing async pipeline).
-- `ConfigureAwait(false)` on library code (not application code in modern ASP.NET) — rationale in the `dotnet-fundamentals` skill (modern-patterns.md).
+- `ConfigureAwait(false)` on library code — in GUI apps (WPF/MAUI/Avalonia) also on awaits whose continuation does not touch the UI; not needed in modern ASP.NET application code — rationale in the `dotnet-fundamentals` skill (modern-patterns.md).
 - `ValueTask` for hot paths that frequently complete synchronously; do not consume `ValueTask` more than once.
 - `IAsyncEnumerable<T>` for streaming; flag `List<T>` accumulation when callers can stream.
 
