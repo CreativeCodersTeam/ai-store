@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 set -u
 TEST_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SKILL_DIR="${SKILL_DIR:-$(cd "$TEST_DIR/../.." && pwd)}"
-FIX="$SKILL_DIR/tests/fixtures"
+TESTS_DIR="${TESTS_DIR:-$(cd "$TEST_DIR/.." && pwd)}"
+SKILL_DIR="${SKILL_DIR:-$(cd "$TESTS_DIR/../../dotnet-reviewer" && pwd)}"
+FIX="$TESTS_DIR/fixtures"
 SCRIPT="$SKILL_DIR/scripts/detect-dotnet-version.sh"
 # shellcheck source=../helpers.sh
-source "$SKILL_DIR/tests/helpers.sh"
+source "$TESTS_DIR/helpers.sh"
 
 # 1. Happy path: net10
 out=$(bash "$SCRIPT" --repo-root "$FIX/repo-net10" 2>/dev/null); rc=$?

@@ -1,11 +1,12 @@
 # Smoke Test — End-to-End Skill Flow
 
 Manual checklist a human walks through once before declaring the skill ready.
-Time budget: ~15 minutes. Use `tests/fixtures/repo-net10` as the working directory.
+Time budget: ~15 minutes. Use `skills/dotnet/tests/dotnet-reviewer/fixtures/repo-net10` as the
+working directory.
 
 ## Prerequisites
 
-- [ ] `bash tests/run-tests.sh` passes (all unit tests green).
+- [ ] `bash skills/dotnet/tests/dotnet-reviewer/run-tests.sh` passes (all unit tests green).
 - [ ] `dotnet --version` reports 10.x (or use the mocked path on a machine without SDK).
 - [ ] You have a Copilot-compatible client that loads skills from this directory.
 

@@ -4,7 +4,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SKILL_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+SKILL_DIR="$(cd "$SCRIPT_DIR/../../dotnet-reviewer" && pwd)"
 
 if ! command -v jq >/dev/null 2>&1; then
   echo "ERROR: jq is required for tests" >&2
@@ -21,7 +21,7 @@ for t in "$SCRIPT_DIR/unit"/test-*.sh; do
   [[ -f "$t" ]] || continue
   echo
   echo "=== $(basename "$t") ==="
-  if ! SKILL_DIR="$SKILL_DIR" bash "$t"; then
+  if ! TESTS_DIR="$SCRIPT_DIR" SKILL_DIR="$SKILL_DIR" bash "$t"; then
     EXIT=1
   fi
 done
