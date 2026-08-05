@@ -71,9 +71,10 @@ Der Abschnitt „Primary Constructors (C# 12)" besteht aus einem einzigen Bullet
 
 Alle Kommandos laufen über `dnx dotnet-inspect -y -- …`. `dnx` (tool-exec) ist erst ab .NET 10 SDK verfügbar; der Skill nennt keine SDK-Anforderung und keinen Fallback (`dotnet tool install -g dotnet-inspect` / `dotnet tool run`). Das kollidiert mit dem Suite-Baseline-Anspruch „.NET 8 SDK" (`dotnet-nuget-manager`): Auf einer 8er/9er-Maschine schlägt jede Beispielzeile fehl — und `dotnet-dev` bindet `dotnet-inspect` in Phase 1/4 ein. Voraussetzungen-Abschnitt ergänzen (SDK ≥ 10 oder Fallback-Kommando dokumentieren).
 
-#### H-5 — Lücke: ASP.NET-Core-Integrationstests haben keinen Ort
+#### H-5 — Lücke: ASP.NET-Core-Integrationstests haben keinen Ort ✅ behoben (2026-08-05)
 
 **Dateien:** `dotnet-tester/SKILL.md`, `dotnet-aspnet/SKILL.md`
+**Status:** Behoben — Hybrid nach ef-core-Vorbild: neue `dotnet-aspnet/references/testing.md` (WebApplicationFactory, `ConfigureTestServices`-Overrides inkl. EF-Core-9-Falle, Test-Auth-Scheme, DB-Swap als Hook auf `dotnet-ef-core/references/testing.md`, External-HTTP-Stubbing); `dotnet-tester` erklärt In-Process-Integrationstests für in Scope und bindet die Reference — das löst auch den Widerspruch, dass `dotnet-sdk-builder`/`dotnet-ef-core` Integrationstests an den Tester delegierten, der sie ablehnte. Router-Zeile und ef-core-Gegen-Hook angeglichen. Verifiziert per Retrieval-Probe **und** vollem Eval-Loop (3 Szenarien × Skill/Baseline gegen kompilierbares .NET-10-Fixture; 17/17 vs. 15/17 Assertions, ~24 % schneller), siehe `skills/dotnet/tests/aspnet-integration-testing-test.md`.
 
 `dotnet-tester` grenzt sich ab („Not for … integration tests that only exercise external systems") und behandelt ausschließlich Unit-Tests. `dotnet-aspnet` schweigt zu Tests vollständig. Der in der Praxis häufigste ASP.NET-Core-Testtyp — In-Memory-Integrationstests via `WebApplicationFactory<TEntryPoint>` / `Microsoft.AspNetCore.Mvc.Testing` (Endpoint + Pipeline + DI + Auth-Stubs) — wird von keinem Skill abgedeckt. Zum Vergleich: `dotnet-ef-core` löst dasselbe Problem für seine Domäne vorbildlich (SQLite in-memory, Testcontainers). Empfehlung: Abschnitt bzw. Reference in `dotnet-aspnet` („testing.md" mit WebApplicationFactory-Pattern) oder erweiterter Scope in `dotnet-tester`, plus wechselseitige Verweise.
 
@@ -137,11 +138,13 @@ Step 6 verweist generisch auf `review-checklist-net<N>.md`, vorhanden ist nur `-
 
 **Behoben (2026-08-03)** — Step 6.1 definiert die Auswahl explizit: exakte Datei → sonst höchste vorhandene `net<M>` mit `M ≤ N` (Substitution im Report benannt) → sonst nur die versionsneutralen Checklisten (ebenfalls benannt). `review-checklist-net10.md` beschreibt seine Geltung jetzt als „höchster Major ≥ 10". Stillschweigende Substitution steht unter „Things This Skill Never Does".
 
-#### M-8 — `error-handling.md`: defekter `type`-URI und fehlende `IProblemDetailsService`-Integration
+#### M-8 — `error-handling.md`: defekter `type`-URI und fehlende `IProblemDetailsService`-Integration ✅ behoben (2026-08-05)
 
 **Datei:** `dotnet-aspnet/references/error-handling.md`
 
 Das Beispiel setzt `Type = "https://httpstatuses.com/500"` — die Domain ist seit Jahren tot (Nachfolger httpstatuses.io); RFC 9457 sieht `about:blank` als Default vor, wenn kein eigener Problem-Type dokumentiert wird. Außerdem schreibt der `IExceptionHandler` die Response manuell (`WriteAsJsonAsync`), statt den registrierten `AddProblemDetails`-Customizer über `IProblemDetailsService.TryWriteAsync` zu nutzen — dadurch geht die im selben File konfigurierte `traceId`-Extension im Fehlerpfad verloren. Die beiden Beispiele wirken zusammengehörig, sind aber nicht integriert.
+
+**Behoben (2026-08-05)** — Der Handler injiziert jetzt `IProblemDetailsService` und schreibt über `TryWriteAsync` (Customizer inkl. `traceId` läuft damit auch im Fehlerpfad); `Type` wird gar nicht mehr gesetzt (RFC-9457-Default `about:blank`, ASP.NET Core substituiert die RFC-9110-Statusreferenz); `Response.StatusCode` wird explizit vor dem Aufruf gesetzt. Neue Bullets erklären Service-vs-manuell, die `false`-Return-Semantik, das fehlende `CancellationToken` an `TryWriteAsync` und die `Type`-Defaults; Pipeline-Wiring bleibt single-sourced in `middleware.md`. Eine Fresh-Subagent-Probe fand zwei Fehler im ersten Wurf (`ProblemDetailsContext.Exception` ist .NET 9+, nicht 8; „weder JSON noch XML" — es gibt keinen XML-Writer), beide per REFACTOR korrigiert; zwei Sharpenings übernommen (Doppel-Logging der Middleware, explizite `UseExceptionHandler`-Abhängigkeit). Nachweis: `skills/dotnet/tests/aspnet-error-handling-test.md`. `SKILL.md`-Referenzindex um `IProblemDetailsService` ergänzt.
 
 #### M-9 — Router: Kompositions-Notiz unvollständig
 
@@ -185,7 +188,7 @@ Testcode profitiert unmittelbar von den fundamentals-Idiomen (CancellationToken 
 |---|---|---|
 | `dotnet` (Router) | Gut | Klare Zwei-Kategorien-Struktur; Lücke: `dotnet-dev` fehlt (H-2), Kompositions-Notiz unvollständig (M-9) |
 | `dotnet-fundamentals` | Gut | Starke Referenzen (DI, Options, Config); Primary-Constructors-Stub (H-3) ✅ behoben 2026-08-05 — voller Abschnitt mit Entscheidungsregeln; Description zu eng (N-2) |
-| `dotnet-aspnet` | Gut | Saubere Abgrenzung zum Fundamentals-Skill, starkes auth.md; middleware.md zu dünn (M-1), Integrationstests fehlen (H-5), error-handling nicht integriert (M-8) |
+| `dotnet-aspnet` | Gut | Saubere Abgrenzung zum Fundamentals-Skill, starkes auth.md; middleware.md zu dünn (M-1) ✅ behoben 2026-08-02; Integrationstests fehlen (H-5) ✅ behoben 2026-08-05 — eigene testing.md; error-handling nicht integriert (M-8) ✅ behoben 2026-08-05 |
 | `dotnet-ef-core` | Gut | Fachlich korrekt; vage Bullets (M-4) ✅ behoben 2026-08-03 — alle 8 Sektionen aktionabel; Strukturausreißer (N-1) ✅ behoben — SKILL.md auf Core Principles + Reference Index reduziert, Tiefe in 8 `references/` |
 | `dotnet-xmldocs` | Sehr gut | Präzise Microsoft-Formeln, kanonisches Beispiel mit Präzedenzregel — vorbildlich |
 | `dotnet-sdk-builder` | Sehr gut | Klarer Workflow mit Nutzer-Entscheidungspunkten, dokumentierte Abweichung vom Fundamentals-Pattern, vollständige Codebeispiele |
@@ -202,7 +205,7 @@ Testcode profitiert unmittelbar von den fundamentals-Idiomen (CancellationToken 
 3. **H-2, M-9** — Router vervollständigen (`dotnet-dev` + Vorrangregel; sdk-builder-Komposition).
 4. **H-3** — Primary-Constructors-Inhalt in `modern-patterns.md` nachliefern. ✅ erledigt (2026-08-05)
 5. **H-4** — `dnx`-Voraussetzung in `dotnet-inspect` dokumentieren.
-6. **H-5** — Ort für ASP.NET-Core-Integrationstests schaffen.
+6. **H-5** — Ort für ASP.NET-Core-Integrationstests schaffen. ✅ erledigt (2026-08-05)
 7. **M-1 … M-8, N-1 … N-4** — in beliebiger Reihenfolge, jeweils lokal begrenzte Edits.
 
 ---

@@ -33,7 +33,7 @@ Detailed patterns and code samples live in `references/`:
 - **[model-binding-validation.md](references/model-binding-validation.md)** — Binding sources (`[FromBody]`, `[FromRoute]`, etc.), Data Annotations, FluentValidation, `ValidationProblemDetails`
 - **[middleware.md](references/middleware.md)** — Pipeline order, custom middleware with primary constructors
 - **[auth.md](references/auth.md)** — JWT Bearer, authorization policies, `IAuthorizationHandler`, `RequireAuthorization`
-- **[error-handling.md](references/error-handling.md)** — ProblemDetails, `IExceptionHandler` (since .NET 8), `UseStatusCodePages`
+- **[error-handling.md](references/error-handling.md)** — ProblemDetails, `IExceptionHandler` + `IProblemDetailsService` (since .NET 8), `UseStatusCodePages`
 - **[openapi-and-cross-cutting.md](references/openapi-and-cross-cutting.md)** — OpenAPI/Swagger, XML doc generation, health checks (liveness/readiness), CORS, rate limiting, output caching, response compression
 - **[testing.md](references/testing.md)** — In-memory integration tests: `WebApplicationFactory`, service overrides via `ConfigureTestServices`, test auth scheme, database/external-dependency swaps
 
