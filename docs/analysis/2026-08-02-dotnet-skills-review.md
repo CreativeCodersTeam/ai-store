@@ -58,9 +58,10 @@ Damit bleibt auch die wichtigste Triggering-Ambiguität ungeregelt: `dotnet-dev`
 
 **Empfehlung:** Im Router eine dritte Kategorie „Workflow-Orchestrierung" mit `dotnet-dev` ergänzen plus eine Vorrangregel („Change-Request → `dotnet-dev`; die Wissens-Skills werden von dort als Bindungen gezogen").
 
-#### H-3 — `modern-patterns.md`: Abschnitt „Primary Constructors" ist ein Stub
+#### H-3 — `modern-patterns.md`: Abschnitt „Primary Constructors" ist ein Stub ✅ behoben (2026-08-05)
 
 **Datei:** `dotnet-fundamentals/references/modern-patterns.md:5-7`
+**Status:** Behoben — Abschnitt vollständig ausgebaut (Syntax + DI-Standardfall, Capturing-Semantik inkl. Double-Capture/CS9124, `class`-vs.-`record`-Abgrenzung) mit geschärfter Entscheidungsgrundlage als expliziter Regelliste (primary constructor vs. `readonly`-Feld-Zuweisung vs. klassischer Konstruktor). Der Middleware-Bullet ist jetzt Hook auf `dotnet-aspnet/references/middleware.md` statt Duplikat; Reviewer-Checkliste (`review-checklist-net10.md`) und `project-and-endpoints.md` per Single-Sourcing angeglichen. Per Retrieval-Probe RED→GREEN→REFACTOR×2→Verify verifiziert, siehe `skills/dotnet/tests/fundamentals-primary-constructors-test.md`.
 
 Der Abschnitt „Primary Constructors (C# 12)" besteht aus einem einzigen Bullet — und der behandelt einen Spezialfall (Middleware, scoped Services via `InvokeAsync`), der zudem `dotnet-aspnet/references/middleware.md` dupliziert. Das eigentliche Pattern fehlt komplett: Syntax, Einsatz in Services/Controllern, Capturing-Semantik, Abgrenzung zu `record`-Primary-Constructors, wann klassischer Konstruktor + `readonly`-Feld vorzuziehen ist. Die Frontmatter-Description von `dotnet-fundamentals` bewirbt primary constructors ausdrücklich; die Reviewer-Checkliste net10 flagt sogar den Legacy-Stil („ctor + private readonly field") — die Wissensgrundlage dazu existiert aber nicht. Vermutlich ein Redaktionsverlust.
 
@@ -183,7 +184,7 @@ Testcode profitiert unmittelbar von den fundamentals-Idiomen (CancellationToken 
 | Skill | Qualität | Anmerkungen |
 |---|---|---|
 | `dotnet` (Router) | Gut | Klare Zwei-Kategorien-Struktur; Lücke: `dotnet-dev` fehlt (H-2), Kompositions-Notiz unvollständig (M-9) |
-| `dotnet-fundamentals` | Gut | Starke Referenzen (DI, Options, Config); Primary-Constructors-Stub (H-3), Description zu eng (N-2) |
+| `dotnet-fundamentals` | Gut | Starke Referenzen (DI, Options, Config); Primary-Constructors-Stub (H-3) ✅ behoben 2026-08-05 — voller Abschnitt mit Entscheidungsregeln; Description zu eng (N-2) |
 | `dotnet-aspnet` | Gut | Saubere Abgrenzung zum Fundamentals-Skill, starkes auth.md; middleware.md zu dünn (M-1), Integrationstests fehlen (H-5), error-handling nicht integriert (M-8) |
 | `dotnet-ef-core` | Gut | Fachlich korrekt; vage Bullets (M-4) ✅ behoben 2026-08-03 — alle 8 Sektionen aktionabel; Strukturausreißer (N-1) ✅ behoben — SKILL.md auf Core Principles + Reference Index reduziert, Tiefe in 8 `references/` |
 | `dotnet-xmldocs` | Sehr gut | Präzise Microsoft-Formeln, kanonisches Beispiel mit Präzedenzregel — vorbildlich |
@@ -199,7 +200,7 @@ Testcode profitiert unmittelbar von den fundamentals-Idiomen (CancellationToken 
 1. **K-1** — Versionskonflikt `dotnet-dev` ↔ `dotnet-reviewer` auflösen (blockiert den Kern-Workflow für .NET 8/9). ✅ erledigt (2026-08-03), zusammen mit **M-7**
 2. **H-1** — Querverweis in der Architektur-Checkliste korrigieren (Ein-Zeilen-Fix, faktisch falsch). ✅ erledigt (2026-08-02)
 3. **H-2, M-9** — Router vervollständigen (`dotnet-dev` + Vorrangregel; sdk-builder-Komposition).
-4. **H-3** — Primary-Constructors-Inhalt in `modern-patterns.md` nachliefern.
+4. **H-3** — Primary-Constructors-Inhalt in `modern-patterns.md` nachliefern. ✅ erledigt (2026-08-05)
 5. **H-4** — `dnx`-Voraussetzung in `dotnet-inspect` dokumentieren.
 6. **H-5** — Ort für ASP.NET-Core-Integrationstests schaffen.
 7. **M-1 … M-8, N-1 … N-4** — in beliebiger Reihenfolge, jeweils lokal begrenzte Edits.

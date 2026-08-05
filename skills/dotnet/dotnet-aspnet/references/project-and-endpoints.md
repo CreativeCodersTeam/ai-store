@@ -40,7 +40,7 @@ public class OrdersController(IOrderService orderService) : ControllerBase
 ```
 
 - Always use `[ApiController]` attribute — enables automatic model validation, binding source inference, and ProblemDetails responses
-- Use primary constructor injection for dependencies
+- Use primary constructor injection for dependencies (capturing semantics and decision rules: `dotnet-fundamentals` skill, `references/modern-patterns.md`)
 - Return `IActionResult` or `ActionResult<T>` for endpoints with multiple response types
 - Accept `CancellationToken` on all async endpoints
 

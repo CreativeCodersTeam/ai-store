@@ -6,7 +6,7 @@ target for which no dedicated checklist exists yet (see the selection rule in St
 
 ## Language Idioms
 
-- **Primary constructors** — prefer over redundant private fields when the parameter is used directly. Flag: legacy `ctor + private readonly field` pattern in new code.
+- **Primary constructors** — parameters only stored and used → primary constructor, no mirror fields; `readonly` guarantee or guard clause needed → assignment to a `private readonly` field or classic ctor, per project style; multiple constructors or construction logic → classic ctor (rule home: `dotnet-fundamentals`, `references/modern-patterns.md`). Flag: `ctor + private readonly field` in new code without readonly/guard justification or multiple constructors; a parameter both assigned to a field and used directly (double capture).
 - **Collection expressions** — `[1, 2, 3]` over `new[] { 1, 2, 3 }` and `new List<int> { 1, 2, 3 }`. Flag: verbose collection initialization.
 - **Required members** — `required` modifier replaces hand-rolled validation in constructors. Flag: throws in constructor for missing init-only properties.
 - **`field` keyword** — auto-property backing-field access (preview in 9, stable in 10). Flag: unnecessary backing field declarations.

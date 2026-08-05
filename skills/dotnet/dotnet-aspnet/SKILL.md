@@ -12,6 +12,7 @@ description: Use when building or changing ASP.NET Core Web/REST APIs — contro
 - Adding authentication, authorization policies, or `[Authorize]`-based access control
 - Implementing error handling with `ProblemDetails` (RFC 9457) or `IExceptionHandler`
 - Wiring up OpenAPI/Swagger, health checks, CORS, rate limiting, output caching, or response compression
+- Writing in-memory integration tests for endpoints via `WebApplicationFactory` (`Microsoft.AspNetCore.Mvc.Testing`)
 - Reviewing or restructuring an existing ASP.NET Core project to align with best practices
 
 This skill covers the **HTTP / web layer only**. For dependency injection, Options pattern, and configuration that apply to any .NET host, see [`dotnet-fundamentals`](../dotnet-fundamentals/SKILL.md).
@@ -34,6 +35,7 @@ Detailed patterns and code samples live in `references/`:
 - **[auth.md](references/auth.md)** — JWT Bearer, authorization policies, `IAuthorizationHandler`, `RequireAuthorization`
 - **[error-handling.md](references/error-handling.md)** — ProblemDetails, `IExceptionHandler` (since .NET 8), `UseStatusCodePages`
 - **[openapi-and-cross-cutting.md](references/openapi-and-cross-cutting.md)** — OpenAPI/Swagger, XML doc generation, health checks (liveness/readiness), CORS, rate limiting, output caching, response compression
+- **[testing.md](references/testing.md)** — In-memory integration tests: `WebApplicationFactory`, service overrides via `ConfigureTestServices`, test auth scheme, database/external-dependency swaps
 
 ## Related Skills
 
@@ -41,5 +43,6 @@ Detailed patterns and code samples live in `references/`:
 - **[dotnet-ef-core](../dotnet-ef-core/SKILL.md)** — Data access with Entity Framework Core, wired in via DI
 - **[dotnet-xmldocs](../dotnet-xmldocs/SKILL.md)** — XML documentation comments (feed OpenAPI output)
 - **[dotnet-nuget-manager](../dotnet-nuget-manager/SKILL.md)** — Use when adding the health-check, resilience, or middleware packages shown in these references
+- **[dotnet-tester](../dotnet-tester/SKILL.md)** — Unit-test workflow and conventions (xUnit, AwesomeAssertions); integration tests in [references/testing.md](references/testing.md) follow the same conventions
 
 The full skill overview lives in the `dotnet` router skill.

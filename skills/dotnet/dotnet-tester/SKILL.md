@@ -1,6 +1,6 @@
 ---
 name: dotnet-tester
-description: Use when creating unit tests, adding tests, or improving test coverage for C#/.NET code, when new production code lacks tests, or when an existing suite is missing edge cases or error paths — projects using xUnit, FakeItEasy, AwesomeAssertions, FluentAssertions, NUnit, MSTest, or Moq. Not for non-.NET code or integration tests that only exercise external systems.
+description: Use when creating unit tests, adding tests, or improving test coverage for C#/.NET code, when new production code lacks tests, or when an existing suite is missing edge cases or error paths — projects using xUnit, FakeItEasy, AwesomeAssertions, FluentAssertions, NUnit, MSTest, or Moq. Also for in-process ASP.NET Core integration tests (WebApplicationFactory) — run this workflow with the patterns from dotnet-aspnet references/testing.md. Not for non-.NET code or tests that only exercise external systems.
 ---
 
 # .NET Tester
@@ -13,8 +13,9 @@ Write comprehensive unit tests for the specified code. Follow a multi-step proce
 - New C#/.NET production code lacks tests and needs them
 - An existing test suite is missing edge cases or error-path coverage
 - Working in a C# project that uses xUnit, FakeItEasy, AwesomeAssertions/FluentAssertions, NUnit, MSTest, or Moq
+- In-process ASP.NET Core integration tests (`WebApplicationFactory`): the phases below apply unchanged; the domain patterns (custom factory, `ConfigureTestServices`, test auth scheme, provider swaps) are owned by the `dotnet-aspnet` skill, [references/testing.md](../dotnet-aspnet/references/testing.md) — read it before writing integration tests
 
-Do **not** use this skill for non-.NET test code, or for integration tests that primarily exercise external systems without unit-level concerns.
+Do **not** use this skill for non-.NET test code, or for tests that only exercise external systems (a deployed API, a shared staging database) — those belong to end-to-end suites outside this skill.
 
 ## Conventions
 

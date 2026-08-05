@@ -32,7 +32,7 @@ orientation, not an intermediate step.
 | Concern | Skill |
 |---------|-------|
 | Generate a .NET SDK / client library / typed HTTP client | `dotnet-sdk-builder` |
-| Write/run unit tests (xUnit, FakeItEasy, AwesomeAssertions) | `dotnet-tester` |
+| Write/run unit or in-process integration tests (xUnit, FakeItEasy, AwesomeAssertions, WebApplicationFactory) | `dotnet-tester` |
 | Structured code review of a .NET project (explicit invocation only, see below) | `dotnet-reviewer` |
 | Query .NET APIs in NuGet packages, platform libraries, or local files | `dotnet-inspect` |
 | Manage NuGet packages (add/remove/update, `--outdated`, Central Package Management) | `dotnet-nuget-manager` |
