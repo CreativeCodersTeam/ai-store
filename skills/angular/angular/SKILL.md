@@ -51,7 +51,10 @@ orientation, not an intermediate step.
   in its phases. The skills in the tables above are used directly only for pure
   knowledge/how-to questions, or for narrowly scoped tasks the user names
   explicitly (write tests for X, document X, bump package Y, generate a
-  library/SDK, run an angular review).
+  library/SDK, run an angular review). `angular-dev` is **interactive-only** —
+  it has no non-interactive mode and stops after Phase 1 when no user is
+  reachable (see its *Precondition — Interactive User Required*). Do not route
+  a headless or sub-agent run into it.
 - **`angular-reviewer` activates only on explicit name** — the phrases
   `angular-reviewer`, `angular code review`, or `angular review`. It does **not**
   trigger on generic "review my code", and the router does not trigger it
@@ -62,6 +65,11 @@ orientation, not an intermediate step.
 - **`angular-state` vs. `angular-rxjs`:** choosing the state approach and
   designing stores is `angular-state`; writing or fixing the streams themselves
   (operators, error handling, interop, stream tests) is `angular-rxjs`.
-- **Version baseline:** these skills are written against Angular 21;
-  version-specific statements name the major where the feature changed.
-  `angular-reviewer` supports Angular 17+.
+- **Version baseline:** the target version resolves explicit user directive → repo
+  directive (installed `@angular/core`, then `package.json`) → latest stable,
+  resolved at runtime with `npm view @angular/core dist-tags.latest`. The rule is
+  canonical in
+  [`angular-fundamentals/references/angular-version.md`](../angular-fundamentals/references/angular-version.md);
+  no skill hardcodes a version of its own. These skills' examples are written
+  against **Angular 21**, which is also the offline fallback; version-specific
+  statements name the major where the feature changed and never select a target.

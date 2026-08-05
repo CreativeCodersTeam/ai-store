@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 set -u
 TEST_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SKILL_DIR="${SKILL_DIR:-$(cd "$TEST_DIR/../.." && pwd)}"
-FIX="$SKILL_DIR/tests/fixtures"
+TESTS_DIR="${TESTS_DIR:-$(cd "$TEST_DIR/.." && pwd)}"
+SKILL_DIR="${SKILL_DIR:-$(cd "$TESTS_DIR/../../dotnet-reviewer" && pwd)}"
+FIX="$TESTS_DIR/fixtures"
 SCRIPT="$SKILL_DIR/scripts/run-checks.sh"
-MOCK="$SKILL_DIR/tests/unit/mock-dotnet/dotnet"
-source "$SKILL_DIR/tests/helpers.sh"
+MOCK="$TESTS_DIR/unit/mock-dotnet/dotnet"
+source "$TESTS_DIR/helpers.sh"
 
 run_with_mode() {
   local mode=$1; shift

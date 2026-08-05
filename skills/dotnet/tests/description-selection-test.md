@@ -61,3 +61,55 @@ Scenario 1c — **fixed.** Verbatim:
 
 All 10 rewritten descriptions pass. No REFACTOR round needed. Re-run this test
 whenever a description under `skills/dotnet/` changes.
+
+---
+
+## Re-Run 2026-08-02 (Finding N-2)
+
+Re-run for the `dotnet-fundamentals` description change fixing Finding N-2 in
+`docs/analysis/2026-08-02-dotnet-skills-review.md`: the frontmatter description
+listed only the topical triggers (DI, Options, configuration, idioms) and did
+not carry the baseline role that the SKILL.md body states (the verified F-1
+wording, see `fundamentals-facts-test.md`) — risking undertriggering on plain
+C# production-code tasks with no DI/Options keyword.
+
+**Change:** two sentences appended to the description, mirroring the F-1 body
+wording: "Also use as the baseline whenever any C# production code is written
+or modified — dotnet-aspnet, dotnet-ef-core, and dotnet-sdk-builder build on
+it; load it alongside them, not instead of them."
+
+**Method:** same probe as above (fresh subagent, only the 11 `name:
+description` pairs, no file access), scenarios 1–8 unchanged (single choice),
+plus a new scenario probing exactly the N-2 gap:
+
+| # | Request | Rule | Expected |
+|---|---|---|---|
+| 9 | "Add a PriceCalculator class with business logic to my console app" | list every licensed skill with citation | `dotnet-fundamentals` licensed (alongside `dotnet-dev`) |
+
+**RED — old description:** Scenarios 1–8 safe (7 → `dotnet-fundamentals`; the
+reviewer did not activate on scenario 2 — the agent chose the router instead of
+"none", which preserves the guarded property). Scenario 9 — **failure
+confirmed**, verbatim:
+
+> **dotnet-fundamentals is NOT among them.** … A plain "add a class" request
+> matches no fragment of that description.
+
+Only `dotnet-dev` was licensed; the baseline knowledge skill would not have
+been loaded for its core case.
+
+**GREEN — new description:** Scenarios 1–8: **8/8 correct**, scenario 2 now
+exactly "none"; `dotnet-fundamentals` still wins only scenario 7 — the
+appended baseline clause did not turn it into a catch-all magnet (the
+"alongside them, not instead of them" phrasing keeps it out of single-choice
+wins). Scenario 9 — **fixed**, verbatim:
+
+> **dotnet-fundamentals** — **yes, it is among them.** … Adding a
+> PriceCalculator class writes C# production code, so this baseline clause
+> licenses loading it regardless of whether DI/configuration/idioms are
+> explicitly requested.
+
+## Result (Re-Run)
+
+N-2 fixed and verified; no REFACTOR round needed (the rollback criterion —
+fundamentals winning a foreign single-choice scenario — did not trigger).
+Scenario 9 is now part of this test's scenario set for future re-runs.

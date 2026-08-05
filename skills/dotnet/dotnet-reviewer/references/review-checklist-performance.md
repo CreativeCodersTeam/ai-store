@@ -5,7 +5,7 @@
 - No `.Result`, `.Wait()`, `GetAwaiter().GetResult()` in async code paths.
 - `async void` only on event handlers.
 - `Task.Run` not used to "fake async" over CPU-bound work that already runs on a worker thread (e.g., inside an existing async pipeline).
-- `ConfigureAwait(false)` on library code (not application code in modern ASP.NET).
+- `ConfigureAwait(false)` on library code — in GUI apps (WPF/MAUI/Avalonia) also on awaits whose continuation does not touch the UI; not needed in modern ASP.NET application code — rationale in the `dotnet-fundamentals` skill (modern-patterns.md).
 - `ValueTask` for hot paths that frequently complete synchronously; do not consume `ValueTask` more than once.
 - `IAsyncEnumerable<T>` for streaming; flag `List<T>` accumulation when callers can stream.
 
@@ -26,7 +26,7 @@
 
 ## EF Core
 
-See the `dotnet-ef-core` skill (Performance section) for the full list of EF Core performance pitfalls. Reviewer-specific hook: flag any new query against a `DbContext` that is missing `.AsNoTracking()` on a read-only path, that calls `.ToList()` before a filter, or that uses `foreach` to iterate parent entities while issuing per-row child queries (N+1).
+See the `dotnet-ef-core` skill for the full list of EF Core performance pitfalls — `references/querying-and-performance.md` (N+1, cartesian explosion, projection, compiled queries, pagination) and `references/change-tracking.md` (tracking on write paths only, one `SaveChanges` per unit of work). Reviewer-specific hook: flag any new query against a `DbContext` that is missing `.AsNoTracking()` on a read-only path, that calls `.ToList()` before a filter, or that uses `foreach` to iterate parent entities while issuing per-row child queries (N+1).
 
 ## Hot-Path Heuristics
 

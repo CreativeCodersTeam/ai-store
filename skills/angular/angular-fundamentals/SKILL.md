@@ -26,6 +26,7 @@ description: Use when registering providers in an Angular app or library (provid
 
 ## Reference Index
 
+- **[angular-version.md](references/angular-version.md)** — the version resolution cascade (explicit user directive → repo directive → latest stable, resolved at runtime); canonical for the whole Angular family
 - **[dependency-injection.md](references/dependency-injection.md)** — provider scopes, `providedIn`, `InjectionToken`/abstract-class tokens, `inject()`, multi providers, anti-service-locator
 - **[typed-configuration.md](references/typed-configuration.md)** — typed configuration objects, `provideXxx(config)` library APIs, validation at bootstrap, environment- vs runtime-loaded config
 - **[configuration.md](references/configuration.md)** — `environment.ts` files, build-time `fileReplacements`, runtime config from `assets/config.json`, and why front-end apps have no real secrets

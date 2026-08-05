@@ -51,7 +51,8 @@ The library's `package.json` declares Angular/RxJS as **peer** dependencies (so 
 ### Peer version resolution
 
 Resolve every peer version (`@angular/*` and `rxjs` alike) at generation time — never copy fixed
-numbers from this template:
+numbers from this template. Apply the cascade in
+[angular-version.md](../../angular-fundamentals/references/angular-version.md):
 
 1. A version the user explicitly requested wins.
 2. Otherwise use the version installed in the target workspace: the Angular major already detected

@@ -15,7 +15,7 @@ Always ask the user for confirmation before creating a new project if not explic
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
@@ -30,13 +30,15 @@ Always ask the user for confirmation before creating a new project if not explic
 > **Packages are NOT part of the template.** Add the required packages (`Microsoft.Extensions.Http`, `Microsoft.Extensions.Options`, `Microsoft.Extensions.DependencyInjection.Abstractions`) afterwards via the `dotnet-nuget-manager` skill (Step 7 of the workflow) — never as literal template entries and never with floating `Version="*"`: wildcards defeat version pinning, and under Central Package Management any `Version` attribute on a `PackageReference` is a restore error (NU1008).
 
 **Key settings:**
-- `<Nullable>enable</Nullable>` — always for new projects when .NET version supports it.
+- `<Nullable>enable</Nullable>` — always for new projects (available since C# 8 / .NET Core 3.0, so on every target this skill generates for).
 - `<GenerateDocumentationFile>true</GenerateDocumentationFile>` — required for XML doc generation.
 - `<NoWarn>CS1591</NoWarn>` — suppress "missing XML comment" warnings during development; remove after `dotnet-xmldocs` skill adds all docs.
 - `<TreatWarningsAsErrors>true</TreatWarningsAsErrors>` — enforces code quality.
 - `<LangVersion>latest</LangVersion>` — enables the latest C# features for the target framework.
 
-Replace `net9.0` with the .NET version determined in Step 2 of the workflow.
+`net10.0` in the template is the latest-LTS fallback, not a fixed value — replace it with whatever
+Step 2 resolved via the cascade in
+[target-framework.md](../../dotnet-fundamentals/references/target-framework.md).
 
 ## Folder Structure
 
@@ -103,7 +105,7 @@ Do **not** change the `.csproj` setting — this would affect all existing files
 
 ## Global Usings (Optional)
 
-For .NET 6+, a `GlobalUsings.cs` file reduces boilerplate in every source file:
+A `GlobalUsings.cs` file (since .NET 6) reduces boilerplate in every source file:
 
 ```csharp
 global using System.Net;

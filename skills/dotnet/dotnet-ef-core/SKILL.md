@@ -13,95 +13,39 @@ description: Use when designing a DbContext, entities, or relationships, writing
 - Implementing concurrency control, repository patterns, or change tracking strategies
 - Setting up EF Core tests with SQLite in-memory or Testcontainers
 
-## Data Context Design
+## Core Principles
 
-- Keep DbContext classes focused and cohesive
-- Use constructor injection for configuration options
-- Override OnModelCreating for fluent API configuration
-- Separate entity configurations using IEntityTypeConfiguration
-- Consider using DbContextFactory pattern for console apps or tests
+The non-negotiables. Each is stated in full, with the reasoning and the edge cases, in the reference
+named beside it — load that file when the work touches its area.
 
-## Entity Design
+- **A `DbContext` is scoped and not thread-safe** — one instance per request or per `IServiceScope`; never shared across concurrent operations. When the consumer outlives a scope (Blazor Server, singletons, background loops), take a context per operation from `AddDbContextFactory<T>` or `IServiceScopeFactory`. → [model-design.md](references/model-design.md)
+- **Mapping lives in the fluent API**, in `IEntityTypeConfiguration<T>` classes — keys, indexes, column types, relationships. EF attributes stay off domain entities, and no property is configured by both an attribute and the fluent API. → [model-design.md](references/model-design.md)
+- **Set delete behaviour explicitly** on every relationship. Convention gives required relationships `Cascade`, so one left unconfigured silently takes its children with it. → [model-design.md](references/model-design.md)
+- **Never let an `IQueryable` escape the data-access layer** — no public member returns `IQueryable<T>`; materialize at the boundary and return a list or a DTO. Share filters as internal `Expression<Func<T, bool>>` constants rather than by exposing the query. → [querying-and-performance.md](references/querying-and-performance.md)
+- **Do not dereference a navigation inside a loop over parents.** With lazy loading that is one query per parent (N+1). Without it, a collection navigation may be partly filled by change-tracker fixup, so the loop computes a silently wrong total instead of failing. Fix by pushing the aggregate into SQL, or `Include` when the entities themselves are needed. → [querying-and-performance.md](references/querying-and-performance.md)
+- **Track only on write paths** — `AsNoTracking()` on read paths, or a `Select` projection where the entity itself is not needed. → [change-tracking.md](references/change-tracking.md), [querying-and-performance.md](references/querying-and-performance.md)
+- **One `SaveChanges()` per unit of work.** On a relational provider it is already atomic, so do not wrap a single save in an explicit transaction. Atomicity is not isolation — a read-then-write still needs the concurrency token below. → [change-tracking.md](references/change-tracking.md), [transactions.md](references/transactions.md)
+- **Add a concurrency token wherever two users can edit the same row**; without one the second save silently overwrites the first. → [concurrency-control.md](references/concurrency-control.md)
+- **Review every migration as generated SQL before it reaches production** (`dotnet ef migrations script --idempotent`), and never edit one already applied anywhere but your own machine. → [migrations.md](references/migrations.md)
+- **The application's database account has no DDL rights** — so no `Database.Migrate()` or `EnsureCreated()` at startup (apply migrations as a deployment step instead), and grants live in ops scripts, not migrations. → [security.md](references/security.md), [migrations.md](references/migrations.md)
+- **Raw SQL only parameterized** — `FromSqlInterpolated`, or `FromSqlRaw` with `{0}` placeholders. `FromSqlRaw($"…{userInput}")` is SQL injection. → [security.md](references/security.md)
+- **Never the In-Memory provider for tests** — it is not a relational store, so queries run as LINQ-to-Objects and expressions a real provider cannot translate pass anyway; foreign keys, unique indexes, and check constraints go unenforced. Use SQLite in-memory for speed, Testcontainers for fidelity. → [testing.md](references/testing.md)
 
-- Default to surrogate keys (`int`/`Guid` `Id`); use a natural key only when it is immutable and unique by domain rule (e.g. an ISO country code)
-- Implement proper relationships (one-to-one, one-to-many, many-to-many)
-- Use data annotations or fluent API for constraints and validations
-- Add navigation properties only for relationships the code actually traverses — every navigation invites an `Include()` and widens the change-tracking graph
-- Consider using owned entity types for value objects
+## Reference Index
 
-## Performance
-
-- Use AsNoTracking() for read-only queries
-- Paginate large result sets with `Skip()`/`Take()` — always paired with a deterministic `OrderBy` (unique key as tie-breaker, e.g. `.OrderBy(p => p.Name).ThenBy(p => p.Id)`); for large offsets prefer keyset pagination over the sort key (Id-ordered list: `.Where(p => p.Id > lastSeenId).OrderBy(p => p.Id).Take(n)`; composite sorts need a composite predicate)
-- Use Include() to eager load related entities when needed
-- Consider projection (Select) to retrieve only required fields
-- Use compiled queries for frequently executed queries
-- Avoid N+1 query problems by properly including related data
-
-## Migrations
-
-- Create small, focused migrations
-- Name migrations descriptively
-- Verify migration SQL scripts before applying to production
-- Consider using migration bundles for deployment
-- Add data seeding through migrations when appropriate
-
-## Querying
-
-- Use IQueryable judiciously and understand when queries execute
-- Prefer strongly-typed LINQ queries over raw SQL
-- Push filtering, ordering, and grouping into the database — apply `Where`/`OrderBy`/`GroupBy` before materialization; do not call `ToList()` and then filter in memory (if a predicate is untranslatable, restructure the query instead of materializing early)
-- Consider database functions for complex operations
-- Implement specifications pattern for reusable queries
-
-## Change Tracking & Saving
-
-- Track entities only on write paths; use `AsNoTracking()` for read paths and `AsNoTrackingWithIdentityResolution()` when the same entity may appear multiple times in the result graph
-- Accumulate related changes and call `SaveChanges()` once per unit of work — not once per entity, and never concurrently on the same `DbContext` (it is not thread-safe). Deliberate exception: very large bulk operations may save in chunks of N entities (with `ChangeTracker.Clear()` between chunks), wrapped in an explicit transaction if atomicity matters
-- Implement concurrency control for multi-user scenarios (see below)
-- Consider using transactions for multiple operations
-- Use appropriate DbContext lifetimes (scoped for web apps)
-
-### Concurrency Control
-
-See [concurrency-control.md](./references/concurrency-control.md) for `[Timestamp]`, `[ConcurrencyCheck]`, fluent API configuration, and `DbUpdateConcurrencyException` handling patterns.
-
-## Security
-
-- Use parameterized queries to prevent SQL injection
-- Run the application under a least-privilege database account — no DDL rights for the app user; migrations run under a separate, privileged deployment identity
-- Raw SQL only via `FromSqlInterpolated` (EF Core 7+: `FromSql`) or `FromSqlRaw` with `{0}`-placeholders plus parameter arguments — never string concatenation; `FromSqlRaw($"…{userInput}")` is SQL injection
-- Consider data encryption for sensitive information
-- Use migrations to manage database user permissions
-
-## Testing
-
-- Avoid the EF Core In-Memory provider for tests — it does not enforce constraints, referential integrity, or transactions, so tests can pass while real database behavior fails
-- Use **SQLite in-memory mode** for lightweight unit and integration tests that need realistic SQL semantics:
-  ```csharp
-  var connection = new SqliteConnection("DataSource=:memory:");
-  connection.Open();
-  var options = new DbContextOptionsBuilder<AppDbContext>()
-      .UseSqlite(connection)
-      .Options;
-  ```
-- Use **Testcontainers** for integration tests that must match production database behavior (e.g., PostgreSQL, SQL Server):
-  ```csharp
-  var container = new PostgreSqlBuilder().Build();
-  await container.StartAsync();
-  var options = new DbContextOptionsBuilder<AppDbContext>()
-      .UseNpgsql(container.GetConnectionString())
-      .Options;
-  ```
-- Mock DbContext and DbSet only for pure unit tests that do not execute queries
-- Test migrations in isolated environments
-- Consider snapshot testing for model changes
-- Use the `dotnet-tester` skill for generating unit and integration tests after schema changes
+- **[model-design.md](references/model-design.md)** — `DbContext` scope and registration, `IEntityTypeConfiguration`, keys, foreign keys and delete behaviour, navigations, owned types vs. `ComplexProperty`
+- **[querying-and-performance.md](references/querying-and-performance.md)** — materializing at the boundary, LINQ vs. raw SQL, `EF.Functions`, the specifications pattern, pagination, N+1, cartesian explosion and `AsSplitQuery`, projections, compiled queries
+- **[change-tracking.md](references/change-tracking.md)** — tracking on write paths, unit of work and `SaveChanges`, when a concurrency token is required
+- **[concurrency-control.md](references/concurrency-control.md)** — `[Timestamp]`, `[ConcurrencyCheck]`, provider-specific row-version types, `DbUpdateConcurrencyException` handling
+- **[transactions.md](references/transactions.md)** — when an explicit transaction is actually required, the retrying-execution-strategy rule, sharing a transaction across contexts, `TransactionScope` caveats
+- **[migrations.md](references/migrations.md)** — naming, never editing an applied migration, reviewing the SQL, concurrent index builds, deployment via bundles, seeding
+- **[security.md](references/security.md)** — least-privilege database accounts, raw-SQL parameterization, column encryption and what TDE does not cover, grant management
+- **[testing.md](references/testing.md)** — SQLite in-memory vs. Testcontainers, why not to mock `DbSet`, migration testing in CI, model-drift detection
 
 ## Related Skills
 
 - **[dotnet-fundamentals](../dotnet-fundamentals/SKILL.md)** — DI lifetimes for `DbContext`, Options pattern for connection strings, modern C# idioms used in entity types
-- **[dotnet-tester](../dotnet-tester/SKILL.md)** — Use for DbContext-backed unit and integration tests (SQLite in-memory, Testcontainers; see Testing section)
+- **[dotnet-tester](../dotnet-tester/SKILL.md)** — Use for DbContext-backed unit and integration tests (SQLite in-memory, Testcontainers; see [testing.md](references/testing.md))
 - **[dotnet-nuget-manager](../dotnet-nuget-manager/SKILL.md)** — Use when adding EF Core providers, Testcontainers, or SQLite packages
 
 The full skill overview lives in the `dotnet` router skill.

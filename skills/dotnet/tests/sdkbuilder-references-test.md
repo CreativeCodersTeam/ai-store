@@ -67,3 +67,12 @@ Template, workflow, and delegated skill agree; the prose matches the API; the
 documented diagnostic property is populated in the canonical path. No REFACTOR
 round needed. Re-run this probe whenever the template, the typed-client
 opening prose, or the exception-mapping example changes.
+
+## Amendment — 2026-08-03 (template TFM)
+
+The verification above cites "target-typed conditional under net9.0" — the TFM
+the template carried at the time. The template now scaffolds `net10.0` as the
+latest-LTS fallback and Step 2 resolves the real value via the cascade in
+`dotnet-fundamentals/references/target-framework.md`. The verified language
+constructs are unaffected (all are available on net9.0 and later), so the
+probe was not re-run. See `version-cascade-test.md`.

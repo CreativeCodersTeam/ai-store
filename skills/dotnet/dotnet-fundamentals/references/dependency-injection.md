@@ -29,7 +29,7 @@ var host = builder.Build();
 
 Both ASP.NET Core and `Host.CreateApplicationBuilder` enable scope validation (`ValidateScopes` / `ValidateOnBuild`) by default in the Development environment. Only a bare `new HostBuilder()` (or a custom service-provider factory) applies no defaults — there, enable it explicitly via `UseDefaultServiceProvider` / `ServiceProviderOptions`.
 
-## Keyed Services (.NET 8+)
+## Keyed Services (since .NET 8)
 
 Use keyed services when multiple implementations of the same interface need to coexist and be selected by key:
 
@@ -76,3 +76,5 @@ public static class MyFeatureServiceCollectionExtensions
     }
 }
 ```
+
+> **SDK libraries deviate deliberately:** when consumers configure options via an `Action<TOptions>` delegate in `AddXxx(...)` — the shape `dotnet-sdk-builder` generates — `required`/`init` options do not fit (a configure delegate cannot satisfy `required` members or assign `init` setters), and the delegate replaces `BindConfiguration` as the configuration source. See the documented deviation in `dotnet-sdk-builder` (`references/di-patterns.md`): mutable properties + `IValidateOptions<T>` + `ValidateOnStart()`.

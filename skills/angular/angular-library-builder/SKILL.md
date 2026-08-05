@@ -96,7 +96,7 @@ Generate all components. See [di-patterns.md](references/di-patterns.md) and [ht
 | Model types | Request/response DTO interfaces/types |
 | Public API (`public-api.ts`) | Barrel exporting only the intended public surface |
 
-**Peer dependencies (not direct deps):** `@angular/core`, `@angular/common` (for `HttpClient`), and `rxjs`. All peer version ranges (Angular and rxjs) are resolved at generation time (user-specified > workspace version > latest stable) — see [project-setup.md](references/project-setup.md); never hardcode template versions. Declare them by editing the **library's own** `projects/<lib>/package.json` directly — a library's peer dependencies are part of the published artifact and are maintained by hand (npm has no `--save-peer`). Use the `angular-package-manager` skill for packages that must be **installed** in the workspace (root `package.json` + lockfile); never hand-edit that one.
+**Peer dependencies (not direct deps):** `@angular/core`, `@angular/common` (for `HttpClient`), and `rxjs`. All peer version ranges (Angular and rxjs) are resolved at generation time via the cascade in [angular-version.md](../angular-fundamentals/references/angular-version.md) (explicit user directive → repo directive → latest stable) — see also [project-setup.md](references/project-setup.md); never hardcode template versions. Declare them by editing the **library's own** `projects/<lib>/package.json` directly — a library's peer dependencies are part of the published artifact and are maintained by hand (npm has no `--save-peer`). Use the `angular-package-manager` skill for packages that must be **installed** in the workspace (root `package.json` + lockfile); never hand-edit that one.
 
 ### Step 8: Document the Code
 

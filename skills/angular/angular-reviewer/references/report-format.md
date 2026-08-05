@@ -17,7 +17,8 @@ Never overwrite — append `-2`, `-3`, … on collision. Never auto-commit.
 
 **Date:** YYYY-MM-DD
 **Mode:** uncommitted | branch (vs. main)
-**Detected Angular:** 17.x | 18.x | …
+**Detected Angular:** 21.x | 19.x | …
+**Version origin:** repo:package.json | user | default-latest | unknown (malformed <file>)
 **Workspace projects:** app, my-lib, …
 **Tools run:** build=Y/N · lint=Y/N · test=Y/N
 **Exclusions:** .gitignore, *.min.js, dist/**, package-lock.json

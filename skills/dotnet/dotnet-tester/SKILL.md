@@ -1,6 +1,6 @@
 ---
 name: dotnet-tester
-description: Use when creating unit tests, adding tests, or improving test coverage for C#/.NET code, when new production code lacks tests, or when an existing suite is missing edge cases or error paths — projects using xUnit, FakeItEasy, AwesomeAssertions, FluentAssertions, NUnit, MSTest, or Moq. Not for non-.NET code or integration tests that only exercise external systems.
+description: Use when creating unit tests, adding tests, or improving test coverage for C#/.NET code, when new production code lacks tests, or when an existing suite is missing edge cases or error paths — projects using xUnit, FakeItEasy, AwesomeAssertions, FluentAssertions, NUnit, MSTest, or Moq. Also for in-process ASP.NET Core integration tests (WebApplicationFactory) — run this workflow with the patterns from dotnet-aspnet references/testing.md. Not for non-.NET code or tests that only exercise external systems.
 ---
 
 # .NET Tester
@@ -13,8 +13,9 @@ Write comprehensive unit tests for the specified code. Follow a multi-step proce
 - New C#/.NET production code lacks tests and needs them
 - An existing test suite is missing edge cases or error-path coverage
 - Working in a C# project that uses xUnit, FakeItEasy, AwesomeAssertions/FluentAssertions, NUnit, MSTest, or Moq
+- In-process ASP.NET Core integration tests (`WebApplicationFactory`): the phases below apply unchanged; the domain patterns (custom factory, `ConfigureTestServices`, test auth scheme, provider swaps) are owned by the `dotnet-aspnet` skill, [references/testing.md](../dotnet-aspnet/references/testing.md) — read it before writing integration tests
 
-Do **not** use this skill for non-.NET test code, or for integration tests that primarily exercise external systems without unit-level concerns.
+Do **not** use this skill for non-.NET test code, or for tests that only exercise external systems (a deployed API, a shared staging database) — those belong to end-to-end suites outside this skill.
 
 ## Conventions
 
@@ -37,7 +38,7 @@ Do **not** use this skill for non-.NET test code, or for integration tests that 
 
    **No test project found → create one.** Its absence is never a reason to skip testing:
    1. Name it `<ProductionProject>.Tests`. Place it where the solution keeps tests (`tests/` folder if one exists, otherwise as a sibling of the production project), matching the production project's target framework.
-   2. `dotnet new xunit -o <path> -f <tfm>` — pass the production project's target framework explicitly (the template otherwise defaults to the SDK's latest TFM); the template already references xUnit. Delete the generated `UnitTest1.cs`.
+   2. `dotnet new xunit -o <path> -f <tfm>` — pass the production project's target framework explicitly (the template otherwise defaults to the SDK's latest TFM); the template already references xUnit. Delete the generated `UnitTest1.cs`. If no production TFM is resolvable (malformed or missing `.csproj`), fall through the cascade in [target-framework.md](../dotnet-fundamentals/references/target-framework.md) — repo directive, then latest LTS — and say which `<tfm>` was used and why.
    3. `dotnet sln add <path>/<ProductionProject>.Tests.csproj` — without this, solution-level `dotnet test` silently runs nothing.
    4. `dotnet add <test.csproj> reference <production.csproj>`
    5. Add **FakeItEasy** and **AwesomeAssertions** via the `dotnet-nuget-manager` skill — never by editing the `.csproj` directly. Install `AwesomeAssertions`, NOT `FluentAssertions` — the API is identical, but FluentAssertions v8+ carries a commercial license.
@@ -191,6 +192,7 @@ At the end, provide a summary:
 
 ## Related Skills
 
+- **[dotnet-fundamentals](../dotnet-fundamentals/SKILL.md)** — Modern C# idioms apply to test code too: `CancellationToken` handling in async tests, `required`/`init` properties in fixtures and test-data builders
 - **[dotnet-ef-core](../dotnet-ef-core/SKILL.md)** — DbContext-backed test patterns (SQLite in-memory, Testcontainers)
 - **[dotnet-sdk-builder](../dotnet-sdk-builder/SKILL.md)** — Invoked by it in Step 9 to generate tests for new SDK libraries
 

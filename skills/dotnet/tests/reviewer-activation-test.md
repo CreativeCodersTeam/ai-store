@@ -63,3 +63,15 @@ Contract is now self-describing in the skill it governs and consistent across
 all three locations; the dotnet-dev Phase 5 invocation is explicitly
 legitimized end-to-end. Re-run this probe whenever the reviewer description,
 its "When to Use" section, or the router note changes.
+
+## Amendment — 2026-08-03 (version gate removed)
+
+The ".NET 10+ as a Step 2 gate" clause recorded above no longer describes the
+skill. Closing Finding K-1 removed the gate entirely: Step 2 now detects the
+version to *select a checklist*, and `dotnet-reviewer` reviews a project at
+whatever version it targets. The three activation sources were re-aligned
+accordingly (frontmatter, "When to Use", router row) and still agree — the
+trigger and exclusion sets are unchanged, only the version qualifier is gone.
+The activation contract this artifact tests is otherwise intact; see
+`version-cascade-test.md` for the gate removal itself. The probe above was not
+re-run, because no trigger or exclusion changed.

@@ -1,11 +1,11 @@
 ---
 name: dotnet-reviewer
-description: Use only when explicitly requested by name — "dotnet-reviewer", "dotnet code review", or "dotnet review" — or when invoked by the dotnet-dev workflow (Phase 5), for a structured code review of a .NET 10+ project (uncommitted working-tree changes or current feature branch vs. main). Must NOT activate on generic "review my code" requests; other-language reviewers must not be hijacked.
+description: Use only when explicitly requested by name — "dotnet-reviewer", "dotnet code review", or "dotnet review" — or when invoked by the dotnet-dev workflow (Phase 5), for a structured code review of a .NET / C# project (uncommitted working-tree changes or current feature branch vs. main). Must NOT activate on generic "review my code" requests; other-language reviewers must not be hijacked.
 ---
 
 # dotnet-reviewer
 
-Structured code review for .NET 10+ projects.
+Structured code review for .NET / C# projects, at whatever version the repo targets.
 
 ## When to Use This Skill
 
@@ -14,14 +14,14 @@ Activate **only** on explicit invocation:
 - The user requests it by name — the phrases `dotnet-reviewer`, `dotnet code review`, or `dotnet review`.
 - The `dotnet-dev` workflow invokes it in its Phase 5 — this counts as explicit invocation.
 
-Must NOT activate on generic "review my code" requests; other-language reviewers must not be hijacked. The target is a .NET 10+ project (enforced in Step 2).
+Must NOT activate on generic "review my code" requests; other-language reviewers must not be hijacked. The target is a .NET / C# project; its version is detected in Step 2 and drives checklist selection — it is not an entry gate.
 
 The user may add language preferences (e.g., "in German") — apply that to the report only. The skill itself remains in English.
 
 ## Prerequisites
 
 - `git` repo with `main` branch (for branch mode).
-- `dotnet ≥ 10` SDK if any of build/format/test will run.
+- A `dotnet` SDK able to build the repo's target framework, if any of build/format/test will run — the version the repo pins, otherwise the latest LTS (see [target-framework.md](../dotnet-fundamentals/references/target-framework.md)). If the SDK cannot build the target, `run-checks.sh` reports the failure inside its JSON and the review continues without tool findings.
 - `bash` 3.2+ available (macOS default works).
 - `python3` available (used by scripts for safe JSON encoding).
 
@@ -45,10 +45,17 @@ Three parameters drive the review:
 
 Run `scripts/detect-dotnet-version.sh --repo-root <repo>`.
 
-- Exit 0: parse JSON `{sdk, target_frameworks, project_files}`. Pick the highest `net<N>.0` from `target_frameworks` to drive checklist selection.
-- Exit 4 (SDK < 10 or none): abort. Tell the user "this skill targets .NET 10+; detected `<X>`."
-- Exit 5 (malformed): show offending file. Ask the user whether to proceed without version-awareness. If yes, fall back to general checklists only.
+The detected version selects a checklist — it is **not** a gate. This skill reviews a project at
+whatever version it targets, following the cascade in
+[target-framework.md](../dotnet-fundamentals/references/target-framework.md).
+
+- Exit 0: parse JSON `{sdk, target_frameworks, project_files, resolved_from}`. Pick the highest `net<N>.0` from `target_frameworks` to drive checklist selection. Carry `resolved_from` into the report's `Version origin:` line (`repo:<file>`). If `target_frameworks` is empty (`resolved_from` is `global.json`), derive the major from `sdk`.
+- Exit 4 (no `*.csproj` and no `global.json`): the repo declares no version. Do not abort — fall back to the latest LTS (currently .NET 10) per the cascade and record `Version origin: default-lts` in the report.
+- Exit 5 (malformed): show offending file. Ask the user whether to proceed without version-awareness. If yes, fall back to general checklists only and record `Version origin: unknown (malformed <file>)`.
 - Exit 1 (usage error or invalid `--repo-root`): the invocation is wrong — check arguments and path, correct, and retry; if they were correct, report the bug and abort.
+
+An explicit user directive ("review it as net8.0") overrides the detected version — record
+`Version origin: user`.
 
 ### Step 3 — Collect diff
 
@@ -82,7 +89,14 @@ If a tool isn't installed, the script reports the failure inside the JSON — lo
 ### Step 6 — Review
 
 Walk the diff against:
-1. The version-specific checklist (`references/review-checklist-net<N>.md`).
+1. The version-specific checklist for the major `N` resolved in Step 2, selected as follows:
+   - `references/review-checklist-net<N>.md` exists → use it.
+   - Otherwise → use the highest `review-checklist-net<M>.md` with `M ≤ N`, and note the
+     substitution in the report (e.g. a `net11.0` target reviewed against the net10 checklist,
+     since no net11 checklist exists yet).
+   - No such file — the target is below every available checklist (e.g. `net8.0` when only
+     `-net10` exists) → skip this step and note that the review used the general checklists only.
+     The general checklists are version-neutral and still apply in full.
 2. `references/review-checklist-security.md`.
 3. `references/review-checklist-performance.md`.
 4. `references/review-checklist-architecture.md`.
@@ -121,7 +135,7 @@ Output to chat: the file path and a one-line summary (e.g., `"Wrote review with 
 - `scripts/run-checks.sh` — optional dotnet build/format/test
 - `references/severity-taxonomy.md`
 - `references/report-format.md`
-- `references/review-checklist-net10.md`
+- `references/review-checklist-net10.md` — version-specific; selected per Step 6.1
 - `references/review-checklist-security.md`
 - `references/review-checklist-performance.md`
 - `references/review-checklist-architecture.md`
@@ -133,7 +147,7 @@ Output to chat: the file path and a one-line summary (e.g., `"Wrote review with 
 - Bypasses git hooks (`--no-verify`, `--no-gpg-sign`).
 - Runs destructive operations as "fixes" (no `git reset`, no deletions).
 - Includes secrets in logs or the report.
-- Reviews .NET versions below 10 — aborts with a clear message.
+- Silently substitutes a checklist — every fallback in Step 6 is named in the report.
 
 ## Related Skills
 

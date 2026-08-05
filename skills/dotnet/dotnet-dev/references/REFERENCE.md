@@ -25,6 +25,9 @@ gap before they become rework.
    - Contradictions between the request and existing code/conventions.
 4. **Codebase analysis** — affected `*.csproj`, host type (ASP.NET Core, Worker,
    Console, MAUI), data layer (EF Core), cross-cutting (DI, Options, Serilog).
+   Resolve the target framework via the cascade in
+   `dotnet-fundamentals/references/target-framework.md` (explicit user directive →
+   repo directive → latest LTS) and record its origin.
    Locate existing tests (`*.Tests`) and docs. Read `Directory.Build.props`,
    `Directory.Packages.props`, `.editorconfig`, `nuget.config`. Navigate the
    codebase per the project's and the user's global tooling rules (CLAUDE.md).
@@ -120,7 +123,8 @@ the skills explicitly to the sub-agent (sub-agents are stateless).
 `dotnet-sdk-builder` (typed SDK/HTTP client), `dotnet-inspect` (verify external
 API). Apply project conventions: the project's guard-clause style, primary constructors,
 nullable reference types, `CancellationToken` propagation, `.ConfigureAwait(false)`
-in library code (not in tests), never `.Result`/`.Wait()`/`.GetAwaiter().GetResult()`.
+per the `dotnet-fundamentals` rule (modern-patterns.md),
+never `.Result`/`.Wait()`/`.GetAwaiter().GetResult()`.
 
 ### Tests
 `dotnet-tester` always when code is written/changed — xUnit + FakeItEasy +
@@ -211,6 +215,45 @@ initiative.*
   small focused tasks; launch independent tasks in parallel.
 - For code research, follow the project's and the user's global tooling rules
   (CLAUDE.md).
+
+### Non-interactive / headless invocation
+
+`SKILL.md` → *Precondition — Interactive User Required* is authoritative; this
+is the handoff format and the reasoning behind it.
+
+**Why the reviewer may default and this workflow may not.** `dotnet-reviewer`
+defaults are recoverable: its three parameters (mode, tools, language) only
+select *what to look at*, a wrong pick costs a re-run, and the report records
+each parameter's origin. This workflow's gates decide *what gets built* —
+architecture, layering, contracts, test strategy, which ≤ Minor findings to
+fix. A defaulted answer there is indistinguishable in the output from a user's
+answer, and the code is already written by the time anyone notices. So the
+workflow refuses instead of guessing.
+
+**Handoff template** (emitted at Gate 1 in place of the confirmation request):
+
+```
+## Blocked — interactive user required
+
+`dotnet-dev` has no non-interactive mode. This run has no user channel
+(<reason: dispatched sub-agent / CI / scheduled run / output consumed by a
+program>), so the workflow stops after Phase 1. No files were changed.
+
+### Phase 1 result (read-only)
+<requirement restated · acceptance criteria · gaps, contradictions, open
+questions · affected scope · preliminary Skill Map table>
+
+### To resume, a user must supply
+- Gate 1: confirmation of the analysis above.
+- Phase 2: answers to the eight clarification points (see SKILL.md), one
+  round-trip each. Listed here as open questions — none are adopted.
+- Gates 2, 3, 4, 5: confirmations, including which ≤ Minor review findings to
+  fix.
+```
+
+The eight points may be *listed* so the dispatcher knows what to collect. They
+are never presented with adopted values — a proposed default that nobody
+answered is an open question, not a decision.
 
 ### Git
 - NEVER commit, branch, tag, or push on your own initiative. Read-only git

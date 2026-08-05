@@ -1,15 +1,15 @@
 ---
 name: angular-reviewer
-description: Use only when a structured Angular code review is explicitly requested by name — "angular-reviewer", "angular code review", or "angular review" — on an Angular 17+ project, or when invoked by the angular-dev workflow (Phase 5). Must NOT activate on generic "review my code" requests, and must not take over reviews of non-Angular code.
+description: Use only when a structured Angular code review is explicitly requested by name — "angular-reviewer", "angular code review", or "angular review" — on an Angular project, or when invoked by the angular-dev workflow (Phase 5). Must NOT activate on generic "review my code" requests, and must not take over reviews of non-Angular code.
 ---
 
 # angular-reviewer
 
-Structured code review for Angular 17+ projects.
+Structured code review for Angular projects, at whatever version the workspace runs.
 
 ## When to Use This Skill
 
-Only when explicitly requested by name — "angular-reviewer", "angular code review", or "angular review" — on an Angular 17+ project, or when invoked programmatically by the `angular-dev` workflow (Phase 5). Do NOT activate on generic "review my code" requests, and do not take over reviews of non-Angular code.
+Only when explicitly requested by name — "angular-reviewer", "angular code review", or "angular review" — on an Angular project, or when invoked programmatically by the `angular-dev` workflow (Phase 5). Do NOT activate on generic "review my code" requests, and do not take over reviews of non-Angular code.
 
 The user may add language preferences (e.g., "in German") — apply that to the report only. The skill itself remains in English.
 
@@ -40,9 +40,13 @@ Validate: mode ∈ {uncommitted, branch}; each tool ∈ {yes, no}; the report la
 
 Run `scripts/detect-angular-version.sh --repo-root <repo>`.
 
-- Exit 0: parse JSON `{version, projects, project_files}`. Use the detected Angular major to drive checklist selection.
-- Exit 4 (Angular < 17 or none): abort. Tell the user "this skill targets Angular 17+; detected `<X>`."
-- Exit 5 (malformed): show the offending file. Ask the user whether to proceed without version-awareness. If yes, fall back to general checklists only.
+The detected version drives checklist selection and finding wording — it is **not** a gate. This
+skill reviews a workspace at whatever version it runs, following the cascade in
+[angular-version.md](../angular-fundamentals/references/angular-version.md).
+
+- Exit 0: parse JSON `{version, projects, project_files}`. Use the detected Angular major to drive checklist selection, and record `Version origin: repo:package.json` in the report.
+- Exit 4 (no `package.json`, or no `@angular/core` dependency in it): the workspace declares no version. Do not abort — fall back to the latest stable per the cascade and record `Version origin: default-latest`.
+- Exit 5 (malformed): show the offending file. Ask the user whether to proceed without version-awareness. If yes, fall back to general checklists only and record `Version origin: unknown (malformed <file>)`.
 - Exit 2 (not a directory) or 1 (usage): bug — report and abort.
 
 ### Step 3 — Collect diff
@@ -127,7 +131,7 @@ Output to chat: the file path and a one-line summary (e.g., `"Wrote review with 
 - Bypasses git hooks (`--no-verify`, `--no-gpg-sign`).
 - Runs destructive operations as "fixes" (no `git reset`, no deletions).
 - Includes secrets in logs or the report.
-- Reviews Angular versions below 17 — aborts with a clear message.
+- Silently omits the version origin — every report names where the reviewed Angular version came from.
 
 ## Related Skills
 

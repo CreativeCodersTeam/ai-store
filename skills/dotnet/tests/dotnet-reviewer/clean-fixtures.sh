@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Remove all generated fixture repos. They will be regenerated on the
-# next `bash tests/run-tests.sh` invocation via make-fixtures.sh.
+# next `bash skills/dotnet/tests/dotnet-reviewer/run-tests.sh` invocation via make-fixtures.sh.
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 rm -rf "$SCRIPT_DIR"/fixtures/repo-*/
