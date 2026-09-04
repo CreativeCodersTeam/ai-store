@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repository is
 
-A distribution of **Agent Skills** (38 of them) — there is no application, no build system, and no
+A distribution of **Agent Skills** — there is no application, no build system, and no
 package manifest. The deliverables are `SKILL.md` files plus their `references/` and `scripts/`
 siblings, consumed by Claude Code and other agents via `npx skills add …` (see README). Tests are
 not a skill sibling — they live under `skills/<category>/tests/` (see below).
