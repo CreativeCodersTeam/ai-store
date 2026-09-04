@@ -1,5 +1,5 @@
 
-Es soll ein neuer Skill implement-feature zusammen mit dem User erstellt werden.
+Es soll ein neuer Skill implement-feature im Ordner skills/development zusammen mit dem User erstellt werden.
 Der Skill soll zusammen mit dem User verfeinert werden, um die Anforderungen des Users bestmöglich zu erfüllen.
 
 Der Skill soll aus einem Plan und einer Spec eine Implementierung erstellen.
