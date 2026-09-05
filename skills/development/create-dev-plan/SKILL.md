@@ -78,10 +78,10 @@ Phase 6  Plan             — re-read the draft from disk, write docs/plans/<slu
    the Gate section.
 
 6. **After approval, test names and interfaces are frozen.** The only permitted edits to an
-   approved plan are ticking checkboxes and appending to its *Change Log*. Renaming a test,
-   changing a signature, or re-cutting a task during implementation is a plan change and is
-   recorded as one, with the reason. This is what lets a reviewer check the matrix against the
-   test suite at the end.
+   approved plan are ticking checkboxes, setting a task's `Status`, and appending to its *Change
+   Log*. Renaming a test, changing a signature, or re-cutting a task during implementation is a
+   plan change and is recorded as one, with the reason. This is what lets a reviewer check the
+   matrix against the test suite at the end.
 
 7. **Never commit, never overwrite silently.** You create the draft and the plan; the user
    commits. If the target file exists, ask before replacing it.
@@ -278,8 +278,7 @@ the plan as it stands" / "Not yet — I have more points".
    place — deleting it is the user's call.
 4. Final reply: the plan path; five lines (what is built, number of tasks and the first one,
    IDs covered, open Spec Feedback items, manual checks); and one line on the next step — handing
-   the plan to an implementation workflow skill, which works the Todos in their given order. Do
-   not commit.
+   the plan to `implement-feature`, which works the Todos in their given order. Do not commit.
 
 ## Red Flags — Stop and Re-read the Rules
 

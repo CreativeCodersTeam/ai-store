@@ -1,10 +1,11 @@
 
 Es soll ein neuer Skill implement-feature im Ordner skills/development zusammen mit dem User erstellt werden.
 Der Skill soll zusammen mit dem User verfeinert werden, um die Anforderungen des Users bestmöglich zu erfüllen.
+Prüfe meine Anforderungen und Vorschläge und bringe eigene Ideen ein, um die Qualität der Implementierung zu verbessern.
 
 Der Skill soll aus einem Plan und einer Spec eine Implementierung erstellen.
 
-Never Commit Changes: Der Skill soll die Änderungen nicht direkt commiten, sondern dem Benutzer die Möglichkeit geben, die Änderungen zu prüfen und zu entscheiden, ob er sie übernehmen möchte.
+Never Commit Changes: Der Skill soll die Änderungen nicht direkt committen, sondern dem Benutzer die Möglichkeit geben, die Änderungen zu prüfen und zu entscheiden, ob er sie übernehmen möchte.
 
 Grobes Vorgehen zur Orientierung:
 1. Prüfe, ob sowohl Plan als auch Spec vorhanden sind. Wenn nicht, informiere den Benutzer, dass beide Dokumente benötigt werden und beende deine Arbeit hier.
