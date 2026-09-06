@@ -4,14 +4,14 @@ A curated collection of [Agent Skills](https://code.claude.com/docs/en/skills) f
 
 Each skill is a self-contained `SKILL.md` file that teaches the agent a specific workflow or set of best practices — from implementing .NET features and reviewing Angular code to writing Gherkin scenarios and refactoring safely. Skills are loaded automatically when relevant, or can be invoked explicitly by name.
 
-The repository currently contains **38 skills** in six categories:
+The repository currently contains **39 skills** in six categories:
 
 | Category | Skills | Focus |
 |---|---|---|
 | [Angular](skills/angular) | 11 | Angular development, testing, reviews, libraries |
 | [.NET](skills/dotnet) | 11 | .NET/C# development, ASP.NET Core, EF Core, NuGet |
 | [General](skills/general) | 8 | Language-agnostic workflows: reviews, refactoring, BDD, docs |
-| [Development](skills/development) | 2 | Requirement engineering: interview-driven specifications and traceable development plans |
+| [Development](skills/development) | 3 | Requirement engineering: interview-driven specifications, traceable development plans, and plan-driven implementation |
 | [Java](skills/java) | 4 | Spring Boot, JUnit 5, Javadoc |
 | [TypeScript](skills/typescript) | 2 | Jest, RxJS |
 
@@ -144,6 +144,7 @@ Restart Claude Code afterwards and run `/skills` to confirm the skills are loade
 |---|---|
 | `create-dev-spec` | Turns a rough requirement into an approved specification through a structured interview, a reviewable draft in `docs/draft/`, and a final spec in `docs/specs/` |
 | `create-dev-plan` | Turns an approved spec (or a requirement) into a reviewed development plan in `docs/plans/`: tasks with dependencies, interfaces, and a traceability matrix linking every requirement to the test that proves it |
+| `implement-dev-plan` | Implements an approved plan from `docs/plans/` task by task: consistency check against the spec, runtime skill discovery, sub-agent or direct implementation with per-task verification, independent review with rework loop, report in `docs/implementation/`. Never commits |
 
 ### Java
 
