@@ -144,7 +144,7 @@ Restart Claude Code afterwards and run `/skills` to confirm the skills are loade
 |---|---|
 | `create-dev-spec` | Turns a rough requirement into an approved specification through a structured interview, a reviewable draft in `docs/draft/`, and a final spec in `docs/specs/` |
 | `create-dev-plan` | Turns an approved spec (or a requirement) into a reviewed development plan in `docs/plans/`: tasks with dependencies, interfaces, and a traceability matrix linking every requirement to the test that proves it |
-| `implement-feature` | Implements an approved plan from `docs/plans/` task by task: consistency check against the spec, runtime skill discovery, sub-agent or direct implementation with per-task verification, independent review with rework loop, report in `docs/implementation/`. Never commits |
+| `implement-dev-plan` | Implements an approved plan from `docs/plans/` task by task: consistency check against the spec, runtime skill discovery, sub-agent or direct implementation with per-task verification, independent review with rework loop, report in `docs/implementation/`. Never commits |
 
 ### Java
 

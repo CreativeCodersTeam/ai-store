@@ -1,7 +1,7 @@
-# implement-feature — Workflow Test (intake guards, consistency, runtime skills, sub-agent verification, review, report)
+# implement-dev-plan — Workflow Test (intake guards, consistency, runtime skills, sub-agent verification, review, report)
 
 **Date:** 2026-09-05
-**Subject:** `skills/development/implement-feature/` (`SKILL.md`, `references/consistency-check.md`,
+**Subject:** `skills/development/implement-dev-plan/` (`SKILL.md`, `references/consistency-check.md`,
 `references/skill-selection.md`, `references/subagent-brief.md`, `references/verification.md`,
 `references/review-and-rework.md`, `references/report-template.md`) at its initial version
 (iteration 1) and after the first revision (iteration 2, see below).

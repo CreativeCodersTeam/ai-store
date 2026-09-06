@@ -278,7 +278,7 @@ the plan as it stands" / "Not yet — I have more points".
    place — deleting it is the user's call.
 4. Final reply: the plan path; five lines (what is built, number of tasks and the first one,
    IDs covered, open Spec Feedback items, manual checks); and one line on the next step — handing
-   the plan to `implement-feature`, which works the Todos in their given order. Do not commit.
+   the plan to `implement-dev-plan`, which works the Todos in their given order. Do not commit.
 
 ## Red Flags — Stop and Re-read the Rules
 

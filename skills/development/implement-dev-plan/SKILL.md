@@ -1,5 +1,5 @@
 ---
-name: implement-feature
+name: implement-dev-plan
 description: >
   Use when the user wants an approved development plan (a create-dev-plan document in
   docs/plans/, usually with its create-dev-spec specification in docs/specs/) turned into working
@@ -14,7 +14,7 @@ description: >
   for writing specs or plans.
 ---
 
-# implement-feature — From Approved Plan to Reviewed, Uncommitted Implementation
+# implement-dev-plan — From Approved Plan to Reviewed, Uncommitted Implementation
 
 ## Core Principle
 
@@ -277,7 +277,7 @@ against the spec text of the ID it verifies — does it assert that criterion, o
 **5.4 Judge deviations.** Every difference between plan and result — reported by the sub-agent or
 found by you — is one of two things. A *technical* deviation (name, signature shape, file split,
 helper added) keeps every spec ID's behaviour: it becomes a Change Log row
-`| date | #n | change | reason | implement-feature |`. A *functional* deviation changes what an ID
+`| date | #n | change | reason | implement-dev-plan |`. A *functional* deviation changes what an ID
 means, drops a criterion, or adds behaviour the spec does not have: it is not accepted; ask the
 user — **revert and redo the task as planned**, **fix the documents** and re-enter Phase 0, or
 **accept as a plan change** recorded with origin `user's own`. A consistency problem between the

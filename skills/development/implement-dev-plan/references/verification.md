@@ -85,8 +85,8 @@ updated, migration applied). A clause that is not met is not done.
 Change Log row format (append to the plan's table; never edit existing rows):
 
 ```
-| 2026-09-05 | #3 | Test it('AC-2: returns header only…') → it('AC-2: returns header row only for customer without orders') | vitest reporter truncates names with "…"; outcome kept | implement-feature |
-| 2026-09-05 | #2 | CsvFormatter.format(orders) → CsvFormatter.format(orders, options?) | delimiter option needed by #3 (C-4) | implement-feature |
+| 2026-09-05 | #3 | Test it('AC-2: returns header only…') → it('AC-2: returns header row only for customer without orders') | vitest reporter truncates names with "…"; outcome kept | implement-dev-plan |
+| 2026-09-05 | #2 | CsvFormatter.format(orders) → CsvFormatter.format(orders, options?) | delimiter option needed by #3 (C-4) | implement-dev-plan |
 ```
 
 A row that cites a user decision carries it in the Reason column (`… per D-7`).

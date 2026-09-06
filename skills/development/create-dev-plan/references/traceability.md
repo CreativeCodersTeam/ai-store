@@ -192,7 +192,7 @@ approved plan changes, apart from ticked checkboxes:
 ```
 | Date | Task | Change | Reason | Origin |
 |---|---|---|---|---|
-| 2026-09-10 | #3 | Test renamed Export_AC1_ThreeOrders_ReturnsCsv → Export_AC1_ReturnsCsvWithHeaderAndRows | Project convention requires outcome in name | implement-feature |
+| 2026-09-10 | #3 | Test renamed Export_AC1_ThreeOrders_ReturnsCsv → Export_AC1_ReturnsCsvWithHeaderAndRows | Project convention requires outcome in name | implement-dev-plan |
 ```
 
 An implementation workflow that renames a test, changes a signature in *Provides*, or re-cuts a
