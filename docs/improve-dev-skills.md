@@ -1,0 +1,2 @@
+
+- Anweisung, dass zur Implementierung eines Plans auch die Anpassung der Kommentare und Dokumentation erforderlich ist, um die Lesbarkeit und Verständlichkeit des Codes zu verbessern und diese Infos aktuell zu halten.
