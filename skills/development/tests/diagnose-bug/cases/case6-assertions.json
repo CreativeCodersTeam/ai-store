@@ -1,0 +1,17 @@
+[
+ "A standalone Markdown diagnosis report file (not just the chat reply) was produced in outputs/",
+ "A reproduction test or script that fails on the unmodified code was written, and the exact command to run it is stated",
+ "At least one alternative cause is explicitly listed as excluded/refuted together with the evidence that refuted it (e.g. a bug in render formatting, quantity/price swapped, VAT math)",
+ "At least two distinct fix proposals are given, each with risk and pros/cons",
+ "Exactly one proposal is explicitly recommended, with reasoning",
+ "Key claims cite concrete evidence (file:line, command + output, or git commit) rather than words like 'probably' or 'likely'",
+ "git_state.txt shows no production source file modified: the fix was NOT implemented, only tests/report/experiment scripts were added",
+ "The root cause was confirmed by a prediction check: a temporary minimal change was applied, the reproduction observed to pass, and the change reverted",
+ "Every experiment whose result is cited as evidence is reproducible from the outputs: its script/command is inlined in the report or saved as a file",
+ "Root cause names BOTH mechanisms and assigns each example to the right one: 2.675 rounds down because the binary float is slightly below the tie (shown e.g. via Decimal(2.675) or repr), and 0.125 rounds to 0.12 because Python's round() uses round-half-to-even on exact ties",
+ "Python's round() semantics and the float representation are verified against the installed interpreter (experiment or the Python docs for the installed version), not asserted from memory only",
+ "The reporter's expectation of commercial rounding (round-half-up) is treated as a claim: the report names it as the business rule to confirm (or cites where it is defined) rather than assuming it",
+ "The one-cent discrepancy between net_total and the sum of printed line amounts is explained as a separate rule question (round the sum vs. sum the rounded lines) and not conflated with the float issue",
+ "Proposals include decimal.Decimal with an explicit quantize/ROUND_HALF_UP (or integer cents) end to end, and address existing invoices / re-rendering as a migration concern",
+ "The report and final reply are written in German, matching the bug report"
+]

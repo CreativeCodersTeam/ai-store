@@ -1,0 +1,16 @@
+[
+ "A standalone Markdown diagnosis report file (not just the chat reply) was produced in outputs/",
+ "A reproduction test or script that fails on the unmodified code was written, and the exact command to run it is stated",
+ "At least one alternative cause is explicitly listed as excluded/refuted together with the evidence that refuted it (e.g. timezone/DST, dayjs bug, data corruption)",
+ "At least two distinct fix proposals are given, each with risk and pros/cons",
+ "Exactly one proposal is explicitly recommended, with reasoning",
+ "Key claims cite concrete evidence (file:line, command + output, or git commit) rather than words like 'probably' or 'likely'",
+ "git_state.txt shows no production source file modified: the fix was NOT implemented, only tests/report/experiment scripts were added",
+ "The root cause was confirmed by a prediction check: a temporary minimal change was applied, the reproduction observed to pass, and the change reverted",
+ "Every experiment whose result is cited as evidence is reproducible from the outputs: its script/command is inlined in the report or saved as a file",
+ "Root cause is identified as invoiceSchedule deriving each date from the previous (already clamped) date in src/billing.js, so the anchor day 31 is lost after the first short month; dayjs's end-of-month clamping is named as the mechanism, not as a bug",
+ "dayjs's month-overflow behavior is verified against the installed version (package-lock / node_modules/dayjs source or an experiment such as add(4,'month') from 01-31 giving 05-31 vs. step-wise giving 05-28), not asserted from memory",
+ "The report treats finance's expected behavior as a claim: it names the business rule that needs to be defined (last-day-of-month vs. same-day-clamped) and marks it as verified or open rather than assuming it",
+ "The report explains why the existing tests are green (only mid-month start dates) and why other customers are unaffected",
+ "Proposals include computing each date from the signup anchor (signup.add(n,'month')) or storing the anchor day, and address existing customers whose schedules have already drifted"
+]

@@ -1,0 +1,5 @@
+Every deploy from the pipeline has been failing since this morning with:
+
+    deploy: error: ambiguous option: --vers could match --version, --versioning-scheme
+
+Nobody touched the pipeline config. Running the deploy command by hand works fine, and `python3 -m unittest discover -s tests` is green. We reverted nothing yet because we don't understand what changed. Repo is at <project>. Please find the root cause and give us options — we need deploys working today, but I also want to know how to stop this from happening again.

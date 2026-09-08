@@ -1,0 +1,16 @@
+[
+ "A standalone Markdown diagnosis report file (not just the chat reply) was produced in outputs/",
+ "A reproduction test or script that fails on the unmodified code was written (e.g. an xunit test building the real host/service collection from Program.cs registrations, or a script running the worker and asserting the net prices), and the exact command to run it is stated",
+ "At least one alternative cause is explicitly listed as excluded/refuted together with the evidence that refuted it (e.g. discount table, tenant casing, QuoteService math, config/environment)",
+ "At least two distinct fix proposals are given, each with risk and pros/cons",
+ "Exactly one proposal is explicitly recommended, with reasoning",
+ "Key claims cite concrete evidence (file:line, command + output, or git commit) rather than words like 'probably' or 'likely'",
+ "git_state.txt shows no production source file modified: the fix was NOT implemented, only tests/report/experiment scripts were added",
+ "The root cause was confirmed by a prediction check: a temporary minimal change was applied, the reproduction observed to pass, and the change reverted",
+ "Every experiment whose result is cited as evidence is reproducible from the outputs: its script/command is inlined in the report or saved as a file",
+ "Root cause is identified as the captive dependency: singleton PriceCatalog receives the root-provider TenantContext (Tenant null) at first resolution and keeps it for the process lifetime, so per-scope TenantContext assignments in JobRunner never reach it",
+ "The report identifies commit #142 (disabling ValidateScopes/ValidateOnBuild) as covering up the diagnostic that would have caught this, i.e. the dev crash was the symptom of the same defect, not a separate bug — and treats the colleague's change as a contributing factor rather than the root cause",
+ "The hosting behavior (Development enables ValidateScopes by default; Production does not) is verified against the installed Microsoft.Extensions.Hosting version (source/decompile/docs or an experiment), not asserted from memory only",
+ "The report explains why the tests are green (they construct the services by hand with a tenant already set and never go through the DI container)",
+ "Proposals include a lifetime fix (PriceCatalog scoped, or split into tenant-independent singleton data + scoped discount resolution / passing the tenant as a parameter) AND re-enabling scope validation (at least ValidateOnBuild in all environments) as a structural safeguard"
+]

@@ -1,0 +1,16 @@
+[
+ "A standalone Markdown diagnosis report file (not just the chat reply) was produced in outputs/",
+ "A reproduction test or script that fails on the unmodified code was written, and the exact command to run it is stated",
+ "At least one alternative cause is explicitly listed as excluded/refuted together with the evidence that refuted it (e.g. input data, JDK version change, the split in LedgerRow.parse, timezone)",
+ "At least two distinct fix proposals are given, each with risk and pros/cons",
+ "Exactly one proposal is explicitly recommended, with reasoning",
+ "Key claims cite concrete evidence (file:line, command + output, or git commit) rather than words like 'probably' or 'likely'",
+ "git_state.txt shows no production source file modified: the fix was NOT implemented, only tests/report/experiment scripts were added",
+ "The root cause was confirmed by a prediction check: a temporary minimal change was applied, the reproduction observed to pass, and the change reverted",
+ "Every experiment whose result is cited as evidence is reproducible from the outputs: its script/command is inlined in the report or saved as a file",
+ "Root cause is identified as the single shared static SimpleDateFormat in DateUtil being used concurrently by the worker pool (SimpleDateFormat is not thread-safe), not as a data or JDK problem",
+ "The intermittent nature is handled per the skill: the reproduction states a measured failure rate (e.g. corrupted rows out of N with W workers) and the report shows the rate drops to zero under the prediction check, rather than relying on a single lucky run",
+ "SimpleDateFormat's thread-safety contract is verified against the installed JDK (javadoc/source in the JDK, or an isolated experiment with the formatter alone), not asserted from memory only",
+ "The report explains why the tests are green (single worker in the test) and why a 5-row sample is fine, and separates the JDK upgrade (not the cause) from the cause",
+ "Proposals include java.time.DateTimeFormatter (immutable) and at least one of ThreadLocal<SimpleDateFormat> / synchronization / per-call instance, with the performance rationale in DateUtil's comment addressed"
+]

@@ -1,0 +1,9 @@
+We got a report against yargs-parser 18.1.0 (this repo, checked out at the release commit). A downstream user builds a CLI where some of the arguments come from a webhook payload. They say that after parsing, completely unrelated objects in their process suddenly carry extra properties — e.g. `({}).isAdmin === 'true'` — and their auth middleware then lets everyone through. Their minimal repro:
+
+```js
+const parser = require('yargs-parser')
+parser('--config.__proto__.isAdmin true')
+console.log(({}).isAdmin)   // 'true'
+```
+
+Our test suite is green (329 tests, `npx mocha test/*.js`). The repo is at <project>. Find out what is going on, how deep this goes, and what our options are for fixing it without breaking downstream users.

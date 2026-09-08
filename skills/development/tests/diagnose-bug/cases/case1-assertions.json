@@ -1,0 +1,16 @@
+[
+ "A standalone Markdown diagnosis report file (not just the chat reply) was produced in outputs/",
+ "A reproduction test (mocha under test/) or script that fails on the unmodified code was written, and the exact command to run it is stated",
+ "At least one alternative cause is explicitly listed as excluded/refuted together with the evidence that refuted it",
+ "At least two distinct fix proposals are given, each with risk and pros/cons",
+ "Exactly one proposal is explicitly recommended, with reasoning",
+ "Key claims cite concrete evidence (file:line, command + output, or git commit) rather than words like 'probably' or 'likely'",
+ "git_state.txt shows no production source file modified: the fix was NOT implemented, only tests/report/experiment scripts were added",
+ "The root cause was confirmed by a prediction check: a temporary minimal change was applied, the reproduction observed to pass, and the change reverted",
+ "Every experiment whose result is cited as evidence is reproducible from the outputs: its script/command is inlined in the report or saved as a file",
+ "Root cause is located in index.js at the object-path assignment inside setKey (walking nested keys with o[key] and assigning into the inherited __proto__ accessor), not attributed to downstream usage or to Node itself",
+ "The report states, backed by an experiment, whether other path segments such as constructor.prototype can be used for the same attack",
+ "The report enumerates which input forms reach the vulnerable assignment (e.g. dot-notation, nested keys, --x.y=z, defaults/aliases) and shows the existing test suite covers none of them",
+ "Proposals include sanitizing or rejecting dangerous keys at the assignment site AND at least one defense-in-depth/structural option (prototype-less objects, disabling dot-notation), each with compatibility impact for downstream users",
+ "The recommendation explicitly addresses backwards compatibility (silently remapping vs. throwing on a key named __proto__)"
+]
