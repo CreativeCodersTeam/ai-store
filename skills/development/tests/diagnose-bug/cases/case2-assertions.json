@@ -1,0 +1,16 @@
+[
+ "A standalone Markdown diagnosis report file (not just the chat reply) was produced in outputs/",
+ "A reproduction test or script that fails on the unmodified code was written (two local HTTP servers on different hosts, e.g. localhost vs 127.0.0.1, showing the Authorization header arriving at the second host), and the exact command to run it is stated",
+ "At least one alternative cause is explicitly listed as excluded/refuted together with the evidence that refuted it (e.g. the app sending the token to the CDN directly, logging, the user-agent header)",
+ "At least two distinct fix proposals are given, each with risk and pros/cons",
+ "Exactly one proposal is explicitly recommended, with reasoning",
+ "Key claims cite concrete evidence (file:line, command + output, or git commit) rather than words like 'probably' or 'likely'",
+ "git_state.txt shows no production source file modified: the fix was NOT implemented, only tests/report/experiment scripts were added",
+ "The root cause was confirmed by a prediction check: a temporary minimal change was applied, the reproduction observed to pass, and the change reverted",
+ "Every experiment whose result is cited as evidence is reproducible from the outputs: its script/command is inlined in the report or saved as a file",
+ "Root cause is located in the installed node-fetch 2.6.6 redirect handling (node_modules/node-fetch/lib/index.js, forwarding the original request headers including Authorization to a redirect target on a different host), cited by file and line, not in the app's own code",
+ "The installed node-fetch version is established from package-lock.json / node_modules (not assumed), and the library behavior is verified by reading its source or by an experiment against it",
+ "The report explains why the existing tests are green: the test API and file server share the same host, so a same-host redirect never exercises the cross-host case",
+ "Proposals include upgrading node-fetch AND an app-level control (e.g. redirect: 'manual' with explicit re-request without the token, or stripping Authorization on host change), with the upgrade's fixed version stated as verified or explicitly marked as unverified/open rather than asserted from memory",
+ "The report separates trigger from cause (whether the partner API started redirecting to a different host recently is listed as an open question, the forwarding behavior is the cause) and gives the user a forwardable summary"
+]

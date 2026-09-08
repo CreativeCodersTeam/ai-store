@@ -1,0 +1,16 @@
+[
+ "A standalone Markdown diagnosis report file (not just the chat reply) was produced in outputs/",
+ "A reproduction test or script that fails on the unmodified code was written, and the exact command to run it is stated",
+ "At least one alternative cause is explicitly listed as excluded/refuted together with the evidence that refuted it (e.g. pipeline config change, Python version change, a bug in the choices validation)",
+ "At least two distinct fix proposals are given, each with risk and pros/cons",
+ "Exactly one proposal is explicitly recommended, with reasoning",
+ "Key claims cite concrete evidence (file:line, command + output, or git commit) rather than words like 'probably' or 'likely'",
+ "git_state.txt shows no production source file modified: the fix was NOT implemented, only tests/report/experiment scripts were added",
+ "The root cause was confirmed by a prediction check: a temporary minimal change was applied, the reproduction observed to pass, and the change reverted",
+ "Every experiment whose result is cited as evidence is reproducible from the outputs: its script/command is inlined in the report or saved as a file",
+ "Root cause is identified as argparse's allow_abbrev=True default making every unambiguous prefix part of the CLI's de-facto interface, combined with ci/deploy.sh relying on the abbreviation --vers; adding --versioning-scheme made that prefix ambiguous",
+ "The report separates trigger from cause: the commit adding --versioning-scheme is named as the trigger (identified from git history, e.g. git log/blame/bisect) while the abbreviation dependency is the cause",
+ "argparse's allow_abbrev behavior is verified against the installed Python version (docs for that version, CPython source, or an experiment), not asserted from memory only",
+ "The report explains why the tests are green (they always pass full option names and never invoke ci/deploy.sh) and why running the command by hand works",
+ "Proposals cover both the immediate unblock (spell out --version in ci/deploy.sh) and a structural option (allow_abbrev=False, plus a test that exercises the CI wrapper), with the compatibility risk of allow_abbrev=False for other callers named"
+]
