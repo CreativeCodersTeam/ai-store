@@ -6,14 +6,12 @@ description: >
   dead code in …", "pay down technical debt in …", "diesen Code refactoren", "aufräumen",
   "Refactoring für …", or when code smells — long functions, duplication, deep nesting, primitive
   obsession, dead code — should be found and removed inside a defined scope. Analyses the scope
-  finding by finding with file:line evidence, writes a prioritised report to docs/refactoring/,
-  lets the user choose what gets touched, proves test coverage per candidate before changing it,
-  and then refactors one named refactoring at a time, verifying build, tests, and linter after
-  every step and rolling back when anything turns red. Always needs a scope and asks for one if the
-  user gave none. Behaviour must not change: it never fixes bugs, adds features, tunes performance,
-  or reformats the repository along the way, and it never commits. Not for a generic "review my
-  code" (that belongs to a reviewer skill), not for building new functionality, and not for finding
-  the cause of a bug.
+  with file:line evidence, writes a prioritised report to docs/refactoring/, lets the user choose
+  what gets touched, proves test coverage per candidate, then applies one named refactoring at a
+  time, verifying build, tests, and linter after each step and rolling back on red. Needs a scope
+  and asks for one if none was given. Never changes behaviour, never fixes bugs, adds features,
+  tunes performance, or reformats along the way, and never commits. Not for a generic "review my
+  code", not for building new functionality, not for finding the cause of a bug.
 ---
 
 # refactor

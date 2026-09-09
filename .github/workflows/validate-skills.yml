@@ -1,0 +1,37 @@
+name: Validate skills and plugins
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Frontmatter, the 1024-character description limit, name/directory match,
+      # plugin manifests, and the marketplace catalog. Needs only bash + python3,
+      # both preinstalled on the runner.
+      - name: Validate skills, plugin manifests and marketplace
+        run: bash scripts/validate-skills.sh
+
+      # Second opinion from the Claude Code CLI. It parses the manifests with the
+      # implementation that actually consumes them, so a schema change upstream
+      # surfaces here first. Not run with --strict: the plugins are deliberately
+      # unversioned, and --strict fails on the resulting "no version" warning.
+      - name: Validate manifests with the Claude Code CLI
+        run: |
+          npx --yes @anthropic-ai/claude-code@latest plugin validate .
+          npx --yes @anthropic-ai/claude-code@latest plugin validate ./skills/development
+
+  dotnet-reviewer-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+      - name: Run dotnet-reviewer script tests
+        run: bash skills/dotnet/tests/dotnet-reviewer/run-tests.sh

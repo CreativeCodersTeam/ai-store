@@ -1,0 +1,32 @@
+{
+  "name": "creativecoders-ai-store",
+  "owner": {
+    "name": "CreativeCodersTeam"
+  },
+  "metadata": {
+    "description": "Curated Agent Skills for Claude Code and GitHub Copilot, organized by technology stack."
+  },
+  "plugins": [
+    {
+      "name": "cc-ai-dev",
+      "source": "./skills/development",
+      "description": "Requirement-to-code workflow skills: interview-driven specifications, traceable development plans, plan-driven implementation, root-cause bug diagnosis, and evidence-driven refactoring.",
+      "author": {
+        "name": "CreativeCodersTeam",
+        "url": "https://github.com/CreativeCodersTeam"
+      },
+      "homepage": "https://github.com/CreativeCodersTeam/ai-store/tree/main/skills/development",
+      "repository": "https://github.com/CreativeCodersTeam/ai-store",
+      "license": "Apache-2.0",
+      "category": "development",
+      "keywords": [
+        "specification",
+        "planning",
+        "implementation",
+        "debugging",
+        "refactoring",
+        "workflow"
+      ]
+    }
+  ]
+}
