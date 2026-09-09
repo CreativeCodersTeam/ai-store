@@ -10,7 +10,7 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       # Frontmatter, the 1024-character description limit, name/directory match,
       # plugin manifests, and the marketplace catalog. Needs only bash + python3,
@@ -30,8 +30,8 @@ jobs:
   dotnet-reviewer-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Install jq
-        run: sudo apt-get update && sudo apt-get install -y jq
+      - uses: actions/checkout@v5
+      # jq, git and python3 are preinstalled on the runner image, and
+      # run-tests.sh fails with a clear message if jq is ever missing.
       - name: Run dotnet-reviewer script tests
-        run: bash skills/dotnet/tests/dotnet-reviewer/run-tests.sh
+        run: bash skills/tests/dotnet/dotnet-reviewer/scripts/run-tests.sh

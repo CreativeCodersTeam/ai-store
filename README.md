@@ -259,10 +259,17 @@ skills/
 ├── dotnet/
 ├── general/
 ├── java/
-└── typescript/
+├── typescript/
+└── tests/                        # test artifacts, mirroring the tree above
+    ├── dotnet/
+    │   ├── dotnet-reviewer/      # tests for that one skill
+    │   └── _shared/              # tests covering the whole .NET family
+    └── ...
 ```
 
 Every skill lives in `skills/<category>/<skill-name>/SKILL.md`. Some skills ship additional reference files or scripts alongside their `SKILL.md`.
+
+Tests are not skill siblings. They live under `skills/tests/<category>/<skill-name>/`, mirroring the skill tree from a separate root — so a category folder contains only skills and installing one with `npx skills add …/skills/dotnet -s '*'` never pulls in test material.
 
 A category that is also published as a plugin carries a `.claude-plugin/plugin.json` at its root. The plugin root is the category directory itself, so nothing is duplicated — the plugin ships exactly the skill directories it lists.
 
@@ -281,6 +288,8 @@ To add a new skill:
    ```
 
 3. Keep the skill self-contained; put larger reference material in files next to the `SKILL.md`.
+   Tests are the exception: they go to `skills/tests/<category>/<skill-name>/`, never next to the
+   `SKILL.md`.
 4. Keep `description` **at or below 1024 characters**. This is a hard limit in the
    [Agent Skills specification](https://agentskills.io/specification): GitHub Copilot drops a skill
    whose description exceeds it, without printing any error, while Claude Code loads it anyway — so

@@ -2,7 +2,7 @@
 
 Test artifact per `superpowers:writing-skills` (RED → GREEN → REFACTOR → Verify) for the 2026-08-03
 mirroring of the .NET version cascade into the Angular family. Sibling artifact:
-`skills/dotnet/tests/version-cascade-test.md`.
+`skills/tests/dotnet/_shared/version-cascade-test.md`.
 
 ## Method
 

@@ -2,7 +2,7 @@
 set -u
 TEST_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TESTS_DIR="${TESTS_DIR:-$(cd "$TEST_DIR/.." && pwd)}"
-SKILL_DIR="${SKILL_DIR:-$(cd "$TESTS_DIR/../../dotnet-reviewer" && pwd)}"
+SKILL_DIR="${SKILL_DIR:-$(cd "$TESTS_DIR/../../../../dotnet/dotnet-reviewer" && pwd)}"
 FIX="$TESTS_DIR/fixtures"
 SCRIPT="$SKILL_DIR/scripts/run-checks.sh"
 MOCK="$TESTS_DIR/unit/mock-dotnet/dotnet"

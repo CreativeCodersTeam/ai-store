@@ -11,7 +11,7 @@ with no canonical form (I-2), and 2,043 words fully inline with no
 ## Method
 
 **Note on method:** the subagent probes used for all other findings in
-`skills/dotnet/tests/` were blocked twice by the permission classifier in this
+`skills/tests/dotnet/` were blocked twice by the permission classifier in this
 session. Since the I-1/I-2 defects are mechanical facts (duplicate counts,
 flag spellings) and I-3 is a structural property, RED and Verify were performed
 with static grep/wc checks instead — objective and re-runnable.
