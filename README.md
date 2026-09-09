@@ -10,8 +10,8 @@ The repository currently contains **39 skills** in six categories:
 |---|---|---|
 | [Angular](skills/angular) | 11 | Angular development, testing, reviews, libraries |
 | [.NET](skills/dotnet) | 11 | .NET/C# development, ASP.NET Core, EF Core, NuGet |
-| [General](skills/general) | 8 | Language-agnostic workflows: reviews, refactoring, BDD, docs |
-| [Development](skills/development) | 4 | Requirement engineering and diagnosis: interview-driven specifications, traceable development plans, plan-driven implementation, and root-cause bug diagnosis |
+| [General](skills/general) | 7 | Language-agnostic workflows: reviews, BDD, docs, prompts |
+| [Development](skills/development) | 5 | Requirement engineering, diagnosis, and code quality: interview-driven specifications, traceable development plans, plan-driven implementation, root-cause bug diagnosis, and evidence-driven refactoring |
 | [Java](skills/java) | 4 | Spring Boot, JUnit 5, Javadoc |
 | [TypeScript](skills/typescript) | 2 | Jest, RxJS |
 
@@ -83,7 +83,7 @@ git clone https://github.com/CreativeCodersTeam/ai-store.git
 cp -R ai-store/skills/dotnet/dotnet-dev ~/.claude/skills/
 
 # Or symlink, so `git pull` keeps the skill up to date
-ln -s "$(pwd)/ai-store/skills/general/refactoring" ~/.claude/skills/refactoring
+ln -s "$(pwd)/ai-store/skills/development/refactor" ~/.claude/skills/refactor
 
 # Project-scoped (current repository only)
 cp -R ai-store/skills/typescript/jest .claude/skills/
@@ -132,7 +132,6 @@ Restart Claude Code afterwards and run `/skills` to confirm the skills are loade
 | `implementer` | Language-agnostic 5-phase implementation workflow with review loop |
 | `boost-prompt` | Interactively refines vague prompts before execution |
 | `code-review` | General code review: quality, security, performance, with severity levels |
-| `refactoring` | Behavior-preserving refactoring, verifies tests before and after |
 | `create-readme` | Generates professional README files following OSS conventions |
 | `convert-plaintext-to-md` | Converts plain text or legacy documentation to Markdown |
 | `gherkin-bdd` | Writing Gherkin feature files and step definitions (Reqnroll, Cucumber) |
@@ -146,6 +145,7 @@ Restart Claude Code afterwards and run `/skills` to confirm the skills are loade
 | `create-dev-plan` | Turns an approved spec (or a requirement) into a reviewed development plan in `docs/plans/`: tasks with dependencies, interfaces, and a traceability matrix linking every requirement to the test that proves it |
 | `implement-dev-plan` | Implements an approved plan from `docs/plans/` task by task: consistency check against the spec, runtime skill discovery, sub-agent or direct implementation with per-task verification, independent review with rework loop, report in `docs/implementation/`. Never commits |
 | `diagnose-bug` | Finds and proves the root cause of a bug instead of its symptom: reproduction test first, every claim verified against experiments, repository history, and the installed library version, refuted causes recorded, then a self-contained report in `docs/bugs/` with a causal chain and ranked fix proposals. Never implements the fix, never commits |
+| `refactor` | Improves the structure of existing code in a defined scope without changing behaviour: smell analysis with `file:line` evidence, a prioritised report in `docs/refactoring/`, user-selected candidates, a coverage gate per candidate, then one named refactoring per step with build, test, and lint verification and rollback on red. Never fixes bugs along the way, never commits |
 
 ### Java
 
