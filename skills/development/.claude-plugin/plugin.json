@@ -1,0 +1,26 @@
+{
+  "name": "cc-ai-dev",
+  "description": "Requirement-to-code workflow skills: interview-driven specifications, traceable development plans, plan-driven implementation, root-cause bug diagnosis, and evidence-driven refactoring.",
+  "author": {
+    "name": "CreativeCodersTeam",
+    "url": "https://github.com/CreativeCodersTeam"
+  },
+  "homepage": "https://github.com/CreativeCodersTeam/ai-store/tree/main/skills/development",
+  "repository": "https://github.com/CreativeCodersTeam/ai-store",
+  "license": "Apache-2.0",
+  "keywords": [
+    "specification",
+    "planning",
+    "implementation",
+    "debugging",
+    "refactoring",
+    "workflow"
+  ],
+  "skills": [
+    "./create-dev-spec",
+    "./create-dev-plan",
+    "./implement-dev-plan",
+    "./diagnose-bug",
+    "./refactor"
+  ]
+}

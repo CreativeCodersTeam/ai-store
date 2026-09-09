@@ -6,11 +6,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 A distribution of **Agent Skills** — there is no application, no build system, and no
 package manifest. The deliverables are `SKILL.md` files plus their `references/` and `scripts/`
-siblings, consumed by Claude Code and other agents via `npx skills add …` (see README). Tests are
-not a skill sibling — they live under `skills/<category>/tests/` (see below).
+siblings, consumed by Claude Code and other agents via `npx skills add …`, and the **plugins**
+defined by `.claude-plugin/marketplace.json` (see README, and *Plugin distribution* below). Tests
+are not a skill sibling — they live under `skills/<category>/tests/` (see below).
 Everything is Markdown and Bash; "shipping" means merging to `main`.
 
 ## Commands
+
+The repository-wide validator checks every `SKILL.md` and every plugin/marketplace manifest.
+Run it before opening a pull request; CI runs the same command.
+
+```bash
+bash scripts/validate-skills.sh                # 0 ok / 1 validation failures / 2 usage or missing dependency
+bash scripts/validate-skills.sh --warn-at 800  # lower the "approaching the limit" warning threshold
+```
 
 Only the `dotnet-reviewer` scripts have an automated test suite; it lives in
 `skills/dotnet/tests/dotnet-reviewer/`, not inside the skill. Run from the repository root:
@@ -86,6 +95,36 @@ changing a script means updating its `SKILL.md` step **and**
 sub-agent path: never stall, never guess — fall back to documented defaults and record the
 parameter origin in the report.
 
+## Plugin distribution
+
+Skills are also published as plugins. `.claude-plugin/marketplace.json` at the repository root is
+the catalog; each published category carries `skills/<category>/.claude-plugin/plugin.json`, whose
+`skills` array lists exactly the skill directories that ship. **The plugin root is the category
+directory itself** — nothing is copied or symlinked, and `tests/` simply stays off the list.
+
+Claude Code and the GitHub Copilot CLI both read these two files: Copilot probes `.claude-plugin/`
+last in its manifest search order, so one set of manifests serves both. Verified against Claude
+Code 2.1.263 and Copilot CLI 1.0.83.
+
+Constraints this layout imposes, each one verified by installing the plugin in both CLIs:
+
+- **A skill's `description` must not exceed 1024 characters** (Agent Skills specification).
+  Copilot drops an over-long skill silently, with no error; Claude Code loads it anyway, so the
+  skill is simply missing for half your users until someone notices. `scripts/validate-skills.sh`
+  is the guard. Three Development skills already sit within 120 characters of the limit — check
+  warnings before adding prose to a description.
+- **Do not declare `$schema`** (the Agent Plugins / Open Plugin Spec opt-in) in `plugin.json`.
+  That spec requires a literal `skills/` directory inside the plugin root, which this layout does
+  not have; declaring it makes Copilot load **zero** skills from the plugin. Adopting Open Plugin
+  Spec later means restructuring to a generated or symlinked `plugins/<name>/skills/` tree.
+- **A plugin cannot span categories.** The plugin root is the category directory, so a plugin that
+  mixes, say, `development` with `general/code-review` needs a different layout.
+- **Plugins are deliberately unversioned.** Without a `version` field Claude Code identifies a
+  plugin by commit SHA, so users track `main`. Consequently `claude plugin validate --strict`
+  fails on the resulting warning — CI validates without `--strict`.
+- **Copilot does not namespace plugin skills.** Claude Code exposes `cc-ai-dev:refactor`, Copilot
+  plain `refactor`, and a project-level skill of the same name silently wins over the plugin's.
+
 ## Testing skill behavior
 
 `skills/<category>/tests/*-test.md` are the test artifacts for behavior that cannot be asserted in
@@ -97,5 +136,12 @@ artifact that says "re-run this probe when X changes" means exactly that.
 
 ## When adding or renaming a skill
 
-Update `README.md` — both the category counts table and the per-category "Available Skills" table —
-and the family router `SKILL.md`. Both are hand-maintained and drift silently.
+Update `README.md` — the category counts table, the per-category "Available Skills" table, and
+the plugin table under *Plugins* — and the family router `SKILL.md`. All are hand-maintained and
+drift silently.
+
+If the category is published as a plugin, add the skill to its
+`skills/<category>/.claude-plugin/plugin.json`; a skill missing from that array exists in the
+repository but never reaches plugin users. Then run `bash scripts/validate-skills.sh`, which fails
+on exactly that omission, on a description over 1024 characters, and on a `name` that does not
+match its directory.

@@ -15,9 +15,83 @@ The repository currently contains **39 skills** in six categories:
 | [Java](skills/java) | 4 | Spring Boot, JUnit 5, Javadoc |
 | [TypeScript](skills/typescript) | 2 | Jest, RxJS |
 
+## Plugins
+
+The skills are also distributed as **plugins** through a marketplace in this repository. A plugin
+bundles a whole category of skills, installs with a single command, and updates in place. Plugins
+work in both **Claude Code** and the **GitHub Copilot CLI** — the two read the same
+`.claude-plugin/` manifests, so there is only one set of files to maintain.
+
+| Plugin | Skills | Contents |
+|---|---|---|
+| `cc-ai-dev` | 5 | The complete [Development](skills/development) category: `create-dev-spec`, `create-dev-plan`, `implement-dev-plan`, `diagnose-bug`, `refactor` |
+
+### Claude Code
+
+```bash
+/plugin marketplace add CreativeCodersTeam/ai-store
+/plugin install cc-ai-dev@creativecoders-ai-store
+```
+
+Claude Code namespaces plugin skills with the plugin name, so they are invoked as
+`/cc-ai-dev:create-dev-spec`.
+
+### GitHub Copilot CLI
+
+```bash
+copilot plugin marketplace add CreativeCodersTeam/ai-store
+copilot plugin install cc-ai-dev@creativecoders-ai-store
+```
+
+Copilot does **not** namespace plugin skills — they appear under their plain name
+(`create-dev-spec`). Copilot resolves skills in the order `.github/skills/` → `.agents/skills/` →
+`.claude/skills/` → plugins, and the first one loaded wins. If you already installed these skills
+with `npx skills add` (see [Installation](#installation)), that copy shadows the plugin's and the
+plugin version is ignored without any error. **Pick one installation method, not both.**
+
+### Updating and removing
+
+Plugins are not version-pinned; each update pulls the current state of `main`.
+
+```bash
+claude plugin update cc-ai-dev
+claude plugin uninstall cc-ai-dev@creativecoders-ai-store
+claude plugin marketplace remove creativecoders-ai-store
+
+copilot plugin update cc-ai-dev
+copilot plugin uninstall cc-ai-dev
+copilot plugin marketplace remove creativecoders-ai-store
+```
+
+### Installing declaratively for a team
+
+Instead of installing interactively, commit the plugin into a repository's settings so everyone on
+the project gets it automatically.
+
+```jsonc
+// .claude/settings.json — Claude Code
+{
+  "extraKnownMarketplaces": {
+    "creativecoders-ai-store": {
+      "source": { "source": "github", "repo": "CreativeCodersTeam/ai-store" }
+    }
+  },
+  "enabledPlugins": { "cc-ai-dev@creativecoders-ai-store": true }
+}
+```
+
+```jsonc
+// .github/copilot/settings.json — GitHub Copilot CLI
+{
+  "enabledPlugins": ["cc-ai-dev@creativecoders-ai-store"]
+}
+```
+
 ## Installation
 
-Skills are installed with the [Skills CLI](https://github.com/vercel-labs/skills) (`npx skills`). It requires Node.js and works with Claude Code, Codex, Cursor, OpenCode, and many other agents.
+Individual skills — including those not yet bundled into a plugin — are installed with the
+[Skills CLI](https://github.com/vercel-labs/skills) (`npx skills`). It requires Node.js and works
+with Claude Code, Codex, Cursor, OpenCode, and many other agents.
 
 Use `-g` to install **user-scoped** (e.g. `~/.claude/skills/` for Claude Code, available in all projects). Without `-g`, skills are installed **project-scoped** into the current repository (e.g. `.claude/skills/`).
 
@@ -166,6 +240,10 @@ Restart Claude Code afterwards and run `/skills` to confirm the skills are loade
 ## Repository Structure
 
 ```
+.claude-plugin/
+└── marketplace.json              # the plugin catalog; read by Claude Code and Copilot CLI
+scripts/
+└── validate-skills.sh            # checks every SKILL.md and plugin manifest
 skills/
 ├── angular/
 │   ├── angular/
@@ -173,7 +251,11 @@ skills/
 │   ├── angular-dev/
 │   │   └── SKILL.md
 │   └── ...
-├── development/
+├── development/                  # also the root of the `cc-ai-dev` plugin
+│   ├── .claude-plugin/
+│   │   └── plugin.json           # lists the skills the plugin ships
+│   ├── create-dev-spec/
+│   └── ...
 ├── dotnet/
 ├── general/
 ├── java/
@@ -181,6 +263,8 @@ skills/
 ```
 
 Every skill lives in `skills/<category>/<skill-name>/SKILL.md`. Some skills ship additional reference files or scripts alongside their `SKILL.md`.
+
+A category that is also published as a plugin carries a `.claude-plugin/plugin.json` at its root. The plugin root is the category directory itself, so nothing is duplicated — the plugin ships exactly the skill directories it lists.
 
 ## Contributing
 
@@ -197,4 +281,21 @@ To add a new skill:
    ```
 
 3. Keep the skill self-contained; put larger reference material in files next to the `SKILL.md`.
-4. Open a pull request.
+4. Keep `description` **at or below 1024 characters**. This is a hard limit in the
+   [Agent Skills specification](https://agentskills.io/specification): GitHub Copilot drops a skill
+   whose description exceeds it, without printing any error, while Claude Code loads it anyway — so
+   the defect is invisible unless you check for it.
+5. If the category is published as a plugin, add the new skill to its
+   `skills/<category>/.claude-plugin/plugin.json`, otherwise it will not ship with the plugin.
+6. Run the validator and make sure it passes:
+
+   ```bash
+   bash scripts/validate-skills.sh
+   ```
+
+   It verifies frontmatter, the 1024-character limit, that `name` matches the directory name, and
+   that every plugin manifest lists exactly the skills present on disk. Exit codes: `0` all checks
+   passed, `1` validation failures, `2` usage error or missing dependency.
+7. Update the category counts table and the "Available Skills" table above, and the family router
+   `SKILL.md` if the category has one.
+8. Open a pull request.
