@@ -8,7 +8,8 @@ A distribution of **Agent Skills** — there is no application, no build system,
 package manifest. The deliverables are `SKILL.md` files plus their `references/` and `scripts/`
 siblings, consumed by Claude Code and other agents via `npx skills add …`, and the **plugins**
 defined by `.claude-plugin/marketplace.json` (see README, and *Plugin distribution* below). Tests
-are not a skill sibling — they live under `skills/<category>/tests/` (see below).
+are not a skill sibling and live outside the category directories entirely, under
+`skills/tests/<category>/<skill-name>/` (see below).
 Everything is Markdown and Bash; "shipping" means merging to `main`.
 
 ## Commands
@@ -22,20 +23,22 @@ bash scripts/validate-skills.sh --warn-at 800  # lower the "approaching the limi
 ```
 
 Only the `dotnet-reviewer` scripts have an automated test suite; it lives in
-`skills/dotnet/tests/dotnet-reviewer/`, not inside the skill. Run from the repository root:
+`skills/tests/dotnet/dotnet-reviewer/scripts/`, not inside the skill. Run from the repository root:
 
 ```bash
-bash skills/dotnet/tests/dotnet-reviewer/run-tests.sh                 # all unit tests (builds fixtures on first run)
-bash skills/dotnet/tests/dotnet-reviewer/unit/test-detect-version.sh  # a single test file
-bash skills/dotnet/tests/dotnet-reviewer/clean-fixtures.sh            # drop generated repo-*/ fixtures
+S=skills/tests/dotnet/dotnet-reviewer/scripts
+bash $S/run-tests.sh                 # all unit tests (builds fixtures on first run)
+bash $S/unit/test-detect-version.sh  # a single test file
+bash $S/clean-fixtures.sh            # drop generated repo-*/ fixtures
 ```
 
 Requires `bash` 3.2+, `git`, `jq`, `python3`. The `dotnet` SDK is **not** needed — `run-checks.sh`
-is exercised against `…/tests/dotnet-reviewer/unit/mock-dotnet/dotnet` (behavior via
-`MOCK_DOTNET_MODE`). `…/tests/dotnet-reviewer/integration/test-skill-flow.md` is a manual checklist
-and is not run by `run-tests.sh`. Unit tests resolve `TESTS_DIR` (fixtures, `helpers.sh`, mock) and
-`SKILL_DIR` (`skills/dotnet/dotnet-reviewer/`, the scripts under test) separately; `run-tests.sh`
-exports both and each test derives them from its own location when run directly.
+is exercised against `$S/unit/mock-dotnet/dotnet` (behavior via `MOCK_DOTNET_MODE`).
+`$S/integration/test-skill-flow.md` is a manual checklist and is not run by `run-tests.sh`. Unit
+tests resolve `TESTS_DIR` (`$S` itself — fixtures, `helpers.sh`, mock) and `SKILL_DIR`
+(`skills/dotnet/dotnet-reviewer/`, the scripts under test — four levels up and back down, since
+the suite no longer sits inside the category) separately; `run-tests.sh` exports both and each test
+derives them from its own location when run directly.
 
 The `angular-reviewer` and `gherkin-bdd-reviewer` scripts have no test suite; verify them by hand.
 
@@ -45,9 +48,22 @@ The `angular-reviewer` and `gherkin-bdd-reviewer` scripts have no test suite; ve
 skills/<category>/<skill-name>/SKILL.md          # required; name in frontmatter MUST equal the directory name
                               references/*.md    # depth material, loaded on demand
                               scripts/*.sh       # only for skills that run tools
-skills/<category>/tests/*-test.md                # skill-behavior test artifacts (see below)
-skills/<category>/tests/<skill-name>/            # Bash test suite for that skill's scripts/
 ```
+
+Tests mirror that tree from a separate root, so a category directory holds nothing but shippable
+skills and a test's subject is its path:
+
+```
+skills/tests/<category>/<skill-name>/*-test.md   # skill-behavior test artifacts (see below)
+skills/tests/<category>/<skill-name>/scripts/    # Bash test suite for that skill's scripts/
+skills/tests/<category>/_shared/*-test.md        # artifacts covering the family, not one skill
+```
+
+`_shared/` is for artifacts whose fix landed in more than one skill's files — a rule unified across
+the family, a frontmatter rewrite of every skill in the category, the version cascade. Everything
+attributable to a single skill goes in that skill's directory. Filenames keep the prefix they were
+written with (`aspnet-auth-gap-test.md`, not `auth-gap-test.md`) so the review documents in
+`docs/` that name them stay searchable.
 
 Frontmatter is `name` + `description` only. The **description is load-bearing** — it is the sole
 trigger for auto-loading, so it must read as a precise "Use when …" and, for reviewer skills,
@@ -89,7 +105,7 @@ exit codes (e.g. `detect-dotnet-version.sh`: 0 ok / 1 usage / 4 SDK<10 / 5 malfo
 `collect-diff.sh`: 0 / 1 / 2 not-git / 3 baseline-missing; `run-checks.sh` always exits 0 and
 reports tool failures inside the JSON). The consuming `SKILL.md` enumerates every exit code, so
 changing a script means updating its `SKILL.md` step **and**
-`skills/dotnet/tests/dotnet-reviewer/unit/test-<name>.sh`.
+`skills/tests/dotnet/dotnet-reviewer/scripts/unit/test-<name>.sh`.
 
 **Interactive vs. non-interactive.** Skills that ask the user questions must also define the
 sub-agent path: never stall, never guess — fall back to documented defaults and record the
@@ -100,7 +116,8 @@ parameter origin in the report.
 Skills are also published as plugins. `.claude-plugin/marketplace.json` at the repository root is
 the catalog; each published category carries `skills/<category>/.claude-plugin/plugin.json`, whose
 `skills` array lists exactly the skill directories that ship. **The plugin root is the category
-directory itself** — nothing is copied or symlinked, and `tests/` simply stays off the list.
+directory itself** — nothing is copied or symlinked, and every subdirectory of it is a skill, so
+there is nothing to keep off the list (tests live under `skills/tests/`).
 
 Claude Code and the GitHub Copilot CLI both read these two files: Copilot probes `.claude-plugin/`
 last in its manifest search order, so one set of manifests serves both. Verified against Claude
@@ -127,7 +144,7 @@ Constraints this layout imposes, each one verified by installing the plugin in b
 
 ## Testing skill behavior
 
-`skills/<category>/tests/*-test.md` are the test artifacts for behavior that cannot be asserted in
+`skills/tests/<category>/<skill-name>/*-test.md` are the test artifacts for behavior that cannot be asserted in
 Bash. They follow `superpowers:writing-skills` (RED → GREEN → REFACTOR): baseline evidence
 (usually grep output showing the gap), the fix, and a verification probe run by a **fresh subagent
 given only the passage under test and no file access**, which answers scenario questions and

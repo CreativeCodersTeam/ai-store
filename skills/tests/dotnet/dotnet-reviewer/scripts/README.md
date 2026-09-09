@@ -17,17 +17,17 @@ relative to the repository root.
 
 ```bash
 # all unit tests (rebuilds fixtures on first run)
-bash skills/dotnet/tests/dotnet-reviewer/run-tests.sh
+bash skills/tests/dotnet/dotnet-reviewer/scripts/run-tests.sh
 
 # one test file (resolves its own paths; no env vars needed)
-bash skills/dotnet/tests/dotnet-reviewer/unit/test-detect-version.sh
+bash skills/tests/dotnet/dotnet-reviewer/scripts/unit/test-detect-version.sh
 
 # rebuild fixtures from scratch
-rm -rf skills/dotnet/tests/dotnet-reviewer/fixtures/repo-*
-bash skills/dotnet/tests/dotnet-reviewer/fixtures/make-fixtures.sh
+rm -rf skills/tests/dotnet/dotnet-reviewer/scripts/fixtures/repo-*
+bash skills/tests/dotnet/dotnet-reviewer/scripts/fixtures/make-fixtures.sh
 
 # clean fixtures (removes repo-*/ directories; auto-rebuilt on next run-tests)
-bash skills/dotnet/tests/dotnet-reviewer/clean-fixtures.sh
+bash skills/tests/dotnet/dotnet-reviewer/scripts/clean-fixtures.sh
 ```
 
 ## Dependencies

@@ -99,7 +99,7 @@ full MSBuild property evaluation — the catch-all clause covers the failure cas
 One rule, one home, one number to bump. K-1 is closed — `dotnet-reviewer` reviews a `net8.0` repo
 with the general checklists instead of aborting, so `dotnet-dev` Phase 5 is completable at any
 version. M-7 is closed — checklist selection has a defined fallback that is always named in the
-report. Bash coverage: `tests/dotnet-reviewer/unit/test-detect-version.sh` (16 assertions, including
+report. Bash coverage: `skills/tests/dotnet/dotnet-reviewer/scripts/unit/test-detect-version.sh` (16 assertions, including
 the inverted `repo-net8` case, `repo-no-project`, and `repo-props-tfm`).
 
 Re-run this probe whenever `target-framework.md`, the router Version-baseline note, or

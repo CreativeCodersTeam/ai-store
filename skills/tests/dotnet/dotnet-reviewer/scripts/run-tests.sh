@@ -4,7 +4,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SKILL_DIR="$(cd "$SCRIPT_DIR/../../dotnet-reviewer" && pwd)"
+SKILL_DIR="$(cd "$SCRIPT_DIR/../../../../dotnet/dotnet-reviewer" && pwd)"
 
 if ! command -v jq >/dev/null 2>&1; then
   echo "ERROR: jq is required for tests" >&2
