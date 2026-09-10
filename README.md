@@ -11,7 +11,7 @@ The repository currently contains **39 skills** in six categories:
 | [Angular](skills/angular) | 11 | Angular development, testing, reviews, libraries |
 | [.NET](skills/dotnet) | 11 | .NET/C# development, ASP.NET Core, EF Core, NuGet |
 | [General](skills/general) | 7 | Language-agnostic workflows: reviews, BDD, docs, prompts |
-| [Development](skills/development) | 5 | Requirement engineering, diagnosis, and code quality: interview-driven specifications, traceable development plans, plan-driven implementation, root-cause bug diagnosis, and evidence-driven refactoring |
+| [Development](skills/development) | 6 | Requirement engineering, diagnosis, and code quality: interview-driven specifications, traceable development plans, plan-driven implementation, root-cause bug diagnosis, evidence-driven refactoring, and unattended goal-driven iteration loops |
 | [Java](skills/java) | 4 | Spring Boot, JUnit 5, Javadoc |
 | [TypeScript](skills/typescript) | 2 | Jest, RxJS |
 
@@ -24,7 +24,7 @@ work in both **Claude Code** and the **GitHub Copilot CLI** — the two read the
 
 | Plugin | Skills | Contents |
 |---|---|---|
-| `cc-ai-dev` | 5 | The complete [Development](skills/development) category: `create-dev-spec`, `create-dev-plan`, `implement-dev-plan`, `diagnose-bug`, `refactor` |
+| `cc-ai-dev` | 6 | The complete [Development](skills/development) category: `create-dev-spec`, `create-dev-plan`, `implement-dev-plan`, `diagnose-bug`, `refactor`, `auto-loop` |
 
 ### Claude Code
 
@@ -220,6 +220,7 @@ Restart Claude Code afterwards and run `/skills` to confirm the skills are loade
 | `implement-dev-plan` | Implements an approved plan from `docs/plans/` task by task: consistency check against the spec, runtime skill discovery, sub-agent or direct implementation with per-task verification, independent review with rework loop, report in `docs/implementation/`. Never commits |
 | `diagnose-bug` | Finds and proves the root cause of a bug instead of its symptom: reproduction test first, every claim verified against experiments, repository history, and the installed library version, refuted causes recorded, then a self-contained report in `docs/bugs/` with a causal chain and ranked fix proposals. Never implements the fix, never commits |
 | `refactor` | Improves the structure of existing code in a defined scope without changing behaviour: smell analysis with `file:line` evidence, a prioritised report in `docs/refactoring/`, user-selected candidates, a coverage gate per candidate, then one named refactoring per step with build, test, and lint verification and rollback on red. Never fixes bugs along the way, never commits |
+| `auto-loop` | Runs an explicitly requested goal as an unattended iteration loop: a setup interview fixes criteria, verification commands, budget, scope limits, and Git strategy, then every round takes one step against `docs/auto-loop/<slug>.md` as its only memory, commits on green and rolls back on red. Stops on met criteria, exhausted budget, stagnation, a needed scope violation, or a contradiction, always with a closing report. Commits to its own branch, never merges or pushes |
 
 ### Java
 
