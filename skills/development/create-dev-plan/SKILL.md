@@ -1,16 +1,15 @@
 ---
 name: create-dev-plan
 description: >
-  Use when the user wants to turn an approved specification (a create-dev-spec document in
-  docs/specs/) or any other requirement — pasted text, an issue URL, a requirements document —
-  into a development plan before implementation starts: requests like "create a dev plan",
-  "plan the implementation", "break this spec into tasks", "what are the tasks for this",
-  "Entwicklungsplan erstellen", or when an implementation workflow needs a task list with
-  dependencies and tests. Reviews the spec for gaps, clarifies them with the user, surveys the
-  codebase, decomposes the work into tasks with explicit interfaces, and binds every requirement
-  ID to the test that will prove it (Verifies blocks, traceability matrix). Writes a reviewable
-  draft to docs/draft/, waits for explicit approval, then the final plan to docs/plans/. Not for
-  writing the spec itself (that is create-dev-spec) and not for implementing anything.
+  Use only when explicitly requested by name — "create-dev-plan", "create dev plan",
+  "/create-dev-plan", "/cc-ai-dev:create-dev-plan", "start create-dev-plan" — or when another skill
+  hands off to it by name, to turn an approved specification in docs/specs/ or another requirement
+  into a development plan before implementation. Reviews the spec for gaps, clarifies them with the
+  user, surveys the codebase, decomposes the work into tasks with explicit interfaces, and binds
+  every requirement ID to the test that proves it. Writes a reviewable draft to docs/draft/, waits
+  for explicit approval, then the final plan to docs/plans/. Writes no spec and implements nothing.
+  Must NOT activate on its own for "plan the implementation", "break this into tasks", "create a
+  development plan", or any other planning request that does not name the skill.
 ---
 
 # create-dev-plan — From Approved Specification to Reviewed Development Plan
@@ -35,6 +34,11 @@ The output is two files:
 `<slug>` is the spec's slug (`docs/specs/<slug>.md`). For a raw requirement without a spec it is
 decided in Phase 2. When the spec is cut into several plans (Phase 2, `C-scope`), each part is
 `docs/plans/<slug>-<n>-<part>.md` and every part carries the same *Plan Set* table.
+
+**Explicit invocation.** This skill starts only when it was named — `/create-dev-plan`,
+`/cc-ai-dev:create-dev-plan`, the name in the prompt, or a hand-off from another skill such as
+`implement-dev-plan`. A request that merely describes plan-shaped work ("break this into tasks",
+"Entwicklungsplan erstellen") is handled as an ordinary request without this workflow.
 
 ## Flow Overview
 

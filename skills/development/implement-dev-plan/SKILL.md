@@ -1,17 +1,16 @@
 ---
 name: implement-dev-plan
 description: >
-  Use when the user wants an approved development plan (a create-dev-plan document in
-  docs/plans/, usually with its create-dev-spec specification in docs/specs/) turned into working
-  code: requests like "implement the plan", "implement docs/plans/<slug>.md", "work through the
-  tasks", "setze den Plan um", "Feature nach Plan implementieren", or when a plan exists and the
-  next step is code. Checks plan and spec for consistency, discovers the installed skills that fit
-  the tech stack at runtime and lets the user pick them, maps them to tasks, implements task by
-  task (directly or with one sub-agent per task), verifies every task against its Verifies block,
-  runs an independent review of the uncommitted changes, loops on rework the user selects, and
-  writes an implementation report to docs/implementation/. Never commits. Not for requests without
-  a plan — a bare "implement feature X" goes to create-dev-spec / create-dev-plan first — and not
-  for writing specs or plans.
+  Use only when explicitly requested by name — "implement-dev-plan", "implement dev plan",
+  "/implement-dev-plan", "/cc-ai-dev:implement-dev-plan", "run implement-dev-plan" — or when
+  another skill hands off to it by name, to turn an approved development plan in docs/plans/ (with
+  its spec in docs/specs/) into working code. Checks plan and spec for consistency, discovers
+  fitting installed skills at runtime and lets the user pick, implements task by task (directly or
+  one sub-agent per task), verifies each task against its Verifies block, runs an independent
+  review with a rework loop, and writes a report to docs/implementation/. Never commits. Must NOT
+  activate on its own for "implement the plan", "implement docs/plans/<slug>.md", "work through the
+  plan", a bare "implement feature X", or any other implementation request that does not name the
+  skill.
 ---
 
 # implement-dev-plan — From Approved Plan to Reviewed, Uncommitted Implementation
@@ -36,6 +35,12 @@ The output is uncommitted code plus three documents:
 | Implementation report | `docs/implementation/<slug>.md` | Decisions, skills, results, deviations, review outcome |
 
 `<slug>` is the plan's slug (`docs/plans/<slug>.md`); a plan-set part keeps its full file name.
+
+**Explicit invocation.** This skill starts only when it was named — `/implement-dev-plan`,
+`/cc-ai-dev:implement-dev-plan`, the name in the prompt, or a hand-off from `create-dev-plan`'s
+closing step. A request that merely describes implementation work ("implement
+docs/plans/<slug>.md", "setze den Plan um") is handled as an ordinary request without this
+workflow.
 
 ## Flow Overview
 
