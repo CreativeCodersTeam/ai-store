@@ -1,17 +1,16 @@
 ---
 name: refactor
 description: >
-  Use when the user wants existing code improved in structure without changing what it does:
-  "refactor <file/class/module>", "clean this up", "reduce the duplication here", "get rid of the
-  dead code in …", "pay down technical debt in …", "diesen Code refactoren", "aufräumen",
-  "Refactoring für …", or when code smells — long functions, duplication, deep nesting, primitive
-  obsession, dead code — should be found and removed inside a defined scope. Analyses the scope
-  with file:line evidence, writes a prioritised report to docs/refactoring/, lets the user choose
-  what gets touched, proves test coverage per candidate, then applies one named refactoring at a
-  time, verifying build, tests, and linter after each step and rolling back on red. Needs a scope
-  and asks for one if none was given. Never changes behaviour, never fixes bugs, adds features,
-  tunes performance, or reformats along the way, and never commits. Not for a generic "review my
-  code", not for building new functionality, not for finding the cause of a bug.
+  Use only when explicitly requested by name — "refactor" as the skill name, "/refactor",
+  "/cc-ai-dev:refactor", "run the refactor skill" — or when another skill hands off to it by name,
+  to improve the structure of existing code in a defined scope without changing behaviour. The verb
+  "refactor" inside a request is not an invocation. Analyses the scope with file:line evidence,
+  writes a prioritised report to docs/refactoring/, lets the user choose candidates, proves test
+  coverage per candidate, then applies one named refactoring at a time with build, test, and lint
+  verification and rollback on red. Needs a scope and asks for one. Never changes behaviour, never
+  fixes bugs, never commits. Must NOT activate on its own for "refactor this", "clean this up",
+  "reduce duplication", "tidy this up", or any other refactoring request that does not name the
+  skill.
 ---
 
 # refactor
@@ -29,6 +28,11 @@ enough that each one can be proven safe, with the user deciding what gets touche
   formatting. Each of those changes behaviour or the diff in ways this workflow cannot verify.
 - **Never commits.** The user reviews the diff and decides what enters history. Offer commit points;
   do not take them.
+
+**Explicit invocation.** This skill starts only when it was named — `/refactor`,
+`/cc-ai-dev:refactor`, "the refactor skill" in the prompt, or a hand-off from another skill. The
+verb "refactor" in a request ("refactor the UserService", "clean this up") is not an invocation;
+such a request is handled as an ordinary request without this workflow.
 
 ## The one rule everything else serves
 

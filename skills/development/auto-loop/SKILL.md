@@ -1,14 +1,15 @@
 ---
 name: auto-loop
 description: >
-  Use only when explicitly requested by name — "auto-loop", "auto loop", "Auto-Loop starten" — to run
-  one goal as an unattended iteration loop until measurable criteria are met. A setup interview fixes
-  the success criteria, verification commands, iteration and time budget, scope limits, mode, and Git
-  strategy; after that the loop runs without asking, each round taking one step against
-  docs/auto-loop/<slug>.md as its only memory, committing on green and rolling back on red. Stops on
-  met criteria, exhausted budget, stagnation, a needed scope violation, or a contradiction, always
-  with a closing report. Stack-agnostic. Must NOT activate on a plain implementation, refactoring, or
-  bug request, on "keep going", or on scheduled recurring runs.
+  Use only when explicitly requested by name — "auto-loop", "auto loop", "/auto-loop",
+  "/cc-ai-dev:auto-loop", "run auto-loop" — to run one goal as an unattended iteration loop until
+  measurable criteria are met. A setup interview fixes the success criteria, verification commands,
+  iteration and time budget, scope limits, mode, and Git strategy; after that the loop runs without
+  asking, each round taking one step against docs/auto-loop/<slug>.md as its only memory,
+  committing on green and rolling back on red. Stops on met criteria, exhausted budget, stagnation,
+  a needed scope violation, or a contradiction, always with a closing report. Stack-agnostic. Must
+  NOT activate on a plain implementation, refactoring, or bug request, on "keep going", or on
+  scheduled recurring runs.
 ---
 
 # auto-loop

@@ -1,15 +1,14 @@
 ---
 name: create-dev-spec
 description: >
-  Use when the user wants to turn an initial requirement, feature idea, user story,
-  or change request into a complete specification document before any code is
-  written — including requests phrased as "write a spec", "spec this out", "create a
-  requirements doc", "let's define this properly first", "I have a rough idea for…",
-  or when a requirement arrives that is too vague or too thin to implement as-is.
-  Runs a structured interview (open questions, gaps, your own proposals), writes a
-  reviewable draft to docs/draft/, waits for explicit approval, then produces the
-  final spec in docs/specs/. Not for implementing the feature — hand the finished
-  spec to an implementation workflow skill afterwards.
+  Use only when explicitly requested by name — "create-dev-spec", "create dev spec",
+  "/create-dev-spec", "/cc-ai-dev:create-dev-spec", "run create-dev-spec" — or when another skill
+  hands off to it by name, to turn a rough requirement, feature idea, user story, or change request
+  into a complete specification before any code is written. Runs a structured interview (open
+  questions, gaps, own proposals), writes a reviewable draft to docs/draft/, waits for explicit
+  approval, then produces the final spec in docs/specs/. Implements nothing. Must NOT activate on
+  its own for "write a spec", "spec this out", "define this properly first", a vague feature idea,
+  or any other requirement that does not name the skill.
 ---
 
 # create-dev-spec — From Rough Requirement to Approved Specification
@@ -32,6 +31,11 @@ The output is two files:
 
 `<slug>` is a 2–4 word kebab-case description of the requirement (e.g. `customer-csv-export`),
 proposed by you and confirmed by the user during the interview.
+
+**Explicit invocation.** This skill starts only when it was named — `/create-dev-spec`,
+`/cc-ai-dev:create-dev-spec`, the name in the prompt, or a hand-off from another skill such as
+`create-dev-plan`. A request that merely describes spec-shaped work ("spec this out", a rough
+feature idea) is handled as an ordinary request without this workflow.
 
 ## Flow Overview
 

@@ -1,6 +1,13 @@
 ---
 name: diagnose-bug
-description: Use when asked to diagnose, investigate, debug, troubleshoot, or find the root cause of a bug, error, exception, crash, failing or flaky test, wrong output, regression, performance anomaly, or any unexpected behavior in a codebase — including "why does X happen", "X is broken", "this fails sometimes", "worked yesterday", or a pasted stack trace or log. Also use when the user asks to fix a bug whose cause has not been established yet, so the fix targets the root cause instead of the symptom. Produces a self-contained diagnosis report under docs/bugs/ with a verified causal chain, excluded causes, and ranked fix proposals; it does not implement the fix. Do not use for feature requests, code review, or bugs whose root cause is already verified.
+description: >
+  Use only when explicitly requested by name — "diagnose-bug", "diagnose bug", "/diagnose-bug",
+  "/cc-ai-dev:diagnose-bug", "run diagnose-bug" — or when another skill hands off to it by name, to
+  find and prove the root cause of a bug, error, failing or flaky test, regression, or other
+  unexpected behaviour. Produces a self-contained diagnosis report under docs/bugs/ with a verified
+  causal chain, excluded causes, and ranked fix proposals; does not implement the fix. Must NOT
+  activate on its own for "why does X happen", "X is broken", "this fails sometimes", a pasted
+  stack trace, or any other bug or debugging request that does not name the skill.
 ---
 
 # diagnose-bug
@@ -21,6 +28,11 @@ developer can act on without redoing the investigation.
   the bug, see which causes were excluded and why, follow the causal chain to the root, and pick
   a fix. Dead ends are part of the deliverable, because they are exactly what the next person
   would otherwise repeat.
+
+**Explicit invocation.** This skill starts only when it was named — `/diagnose-bug`,
+`/cc-ai-dev:diagnose-bug`, the name in the prompt, or a hand-off from another skill such as
+`auto-loop`. A request that merely describes a bug ("why does this fail", a pasted stack trace)
+is handled as an ordinary request without this workflow.
 
 ## Principles
 

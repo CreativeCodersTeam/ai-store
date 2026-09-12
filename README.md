@@ -2,7 +2,7 @@
 
 A curated collection of [Agent Skills](https://code.claude.com/docs/en/skills) for Claude Code and compatible AI coding agents, organized by technology stack.
 
-Each skill is a self-contained `SKILL.md` file that teaches the agent a specific workflow or set of best practices — from implementing .NET features and reviewing Angular code to writing Gherkin scenarios and refactoring safely. Skills are loaded automatically when relevant, or can be invoked explicitly by name.
+Each skill is a self-contained `SKILL.md` file that teaches the agent a specific workflow or set of best practices — from implementing .NET features and reviewing Angular code to writing Gherkin scenarios and refactoring safely. Skills are loaded automatically when relevant, or can be invoked explicitly by name. The [Development](skills/development) category loads on explicit invocation only.
 
 The repository currently contains **39 skills** in six categories:
 
@@ -11,7 +11,7 @@ The repository currently contains **39 skills** in six categories:
 | [Angular](skills/angular) | 11 | Angular development, testing, reviews, libraries |
 | [.NET](skills/dotnet) | 11 | .NET/C# development, ASP.NET Core, EF Core, NuGet |
 | [General](skills/general) | 7 | Language-agnostic workflows: reviews, BDD, docs, prompts |
-| [Development](skills/development) | 6 | Requirement engineering, diagnosis, and code quality: interview-driven specifications, traceable development plans, plan-driven implementation, root-cause bug diagnosis, evidence-driven refactoring, and unattended goal-driven iteration loops |
+| [Development](skills/development) | 6 | Requirement engineering, diagnosis, and code quality: interview-driven specifications, traceable development plans, plan-driven implementation, root-cause bug diagnosis, evidence-driven refactoring, and unattended goal-driven iteration loops (explicit invocation only) |
 | [Java](skills/java) | 4 | Spring Boot, JUnit 5, Javadoc |
 | [TypeScript](skills/typescript) | 2 | Jest, RxJS |
 
@@ -212,6 +212,11 @@ Restart Claude Code afterwards and run `/skills` to confirm the skills are loade
 | `gherkin-bdd-reviewer` | Reviews existing Gherkin/BDD files against best practices |
 
 ### Development
+
+Every skill in this category loads on **explicit invocation only** — `/name` (`/cc-ai-dev:name` when
+installed as a plugin in Claude Code) or the skill name in the prompt. None of them activates from a
+task description alone; "spec this out", "why does this test fail", or "clean this up" are answered
+as ordinary requests.
 
 | Skill | Description |
 |---|---|
