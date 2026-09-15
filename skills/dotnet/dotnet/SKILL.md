@@ -44,6 +44,13 @@ orientation, not an intermediate step.
   by the `dotnet-dev` workflow (Phase 5), which counts as explicit. It does
   **not** trigger on generic "review my code", and the router does not trigger
   it automatically.
+- **`dotnet-dev` activates only when the user names it** — `/dotnet-dev`,
+  `dotnet-dev`, or `dotnet dev` in the prompt. It is the gated end-to-end
+  implementation workflow (requirement review → clarification → task breakdown
+  → implementation → `dotnet-reviewer` → summary). A plain "implement this
+  feature" / "fix this bug" request is served by the knowledge skills above;
+  neither the router nor any other skill or agent starts `dotnet-dev` on the
+  user's behalf.
 - **Composition:** `dotnet-sdk-builder` invokes `dotnet-xmldocs` and `dotnet-tester`;
   `dotnet-aspnet` and `dotnet-ef-core` build on `dotnet-fundamentals`.
 - **Version baseline:** target frameworks resolve explicit user directive → repo

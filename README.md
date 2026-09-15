@@ -188,7 +188,7 @@ Restart Claude Code afterwards and run `/skills` to confirm the skills are loade
 | Skill | Description |
 |---|---|
 | `dotnet` | Entry point that routes to the right specialized .NET skill |
-| `dotnet-dev` | End-to-end implementation workflow for .NET/C# features and bug fixes |
+| `dotnet-dev` | End-to-end implementation workflow for .NET/C# features and bug fixes (explicit invocation only) |
 | `dotnet-fundamentals` | DI lifetimes, IOptions, configuration, modern C# idioms |
 | `dotnet-aspnet` | ASP.NET Core APIs: controllers, minimal APIs, middleware, auth, ProblemDetails |
 | `dotnet-ef-core` | EF Core: DbContext design, LINQ, migrations, query performance |
