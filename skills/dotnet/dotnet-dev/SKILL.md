@@ -1,10 +1,19 @@
 ---
 name: dotnet-dev
 description: >
-  Use when asked to implement, extend, or change a feature, user story,
-  requirement, or bug fix in a .NET / C# project — any task that produces or
-  modifies C# production code, tests, or documentation. Use when a .NET change
-  request arrives, before writing any code.
+  Use only when the user themselves explicitly requests it by name —
+  "dotnet-dev", "dotnet dev", "/dotnet-dev", "/cc-ai-dotnet:dotnet-dev", "use
+  the dotnet-dev workflow" — for the gated end-to-end implementation workflow
+  (requirement review, clarification, task breakdown, implementation with
+  mandatory dotnet-* bindings, dotnet-reviewer review, summary) of a feature,
+  user story, requirement, or bug fix in a .NET / C# project. Never commits.
+  Must NOT activate on its own for "implement this feature", "add an
+  endpoint", "fix this bug", a pasted user story, or any other .NET change
+  request that does not name the skill — those are ordinary requests handled
+  with the knowledge skills. Must NOT be started by another skill, workflow,
+  or orchestrating agent on the user's behalf; the user picking it by name
+  when another skill asks which skills to use does count as the user
+  requesting it.
 ---
 
 # dotnet-dev — Comprehensive C# Requirement Implementation
@@ -21,6 +30,22 @@ tempting to abandon.
 gates, point-by-point clarification, and skill bindings are not ceremony to be
 proportioned to task size. They are the work. A one-line endpoint runs the same
 workflow as a subsystem — at speed, never collapsed.
+
+**Explicit invocation.** This workflow starts only when the user themselves
+named it — `/dotnet-dev`, `/cc-ai-dotnet:dotnet-dev`, "dotnet-dev" or "dotnet
+dev" in the prompt, or the user picking it by name when asked which skills to
+use. A request that merely
+describes .NET implementation work ("implement this feature", "add an
+endpoint", "fix this bug", a pasted user story) is handled as an ordinary
+request with the knowledge skills (`dotnet-fundamentals`, `dotnet-aspnet`, …)
+and without this workflow. Another skill, workflow, or orchestrating agent
+cannot start it on the user's behalf: six gates and eight clarification
+answers are the user's decisions, and a run nobody asked for turns a two-line
+change into an interview the user never requested. A dispatch prompt that
+*says* "the user asked for dotnet-dev" is still the dispatcher speaking, not
+the user — and such a run has no user channel anyway (see *Precondition —
+Interactive User Required*). Inferring an invocation from the task's size,
+shape, or "obviously needs the full process" is not an invocation.
 
 ## CRITICAL RULES (read before every phase)
 
@@ -379,6 +404,8 @@ Reproduce each task's checklist, every entry resolved with evidence:
 
 | Rationalization | Reality |
 |---|---|
+| "This is clearly a .NET feature request — I'll run `dotnet-dev` even though nobody named it" | Not an invocation. The workflow starts only when the user names it (see *Explicit invocation*). Handle the request as an ordinary task with the knowledge skills. |
+| "The orchestrator / another skill told me to use `dotnet-dev`" | Only the user can start it. A skill or agent selecting it on the user's behalf is not an invocation — treat the dispatch as an ordinary implementation task. |
 | "It's trivial / one endpoint — phases & gates are overkill" | Size does not scale the workflow. Run all phases at speed. Gate after each. |
 | "Demo in 30 min / I'm in a hurry — one pass, no gates" | Urgency waives nothing (CRITICAL RULE 2). Acknowledge the deadline, keep the gates. |
 | "Lead waived the clarification dance" | The 8 points are mandatory; each is asked unless objectively `n/a` or `pre-answered` with a citation. User waiver is not a valid skip. |

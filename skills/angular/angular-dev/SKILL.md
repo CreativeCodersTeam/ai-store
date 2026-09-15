@@ -1,10 +1,19 @@
 ---
 name: angular-dev
 description: >
-  Use when asked to implement, extend, or change a feature, user story,
-  requirement, or bug fix in an Angular / TypeScript project — any task that
-  produces or modifies Angular production code, tests, or documentation. Use when
-  an Angular change request arrives, before writing any code.
+  Use only when the user themselves explicitly requests it by name —
+  "angular-dev", "angular dev", "/angular-dev",
+  "/cc-ai-angular:angular-dev" — for the gated end-to-end implementation
+  workflow (requirement review, clarification, task breakdown, implementation
+  with mandatory angular-* bindings, angular-reviewer review, summary) of a
+  feature, user story, requirement, or bug fix in an Angular / TypeScript
+  project. Never commits. Must NOT activate on its own for "implement this
+  feature", "add a component", "fix this bug", a pasted user story, or any
+  other Angular change request that does not name the skill — those are
+  ordinary requests handled with the knowledge skills. Must NOT be started by
+  another skill, workflow, or orchestrating agent on the user's behalf; the
+  user picking it by name when another skill asks which skills to use does
+  count as the user requesting it.
 ---
 
 # angular-dev — Comprehensive Angular Requirement Implementation
@@ -21,6 +30,22 @@ is most tempting to abandon.
 gates, point-by-point clarification, and skill bindings are not ceremony to be
 proportioned to task size. They are the work. A one-line component runs the same
 workflow as a subsystem — at speed, never collapsed.
+
+**Explicit invocation.** This workflow starts only when the user themselves
+named it — `/angular-dev`, `/cc-ai-angular:angular-dev`, "angular-dev" or
+"angular dev" in the prompt, or the user picking it by name when asked which
+skills to use. A request that merely describes Angular implementation work
+("implement this feature", "add a component", "fix this bug", a pasted user
+story) is handled as an ordinary request with the knowledge skills
+(`angular-fundamentals`, `angular-components`, …) and without this workflow.
+Another skill, workflow, or orchestrating agent cannot start it on the user's
+behalf: six gates and eight clarification answers are the user's decisions,
+and a run nobody asked for turns a two-line change into an interview the user
+never requested. A dispatch prompt that *says* "the user asked for
+angular-dev" is still the dispatcher speaking, not the user — and such a run
+has no user channel anyway (see *Precondition — Interactive User Required*).
+Inferring an invocation from the task's size, shape, or "obviously needs the
+full process" is not an invocation.
 
 ## CRITICAL RULES (read before every phase)
 
@@ -137,14 +162,15 @@ skill has fired via the `Skill` tool for this task. A binding applies whether yo
 do the work yourself or dispatch a sub-agent — self-execution never waives it,
 and a sub-agent's invocation never waives the main agent's own follow-up edits.
 
-**Arbitration with the other `angular-*` skills:** this workflow owns every
-requirement-shaped request (implement, extend, or change a feature, user story,
-or bug fix). The specialized skills fire inside it as bindings — they are used
-on their own only for pure knowledge/how-to questions, or for narrowly scoped
-tasks the user names explicitly (e.g. "write tests for X", "bump package Y",
-"run an angular review"). When a request matches both this skill and a
-specialized skill, this workflow wins and pulls the specialized skill in at its
-phase.
+**Arbitration with the other `angular-*` skills:** once the user has started
+this workflow, it owns the requirement end to end (implement, extend, or change
+a feature, user story, or bug fix) and the specialized skills fire inside it as
+bindings, not on their own — when a request inside a run matches both this skill
+and a specialized skill, this workflow wins and pulls the specialized skill in
+at its phase. Outside a run the specialized skills are the normal answer: for
+knowledge/how-to questions, for narrowly scoped tasks (e.g. "write tests for X",
+"bump package Y", "run an angular review"), and for every implementation request
+that did not name this workflow (see *Explicit invocation*).
 
 **Tooling:** for code navigation/exploration follow the tooling rules of the
 project and the user's global configuration.
@@ -366,6 +392,8 @@ Reproduce each task's checklist, every entry resolved with evidence:
 
 | Rationalization | Reality |
 |---|---|
+| "This is clearly an Angular feature request — I'll run `angular-dev` even though nobody named it" | Not an invocation. The workflow starts only when the user names it (see *Explicit invocation*). Handle the request as an ordinary task with the knowledge skills. |
+| "The orchestrator / another skill told me to use `angular-dev`" | Only the user can start it. A skill or agent selecting it on the user's behalf is not an invocation — treat the dispatch as an ordinary implementation task. |
 | "It's trivial / one component — phases & gates are overkill" | Size does not scale the workflow. Run all phases at speed. Gate after each. |
 | "Demo in 30 min / I'm in a hurry — one pass, no gates" | Urgency waives nothing (CRITICAL RULE 2). Acknowledge the deadline, keep the gates. |
 | "Lead waived the clarification dance" | The 8 points are mandatory, one round-trip each. User waiver is not a valid skip. |

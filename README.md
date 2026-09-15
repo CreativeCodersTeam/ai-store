@@ -4,7 +4,7 @@ A curated collection of [Agent Skills](https://code.claude.com/docs/en/skills) f
 
 Each skill is a self-contained `SKILL.md` file that teaches the agent a specific workflow or set of best practices — from implementing .NET features and reviewing Angular code to writing Gherkin scenarios and refactoring safely. Skills are loaded automatically when relevant, or can be invoked explicitly by name. The [Development](skills/development) category loads on explicit invocation only.
 
-The repository currently contains **39 skills** in six categories:
+The repository's skills are organized in the following categories:
 
 | Category | Skills | Focus |
 |---|---|---|
@@ -24,34 +24,44 @@ work in both **Claude Code** and the **GitHub Copilot CLI** — the two read the
 
 | Plugin | Skills | Contents |
 |---|---|---|
+| `cc-ai-angular` | 11 | The complete [Angular](skills/angular) category: `angular`, `angular-dev`, `angular-fundamentals`, `angular-components`, `angular-state`, `angular-rxjs`, `angular-library-builder`, `angular-tester`, `angular-reviewer`, `angular-package-manager`, `angular-tsdoc` |
+| `cc-ai-dotnet` | 11 | The complete [.NET](skills/dotnet) category: `dotnet`, `dotnet-dev`, `dotnet-fundamentals`, `dotnet-aspnet`, `dotnet-ef-core`, `dotnet-sdk-builder`, `dotnet-tester`, `dotnet-reviewer`, `dotnet-inspect`, `dotnet-nuget-manager`, `dotnet-xmldocs` |
 | `cc-ai-dev` | 6 | The complete [Development](skills/development) category: `create-dev-spec`, `create-dev-plan`, `implement-dev-plan`, `diagnose-bug`, `refactor`, `auto-loop` |
 
 ### Claude Code
 
 ```bash
 /plugin marketplace add CreativeCodersTeam/ai-store
+/plugin install cc-ai-angular@creativecoders-ai-store
+/plugin install cc-ai-dotnet@creativecoders-ai-store
 /plugin install cc-ai-dev@creativecoders-ai-store
 ```
 
+All three plugins come from the same marketplace — add it once, then install whichever you need.
+
 Claude Code namespaces plugin skills with the plugin name, so they are invoked as
-`/cc-ai-dev:create-dev-spec`.
+`/cc-ai-dotnet:dotnet-dev` or `/cc-ai-dev:create-dev-spec`.
 
 ### GitHub Copilot CLI
 
 ```bash
 copilot plugin marketplace add CreativeCodersTeam/ai-store
+copilot plugin install cc-ai-angular@creativecoders-ai-store
+copilot plugin install cc-ai-dotnet@creativecoders-ai-store
 copilot plugin install cc-ai-dev@creativecoders-ai-store
 ```
 
 Copilot does **not** namespace plugin skills — they appear under their plain name
-(`create-dev-spec`). Copilot resolves skills in the order `.github/skills/` → `.agents/skills/` →
-`.claude/skills/` → plugins, and the first one loaded wins. If you already installed these skills
-with `npx skills add` (see [Installation](#installation)), that copy shadows the plugin's and the
-plugin version is ignored without any error. **Pick one installation method, not both.**
+(`dotnet-dev`, `angular-dev`, `create-dev-spec`). Copilot resolves skills in the order
+`.github/skills/` → `.agents/skills/` → `.claude/skills/` → plugins, and the first one loaded wins.
+If you already installed these skills with `npx skills add` (see [Installation](#installation)),
+that copy shadows the plugin's and the plugin version is ignored without any error. **Pick one
+installation method, not both.**
 
 ### Updating and removing
 
-Plugins are not version-pinned; each update pulls the current state of `main`.
+Plugins are not version-pinned; each update pulls the current state of `main`. The commands below
+use `cc-ai-dev`; they work the same way for `cc-ai-dotnet` and `cc-ai-angular`.
 
 ```bash
 claude plugin update cc-ai-dev
@@ -76,14 +86,22 @@ the project gets it automatically.
       "source": { "source": "github", "repo": "CreativeCodersTeam/ai-store" }
     }
   },
-  "enabledPlugins": { "cc-ai-dev@creativecoders-ai-store": true }
+  "enabledPlugins": {
+    "cc-ai-angular@creativecoders-ai-store": true,
+    "cc-ai-dotnet@creativecoders-ai-store": true,
+    "cc-ai-dev@creativecoders-ai-store": true
+  }
 }
 ```
 
 ```jsonc
 // .github/copilot/settings.json — GitHub Copilot CLI
 {
-  "enabledPlugins": ["cc-ai-dev@creativecoders-ai-store"]
+  "enabledPlugins": [
+    "cc-ai-angular@creativecoders-ai-store",
+    "cc-ai-dotnet@creativecoders-ai-store",
+    "cc-ai-dev@creativecoders-ai-store"
+  ]
 }
 ```
 
@@ -172,7 +190,7 @@ Restart Claude Code afterwards and run `/skills` to confirm the skills are loade
 | Skill | Description |
 |---|---|
 | `angular` | Entry point that routes to the right specialized Angular skill |
-| `angular-dev` | End-to-end implementation workflow for Angular features and bug fixes |
+| `angular-dev` | End-to-end implementation workflow for Angular features and bug fixes (explicit invocation only) |
 | `angular-fundamentals` | DI and providers, typed configuration, standalone APIs, signals, modern TypeScript idioms |
 | `angular-components` | Components, templates, routing, forms, HttpClient, interceptors, guards |
 | `angular-state` | State design: signals vs. RxJS vs. NgRx, selectors, change detection |
@@ -188,7 +206,7 @@ Restart Claude Code afterwards and run `/skills` to confirm the skills are loade
 | Skill | Description |
 |---|---|
 | `dotnet` | Entry point that routes to the right specialized .NET skill |
-| `dotnet-dev` | End-to-end implementation workflow for .NET/C# features and bug fixes |
+| `dotnet-dev` | End-to-end implementation workflow for .NET/C# features and bug fixes (explicit invocation only) |
 | `dotnet-fundamentals` | DI lifetimes, IOptions, configuration, modern C# idioms |
 | `dotnet-aspnet` | ASP.NET Core APIs: controllers, minimal APIs, middleware, auth, ProblemDetails |
 | `dotnet-ef-core` | EF Core: DbContext design, LINQ, migrations, query performance |
@@ -251,7 +269,9 @@ as ordinary requests.
 scripts/
 └── validate-skills.sh            # checks every SKILL.md and plugin manifest
 skills/
-├── angular/
+├── angular/                      # also the root of the `cc-ai-angular` plugin
+│   ├── .claude-plugin/
+│   │   └── plugin.json           # lists the skills the plugin ships
 │   ├── angular/
 │   │   └── SKILL.md
 │   ├── angular-dev/
@@ -259,10 +279,14 @@ skills/
 │   └── ...
 ├── development/                  # also the root of the `cc-ai-dev` plugin
 │   ├── .claude-plugin/
-│   │   └── plugin.json           # lists the skills the plugin ships
+│   │   └── plugin.json
 │   ├── create-dev-spec/
 │   └── ...
-├── dotnet/
+├── dotnet/                       # also the root of the `cc-ai-dotnet` plugin
+│   ├── .claude-plugin/
+│   │   └── plugin.json
+│   ├── dotnet-dev/
+│   └── ...
 ├── general/
 ├── java/
 ├── typescript/
