@@ -190,7 +190,7 @@ Restart Claude Code afterwards and run `/skills` to confirm the skills are loade
 | Skill | Description |
 |---|---|
 | `angular` | Entry point that routes to the right specialized Angular skill |
-| `angular-dev` | End-to-end implementation workflow for Angular features and bug fixes |
+| `angular-dev` | End-to-end implementation workflow for Angular features and bug fixes (explicit invocation only) |
 | `angular-fundamentals` | DI and providers, typed configuration, standalone APIs, signals, modern TypeScript idioms |
 | `angular-components` | Components, templates, routing, forms, HttpClient, interceptors, guards |
 | `angular-state` | State design: signals vs. RxJS vs. NgRx, selectors, change detection |

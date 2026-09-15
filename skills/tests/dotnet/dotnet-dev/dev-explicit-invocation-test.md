@@ -92,7 +92,8 @@ the `/` listing stays informative once the skill *is* named. 844 characters. The
 clarification answers are the user's decisions) and two Red-Flags rows ("clearly a .NET feature —
 I'll run it anyway", "the orchestrator told me to use it"). The `dotnet` router gained a note
 parallel to its `dotnet-reviewer` note; the README row says "(explicit invocation only)". No
-`/cc-ai-dev:`-style alias: the `.NET` category is not published as a plugin.
+plugin-namespaced alias at this point: the `.NET` category was not yet published as a plugin —
+superseded later the same day, see *GREEN 4*.
 
 **GREEN — 2026-09-15, new description, requests 1–12:** 12/12, eleven at high confidence.
 
@@ -160,14 +161,42 @@ Precondition section blocks it at Gate 1 regardless. Requests 9, 11, 12, and 13 
 for the actor clause and its exception — remove or reword either sentence and re-run before
 merging.
 
+**Plugin alias, same day.** The `.NET` category shipped as the `cc-ai-dotnet` plugin, which makes
+the skill's Claude Code slash command `/cc-ai-dotnet:dotnet-dev` — the *Re-run when* case below.
+`"/cc-ai-dotnet:dotnet-dev"` was added to the trigger list, the **Explicit invocation.** paragraph
+and the router note, following the `development` family, whose descriptions carry
+`/cc-ai-dev:<skill>`. The description had no room (876 of the validator's 900), so `"run
+dotnet-dev"` was dropped for it: the bare `"dotnet-dev"` entry already covers that phrasing. 886
+characters. Request 14 (`/cc-ai-dotnet:dotnet-dev implement the invoice export feature.`) was added
+to prove the alias fires, and request 2 ("run dotnet-dev …") was kept precisely to prove the
+dropped entry is not missed.
+
+**GREEN 4 — 2026-09-15, description with the alias (886 chars), requests 1, 2, 3, 4, 9, 11, 12, 13,
+14:** 9/9, eight at high confidence.
+
+| | Loaded | Conf. | Agent's reason (abridged) |
+|---|---|---|---|
+| 1, 3 | yes | high | quoted the trigger list, 3 on "use the dotnet-dev workflow" |
+| 2 | yes | high | "'run dotnet-dev' names the skill directly" — the dropped entry costs nothing |
+| 4 | no | high | "Must NOT activate on its own for 'implement this feature' … handled with the knowledge skills" |
+| 9, 11 | no | high | "Must NOT be started by another skill, workflow, or orchestrating agent on the user's behalf" |
+| 12 | yes | high | "Fits the carve-out exactly" |
+| 13 | no | medium | "Claim of user intent is relayed by the orchestrating agent, not the user directly" |
+| 14 | yes | high | "'/cc-ai-dotnet:dotnet-dev' is an explicit quoted trigger name" |
+
+Every answer matches GREEN 3, with 13 again the sole medium for the same reason. Request 2 is the
+load-bearing one for the trim: drop `"dotnet-dev"` itself from the list and it fails.
+
 ## Re-run when
 
 - the `dotnet-dev` description changes, including adding an alias;
 - the **Explicit invocation.** paragraph or the two Red-Flags rows are removed or reworded;
-- the `.NET` category is published as a plugin (the plugin-namespaced alias must be added to the
-  description, the body paragraph, and the router note, and the probe needs a request using it);
-- `angular-dev` is switched to the same rule — its probe should reuse these twelve shapes
-  (family parity, see `CLAUDE.md`);
+- the `cc-ai-dotnet` plugin is renamed — request 14 and the alias in the description, the body
+  paragraph, and the router note all carry the plugin name (the plugin itself was added in
+  *GREEN 4*);
+- `angular-dev`'s rule changes — it was switched to the same rule on 2026-09-15 and its probe
+  reuses these shapes, so the two move together (family parity, see `CLAUDE.md`):
+  `skills/tests/angular/angular-dev/angular-dev-explicit-invocation-test.md`;
 - another `skills/dotnet/` description is changed to overlap with implementation requests — the
   probe only shows that `dotnet-dev` does not fire, not that something else does (see
   `_shared/description-selection-test.md` for the family-wide selection probe).

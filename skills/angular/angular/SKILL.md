@@ -1,6 +1,6 @@
 ---
 name: angular
-description: Entry point and router for Angular and TypeScript front-end work — directs you to the right specialized Angular skill. Use when a request mentions Angular in general but the specific tool is not obvious, or to get an overview of the available Angular skills. Routes to knowledge skills (angular-fundamentals, angular-components, angular-state, angular-rxjs, angular-tsdoc) and workflow skills (angular-library-builder, angular-tester, angular-reviewer, angular-package-manager), and the angular-dev implementation workflow. When the matching skill is already clear, invoke that skill directly instead.
+description: Entry point and router for Angular and TypeScript front-end work — directs you to the right specialized Angular skill. Use when a request mentions Angular in general but the specific tool is not obvious, or to get an overview of the available Angular skills. Routes to knowledge skills (angular-fundamentals, angular-components, angular-state, angular-rxjs, angular-tsdoc) and workflow skills (angular-library-builder, angular-tester, angular-reviewer, angular-package-manager). When the matching skill is already clear, invoke that skill directly instead.
 ---
 
 # Angular Skill Router
@@ -37,28 +37,19 @@ orientation, not an intermediate step.
 | Structured code review for Angular (explicit invocation only, see below) | `angular-reviewer` |
 | Manage npm packages, `ng add`, `ng update`, version verification | `angular-package-manager` |
 
-### Orchestration skill
-
-| Concern | Skill |
-|---------|-------|
-| End-to-end implementation of a feature, user story, requirement, or bug fix (gated workflow; invokes the skills above as bindings) | `angular-dev` |
-
 ## Notes
 
-- **Arbitration with `angular-dev`:** requirement-shaped requests — implement,
-  extend, or change a feature, user story, or bug fix — belong to the
-  `angular-dev` workflow, which invokes the skills above as mandatory bindings
-  in its phases. The skills in the tables above are used directly only for pure
-  knowledge/how-to questions, or for narrowly scoped tasks the user names
-  explicitly (write tests for X, document X, bump package Y, generate a
-  library/SDK, run an angular review). `angular-dev` is **interactive-only** —
-  it has no non-interactive mode and stops after Phase 1 when no user is
-  reachable (see its *Precondition — Interactive User Required*). Do not route
-  a headless or sub-agent run into it.
 - **`angular-reviewer` activates only on explicit name** — the phrases
   `angular-reviewer`, `angular code review`, or `angular review`. It does **not**
   trigger on generic "review my code", and the router does not trigger it
   automatically.
+- **`angular-dev` activates only when the user names it** — `/angular-dev`,
+  `/cc-ai-angular:angular-dev`, `angular-dev`, or `angular dev` in the prompt.
+  It is the gated end-to-end implementation workflow (requirement review →
+  clarification → task breakdown → implementation → `angular-reviewer` →
+  summary). A plain "implement this feature" / "fix this bug" request is served
+  by the knowledge skills above; neither the router nor any other skill or
+  agent starts `angular-dev` on the user's behalf.
 - **Composition:** `angular-library-builder` invokes `angular-tsdoc` and
   `angular-tester`; `angular-components`, `angular-state`, and `angular-rxjs`
   build on `angular-fundamentals`.

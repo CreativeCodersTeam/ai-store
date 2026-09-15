@@ -2,8 +2,8 @@
 name: dotnet-dev
 description: >
   Use only when the user themselves explicitly requests it by name —
-  "dotnet-dev", "dotnet dev", "/dotnet-dev", "run dotnet-dev", "use the
-  dotnet-dev workflow" — for the gated end-to-end implementation workflow
+  "dotnet-dev", "dotnet dev", "/dotnet-dev", "/cc-ai-dotnet:dotnet-dev", "use
+  the dotnet-dev workflow" — for the gated end-to-end implementation workflow
   (requirement review, clarification, task breakdown, implementation with
   mandatory dotnet-* bindings, dotnet-reviewer review, summary) of a feature,
   user story, requirement, or bug fix in a .NET / C# project. Never commits.
@@ -32,8 +32,9 @@ proportioned to task size. They are the work. A one-line endpoint runs the same
 workflow as a subsystem — at speed, never collapsed.
 
 **Explicit invocation.** This workflow starts only when the user themselves
-named it — `/dotnet-dev`, "dotnet-dev" or "dotnet dev" in the prompt, or the
-user picking it by name when asked which skills to use. A request that merely
+named it — `/dotnet-dev`, `/cc-ai-dotnet:dotnet-dev`, "dotnet-dev" or "dotnet
+dev" in the prompt, or the user picking it by name when asked which skills to
+use. A request that merely
 describes .NET implementation work ("implement this feature", "add an
 endpoint", "fix this bug", a pasted user story) is handled as an ordinary
 request with the knowledge skills (`dotnet-fundamentals`, `dotnet-aspnet`, …)
