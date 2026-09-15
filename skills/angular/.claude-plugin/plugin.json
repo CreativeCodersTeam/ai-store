@@ -1,0 +1,35 @@
+{
+  "name": "cc-ai-angular",
+  "description": "Angular and TypeScript skills: DI and providers, standalone APIs and signals, components, routing and forms, state design, RxJS, publishable libraries and typed API clients, unit tests, npm package management, and TSDoc comments, with a router skill that dispatches to the right one. Most skills activate from the task description; angular-reviewer loads on explicit invocation only (/cc-ai-angular:<skill> in Claude Code, /<skill> in Copilot, or the skill name in the prompt).",
+  "author": {
+    "name": "CreativeCodersTeam",
+    "url": "https://github.com/CreativeCodersTeam"
+  },
+  "homepage": "https://github.com/CreativeCodersTeam/ai-store/tree/main/skills/angular",
+  "repository": "https://github.com/CreativeCodersTeam/ai-store",
+  "license": "Apache-2.0",
+  "keywords": [
+    "angular",
+    "typescript",
+    "rxjs",
+    "signals",
+    "npm",
+    "tsdoc",
+    "implementation",
+    "testing",
+    "workflow"
+  ],
+  "skills": [
+    "./angular",
+    "./angular-components",
+    "./angular-dev",
+    "./angular-fundamentals",
+    "./angular-library-builder",
+    "./angular-package-manager",
+    "./angular-reviewer",
+    "./angular-rxjs",
+    "./angular-state",
+    "./angular-tester",
+    "./angular-tsdoc"
+  ]
+}
