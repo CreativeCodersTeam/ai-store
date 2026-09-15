@@ -25,33 +25,39 @@ work in both **Claude Code** and the **GitHub Copilot CLI** — the two read the
 | Plugin | Skills | Contents |
 |---|---|---|
 | `cc-ai-dev` | 6 | The complete [Development](skills/development) category: `create-dev-spec`, `create-dev-plan`, `implement-dev-plan`, `diagnose-bug`, `refactor`, `auto-loop` |
+| `cc-ai-dotnet` | 11 | The complete [.NET](skills/dotnet) category: `dotnet`, `dotnet-dev`, `dotnet-fundamentals`, `dotnet-aspnet`, `dotnet-ef-core`, `dotnet-sdk-builder`, `dotnet-tester`, `dotnet-reviewer`, `dotnet-inspect`, `dotnet-nuget-manager`, `dotnet-xmldocs` |
 
 ### Claude Code
 
 ```bash
 /plugin marketplace add CreativeCodersTeam/ai-store
 /plugin install cc-ai-dev@creativecoders-ai-store
+/plugin install cc-ai-dotnet@creativecoders-ai-store
 ```
 
+Both plugins come from the same marketplace — add it once, then install whichever you need.
+
 Claude Code namespaces plugin skills with the plugin name, so they are invoked as
-`/cc-ai-dev:create-dev-spec`.
+`/cc-ai-dev:create-dev-spec` and `/cc-ai-dotnet:dotnet-dev`.
 
 ### GitHub Copilot CLI
 
 ```bash
 copilot plugin marketplace add CreativeCodersTeam/ai-store
 copilot plugin install cc-ai-dev@creativecoders-ai-store
+copilot plugin install cc-ai-dotnet@creativecoders-ai-store
 ```
 
 Copilot does **not** namespace plugin skills — they appear under their plain name
-(`create-dev-spec`). Copilot resolves skills in the order `.github/skills/` → `.agents/skills/` →
-`.claude/skills/` → plugins, and the first one loaded wins. If you already installed these skills
-with `npx skills add` (see [Installation](#installation)), that copy shadows the plugin's and the
-plugin version is ignored without any error. **Pick one installation method, not both.**
+(`create-dev-spec`, `dotnet-dev`). Copilot resolves skills in the order `.github/skills/` →
+`.agents/skills/` → `.claude/skills/` → plugins, and the first one loaded wins. If you already
+installed these skills with `npx skills add` (see [Installation](#installation)), that copy
+shadows the plugin's and the plugin version is ignored without any error. **Pick one installation method, not both.**
 
 ### Updating and removing
 
-Plugins are not version-pinned; each update pulls the current state of `main`.
+Plugins are not version-pinned; each update pulls the current state of `main`. The commands below
+use `cc-ai-dev`; they work the same way for `cc-ai-dotnet`.
 
 ```bash
 claude plugin update cc-ai-dev
@@ -76,14 +82,20 @@ the project gets it automatically.
       "source": { "source": "github", "repo": "CreativeCodersTeam/ai-store" }
     }
   },
-  "enabledPlugins": { "cc-ai-dev@creativecoders-ai-store": true }
+  "enabledPlugins": {
+    "cc-ai-dev@creativecoders-ai-store": true,
+    "cc-ai-dotnet@creativecoders-ai-store": true
+  }
 }
 ```
 
 ```jsonc
 // .github/copilot/settings.json — GitHub Copilot CLI
 {
-  "enabledPlugins": ["cc-ai-dev@creativecoders-ai-store"]
+  "enabledPlugins": [
+    "cc-ai-dev@creativecoders-ai-store",
+    "cc-ai-dotnet@creativecoders-ai-store"
+  ]
 }
 ```
 
@@ -262,7 +274,11 @@ skills/
 │   │   └── plugin.json           # lists the skills the plugin ships
 │   ├── create-dev-spec/
 │   └── ...
-├── dotnet/
+├── dotnet/                       # also the root of the `cc-ai-dotnet` plugin
+│   ├── .claude-plugin/
+│   │   └── plugin.json
+│   ├── dotnet-dev/
+│   └── ...
 ├── general/
 ├── java/
 ├── typescript/
