@@ -1,6 +1,6 @@
 {
   "name": "cc-ai-dev",
-  "description": "Requirement-to-code workflow skills: interview-driven specifications, traceable development plans, plan-driven implementation, root-cause bug diagnosis, evidence-driven refactoring, and unattended goal-driven iteration loops. All skills load on explicit invocation only (/cc-ai-dev:<skill> in Claude Code, /<skill> in Copilot, or the skill name in the prompt).",
+  "description": "Requirement-to-code workflow skills: interview-driven specifications, traceable development plans, plan-driven implementation, plan-less direct implementation, root-cause bug diagnosis, evidence-driven refactoring, and unattended goal-driven iteration loops. All skills load on explicit invocation only (/cc-ai-dev:<skill> in Claude Code, /<skill> in Copilot, or the skill name in the prompt).",
   "author": {
     "name": "CreativeCodersTeam",
     "url": "https://github.com/CreativeCodersTeam"
@@ -21,6 +21,7 @@
     "./create-dev-spec",
     "./create-dev-plan",
     "./implement-dev-plan",
+    "./implement-direct",
     "./diagnose-bug",
     "./refactor",
     "./auto-loop"
