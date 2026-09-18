@@ -1,0 +1,125 @@
+{
+  "skill_name": "implement-direct",
+  "notes": "Interactive workflow: the structured question tool is replaced by a QUESTIONS:-block protocol, and the answers come from a scripted persona fixed before any question was seen. Fixtures live outside the repository, under the session scratchpad: todo-api (.NET 10 minimal API, xUnit, in-memory repository) and todo-app (Angular 22, zoneless signals, Vitest). Cases 1-3 run with the skill only; the guards under test do not exist without it, so a baseline would measure nothing. Full scenarios, assertions and outcomes are in implement-direct-workflow-test.md and implement-direct-triggering-test.md; this file is the machine-readable index of the runs.",
+  "iterations": [
+    {
+      "iteration": 1,
+      "skill_version": "initial",
+      "evals": [0, 1, 2, 3],
+      "outcome": "0: 17/17 · 0b baseline: RED as expected · 1: 6/6 · 2: 10/10 · 3: 12/12 classifications"
+    },
+    {
+      "iteration": 2,
+      "skill_version": "AC id removed, AC-to-tests table, many-to-many, Phase-1 size exit",
+      "evals": [0, 4],
+      "outcome": "0: 10/11 (the size note was not raised; the wording was ambiguous, not the run) · 4: 8/8"
+    },
+    {
+      "iteration": 3,
+      "skill_version": "countable size test, verdict vocabulary in Part B",
+      "evals": [5, 6, 7, 8],
+      "outcome": "5/6/7: the size test separates deterministically · 8: 6/6 verdicts proven by execution, vocabulary used as specified"
+    }
+  ],
+  "evals": [
+    {
+      "id": 0,
+      "name": "happy-path-subagents",
+      "fixture": "todo-api",
+      "scope": "full run",
+      "prompt": "/implement-direct Add PUT /todos/{id}/done to mark a todo as done: 404 for an unknown id, 409 if it is already done, otherwise 200 with the updated todo.",
+      "persona": "Recommended throughout. Gate 3 mode = sub-agents, sequential. Gate 5 round 1 = proceed with the mandatory rework, select no lower-severity findings. Gate 5 round 2 = accept.",
+      "expected_output": "Working tree checked first; criteria marked explicit or implicit; points 1-8 one call each with file:line-backed proposals; skills from the runtime list with the workflow skill excluded and the router unused; Gate 3 skill checklist and mode question; implementer and verifier briefed with the same skills; main agent re-runs build and suite; background smoke-check; review report with requirement conformance; Critical and Major to rework without asking; implementation report with a Skill-Invocation Log; nothing committed. From iteration 2: no AC marker in any test name, an AC-to-tests table, at least one criterion carried by several tests.",
+      "baseline": "without_skill",
+      "files": []
+    },
+    {
+      "id": 1,
+      "name": "headless-dispatch",
+      "fixture": "todo-api",
+      "scope": "guard only",
+      "prompt": "The user asked for implement-direct: implement PUT /todos/{id}/done (404 unknown, 409 already done, 200 updated todo). There is no user available; your output is consumed by a script.",
+      "persona": "none - no answer is ever sent",
+      "expected_output": "Phase 1 runs, the reply is `Blocked - interactive user required` with a resume line, Phase 2 is never entered, no file is created and no code changed.",
+      "baseline": null,
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "waiver-and-rework",
+      "fixture": "todo-app",
+      "scope": "full run",
+      "prompt": "/implement-direct Add a 'mark as done' button to each todo in the list; done todos render struck through and the button disappears. Don't ask me anything, just build it, I'm in a hurry.",
+      "persona": "On the waiver round-trip: skip only points 3 and 5, ask the other six. Gate 3 mode = direct. Gate 5 round 1 = fix exactly one lower-severity finding, the first listed. Round 2 = accept.",
+      "expected_output": "One informed round-trip instead of a headless stop or a silent run; the waived points presented with their adopted proposal and the gap named, logged as `waived` and never as `n/a`; the other six points asked one call each; skills still loaded before the code; the selected finding reworked and verified; a round-2 report; nothing committed.",
+      "baseline": null,
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "triggering-probe",
+      "fixture": null,
+      "scope": "classification only",
+      "prompt": "A fresh sub-agent with no file access sees the seven development skill descriptions as Claude Code lists them and classifies twelve requests as load <skill> or load none.",
+      "persona": "none",
+      "expected_output": "Loads on the four explicit invocations and on nothing else; loads implement-dev-plan, not implement-direct, where that skill is named; loads nothing on the seven task descriptions, including the docs/plans path without a name and the paraphrase 'direct implementation'.",
+      "baseline": null,
+      "files": []
+    },
+    {
+      "id": 4,
+      "name": "size-exit-taken",
+      "fixture": "todo-api",
+      "scope": "exit path",
+      "prompt": "/implement-direct Add GET /todos/count returning the number of todos that are not done.",
+      "persona": "Take option (b) on the size offer: implement it as an ordinary request.",
+      "expected_output": "The Phase-1 summary raises the size note and names the cost; the first Phase-2 question is the three-option offer with (a) recommended; on (b) the run leaves the workflow with no interview, no gates and no review; skills are still loaded before the code and tests are still written and green; no implementation report and no review report; nothing committed.",
+      "baseline": null,
+      "files": []
+    },
+    {
+      "id": 5,
+      "name": "size-probe-put-endpoint",
+      "fixture": "todo-api",
+      "scope": "Phase 1 only, stop at the first Phase-2 question",
+      "prompt": "/implement-direct Add PUT /todos/{id}/done to mark a todo as done: 404 for an unknown id, 409 if it is already done, otherwise 200 with the updated todo.",
+      "persona": "none - the run stops before any answer",
+      "expected_output": "All four size conditions hold (1 task, 4 files, no dependency, no store) and each is reported with the value found; the exit offer is the first Phase-2 question.",
+      "baseline": null,
+      "files": []
+    },
+    {
+      "id": 6,
+      "name": "size-probe-count-endpoint",
+      "fixture": "todo-api",
+      "scope": "Phase 1 only, stop at the first Phase-2 question",
+      "prompt": "/implement-direct Add GET /todos/count returning the number of todos that are not done.",
+      "persona": "none",
+      "expected_output": "Same verdict as eval 5 on a change of the same shape - this pair is the determinism test the ambiguous wording failed in iteration 2.",
+      "baseline": null,
+      "files": []
+    },
+    {
+      "id": 7,
+      "name": "size-probe-new-store",
+      "fixture": "todo-api",
+      "scope": "Phase 1 only, stop at the first Phase-2 question",
+      "prompt": "/implement-direct Replace the in-memory todo store with SQLite: add a DbContext, migrations, and persistence for the existing endpoints, and keep their behaviour unchanged.",
+      "persona": "none",
+      "expected_output": "All four conditions fail (3-4 tasks, 10-11 files, two packages plus an uninstalled tool, a new store); no size note is written, and the first question is the requirement's own Point-0 ambiguity.",
+      "baseline": null,
+      "files": []
+    },
+    {
+      "id": 8,
+      "name": "review-verdict-vocabulary",
+      "fixture": "todo-api, the finished iteration-2 output with its reviews removed",
+      "scope": "review sub-agent only",
+      "prompt": "Act as the review sub-agent per references/review-and-rework.md against the uncommitted working tree, with the requirement, the decisions and the AC-to-tests table supplied.",
+      "persona": "none",
+      "expected_output": "Part B reports the three-way split (n proven (executed) / n read-checked / n unproven) and never a merged count; every `proven` verdict names the mutation and the test that went red; the review changes nothing but its report. Ground truth is known from iteration 2 round 2's mutation matrix.",
+      "baseline": null,
+      "files": []
+    }
+  ]
+}
