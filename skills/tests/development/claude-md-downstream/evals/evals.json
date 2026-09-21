@@ -1,0 +1,60 @@
+{
+  "skill_name": "claude-md-downstream",
+  "notes": "Scenario repositories are built by make-eval-scenarios.sh into <workspace>/scenarios. Each prompt runs with the scenario repository as the working directory and points the skill at the fake upstream with --repo-url, so the evals need no network and do not depend on the published template.",
+  "evals": [
+    {
+      "id": 0,
+      "name": "diverged-with-conflict",
+      "scenario": "repo-diverged",
+      "prompt": "Run claude-md-downstream in repo mode for this repository. We mirror the ai-store repo internally, so use <UPSTREAM> as the upstream instead of the public GitHub one.",
+      "expected_output": "Reports the file as diverged, names the closest template version with its commit and link, separates the upstream changes from the project's own, raises the commit-rule conflict on its own and waits, keeps the Build and Test and Deployment sections untouched, and writes nothing without approval.",
+      "assertions": [
+        "Reports the file as diverged and names the closest template version by commit SHA",
+        "Presents the commit-rule conflict on its own, showing both the upstream and the local wording",
+        "Names the upstream commit (subject or SHA) that caused the conflict",
+        "The project's 'Build and Test' section survives verbatim in the final CLAUDE.md",
+        "The project's 'Deployment' section survives verbatim in the final CLAUDE.md",
+        "The local 'Never commit on main' instruction is still present in the final CLAUDE.md",
+        "The upstream verification rule was applied to the final CLAUDE.md",
+        "The upstream 'Stage files by name' clause was applied to the final CLAUDE.md",
+        "The upstream 'unless another specific language is expressly requested' clause was applied",
+        "A timestamped backup of the previous CLAUDE.md exists next to it",
+        "No git commit was created in the scenario repository",
+        "Asked for approval before writing, and the question is recorded verbatim"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "known-older-version",
+      "scenario": "repo-older",
+      "prompt": "I think our CLAUDE.md is out of date. Use the claude-md-downstream skill, repo mode, against our internal mirror at <UPSTREAM>.",
+      "expected_output": "Reports that the file matches an older template verbatim, names that commit with SHA, date and subject, and says once that this mirror has no browsable commit view instead of inventing a link, lists what has landed since, says that nothing local would be lost, asks whether to take the current version, and writes nothing without approval.",
+      "assertions": [
+        "Reports that the file matches an older template verbatim",
+        "Names the matched commit with SHA, date and subject",
+        "Reports the matched commit by SHA and does not fabricate a link for the mirror upstream",
+        "Lists the template changes that have landed since the matched commit",
+        "States that nothing local would be lost by taking the current version",
+        "Asks whether to take the current version instead of writing unprompted",
+        "After approval the final CLAUDE.md equals the current upstream template",
+        "A timestamped backup of the previous CLAUDE.md exists next to it",
+        "No git commit was created in the scenario repository"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "identical-restraint",
+      "scenario": "repo-current",
+      "prompt": "run claude-md-downstream repo mode, upstream is <UPSTREAM>",
+      "expected_output": "Reports in a few lines that CLAUDE.md is current, naming the upstream commit. Offers nothing, asks nothing, changes nothing.",
+      "assertions": [
+        "Reports that CLAUDE.md is current",
+        "Names the upstream commit it matches",
+        "CLAUDE.md is byte-identical to before the run",
+        "No backup file was created",
+        "Asked the user nothing",
+        "The report is brief \u2014 no offers, no proposals, no follow-up work"
+      ]
+    }
+  ]
+}
