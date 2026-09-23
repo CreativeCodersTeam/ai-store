@@ -22,8 +22,8 @@ bash scripts/validate-skills.sh                # 0 ok / 1 validation failures / 
 bash scripts/validate-skills.sh --warn-at 800  # lower the "approaching the limit" warning threshold
 ```
 
-Only the `dotnet-reviewer` scripts have an automated test suite; it lives in
-`skills/tests/dotnet/dotnet-reviewer/scripts/`, not inside the skill. Run from the repository root:
+Two skills have an automated test suite for their scripts, both living under `skills/tests/`, not
+inside the skill: `dotnet-reviewer` and `claude-md-downstream`. Run from the repository root:
 
 ```bash
 S=skills/tests/dotnet/dotnet-reviewer/scripts
@@ -39,6 +39,20 @@ tests resolve `TESTS_DIR` (`$S` itself — fixtures, `helpers.sh`, mock) and `SK
 (`skills/dotnet/dotnet-reviewer/`, the scripts under test — four levels up and back down, since
 the suite no longer sits inside the category) separately; `run-tests.sh` exports both and each test
 derives them from its own location when run directly.
+
+```bash
+S=skills/tests/development/claude-md-downstream/scripts
+bash $S/run-tests.sh                 # all unit tests (builds git fixtures on first run)
+bash $S/clean-fixtures.sh            # drop the generated fixture repositories
+```
+
+The `claude-md-downstream` fixtures are local git repositories, so the suite never reaches the
+network. **They are rebuilt by every test file and removed again by `run-tests.sh`** — nested
+`.git` directories must not survive inside this repository, and a fixture that persists also
+carries over state from the previous run (`test-fetch-upstream.sh` commits to the upstream
+fixture on purpose). A new test file therefore calls `fixtures/make-fixtures.sh` itself instead of
+assuming a fixture exists; `KEEP_FIXTURES=1` suspends the cleanup for debugging, and running a
+single test file directly leaves the fixtures behind for you to `clean-fixtures.sh`.
 
 The `angular-reviewer` and `gherkin-bdd-reviewer` scripts have no test suite; verify them by hand.
 
