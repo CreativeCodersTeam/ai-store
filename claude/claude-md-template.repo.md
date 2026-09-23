@@ -1,36 +1,25 @@
-
 # Coding Guidelines
 
 ## 1. Think Before Coding
 
-**Don't assume. Don't hide confusion. Surface tradeoffs.**
-
-Before implementing:
-- State your assumptions explicitly and verify them. If uncertain, ask.
 - If multiple interpretations exist, present them — don't pick silently.
-- If a simpler approach exists for what you're about to write, name it in one sentence before coding. If the user confirms the original, proceed.
-- If something is unclear, stop. Name what's confusing. Ask.
 
 ## 2. Simplicity First
 
-**Minimum code that solves the problem. Nothing speculative.**
-
-If skill ponytail is available, use it for implementation tasks.
-
 - No features beyond what was asked.
 - No "flexibility" or "configurability" that wasn't requested.
-- No error handling for impossible scenarios. No error handling for scenarios guaranteed impossible by the type system or a same-file invariant. If justifying the skip requires reasoning about callers, keep the check.
+- No error handling for scenarios guaranteed impossible by the type system or a same-file invariant. If justifying the skip requires reasoning about callers, keep the check.
+- Before implementing, check the code your change touches for a refactoring that would make the change simpler or the result clearer (duplication, a function doing too much, a missing abstraction). If you find one, offer the paths as a choice before coding: (a) the minimal change without refactoring, (b) the refactoring first, then the change, and (c) a simpler approach to the task itself, if one exists. State each path's scope, risk, and benefit, and continue only with the path the user picks. If you find none, say so in one sentence. If you cannot ask, take (a) and list the refactoring in your result.
+- A refactoring changes structure, not behaviour. Keep it a separate step from the requested change.
 
 ## 3. Surgical Changes
 
-**Touch only what you must. Clean up only your own mess.**
-
 When editing existing code:
-- If a refactoring is needed or will improve the code quality, ask the user first.
+- Refactor only on a path the user picked (see *Simplicity First*).
 - Match existing style, even if you'd do it differently. If that style conflicts with these guidelines, see *Priority When Rules Conflict*, rule 3.
 - If you notice unrelated dead code, mention it in your final response — don't delete it.
 
-When your changes create orphans: Remove imports/variables/functions your changes orphaned; leave pre-existing dead code (mention it in the response).
+When your changes create orphans, remove the imports, variables, and functions your changes orphaned.
 
 # Priority When Rules Conflict
 
