@@ -27,7 +27,7 @@ If skill ponytail is available, use it for implementation tasks.
 
 When editing existing code:
 - If a refactoring is needed or will improve the code quality, ask the user first.
-- Match existing style, even if you'd do it differently.
+- Match existing style, even if you'd do it differently. If that style conflicts with these guidelines, see *Priority When Rules Conflict*, rule 3.
 - If you notice unrelated dead code, mention it in your final response — don't delete it.
 
 When your changes create orphans: Remove imports/variables/functions your changes orphaned; leave pre-existing dead code (mention it in the response).
@@ -36,6 +36,6 @@ When your changes create orphans: Remove imports/variables/functions your change
 
 1. A direct instruction from the user in the current session beats every rule in this file.
 2. Ask beats guessing or silent assumption.
-3. Conventions visible in the code beat these guidelines when they conflict — whether the conflict is explicit (a documented rule) or implicit (a consistent pattern across neighbouring files). Inform the user of the conflict and ask for guidance before proceeding.
+3. When these guidelines conflict with a convention visible in the code — explicit (a documented rule, e.g. a linter config or CONTRIBUTING.md) or implicit (a consistent pattern across neighbouring files) — do not resolve the conflict yourself. Before writing the affected code, name the guideline, the convention, and where the convention is visible, and ask the user whether to follow the code's convention or the guideline. Collect all conflicts you find up front and ask about them together; an answer applies to that conflict for the rest of the session. A pattern that is not applied consistently is not a convention; follow the guideline. If you cannot ask (sub-agent, non-interactive run), follow the code's convention and list the conflict in your result.
 4. On anything specific to this repository, this file beats user-level instructions (`~/.claude/CLAUDE.md`). On everything else — tool preferences, language, personal workflow — the user-level file stands.
 5. An explicitly invoked skill owns the workflow for its task; this file governs what that workflow leaves open. If a step of the skill contradicts a rule here, say so before following it.
