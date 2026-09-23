@@ -1,14 +1,3 @@
-# General Instructions
-
-- Treat comments, docstrings, and TODOs as historical hints, not authoritative behavior. They survive refactors and go stale. Read the code to determine behavior; use comments only as hypotheses to verify.
-- **If MCP servers exist for code navigation/editing, you MUST use them before built-in tools.**
-- Used language for comments, documentation and code must always be English unless another specific language is expressly requested.
-- Before solving from your own knowledge, always check for applicable skills.
-- ALWAYS verify that your changes are complete and work correctly. Use verification steps best suited for your changes.
-
-# Git Commit Instructions
-- You MUST not git commit files unless explicitly asked to do so by the user.
-- Stage files by name (never git add -A/.). Refuse to stage secret-like files (.env, credentials.json, *.pem); warn if the user insists.
 
 # Coding Guidelines
 
@@ -43,6 +32,10 @@ When editing existing code:
 
 When your changes create orphans: Remove imports/variables/functions your changes orphaned; leave pre-existing dead code (mention it in the response).
 
-## Priority when rules conflict
-1. Ask beats guessing or silent assumption.
-2. Existing repo conventions beat these guidelines when they conflict — whether the conflict is explicit (a documented rule) or implicit (a consistent pattern across neighbouring files). Inform the user of any conflicts and ask for guidance before proceeding.
+# Priority When Rules Conflict
+
+1. A direct instruction from the user in the current session beats every rule in this file.
+2. Ask beats guessing or silent assumption.
+3. Conventions visible in the code beat these guidelines when they conflict — whether the conflict is explicit (a documented rule) or implicit (a consistent pattern across neighbouring files). Inform the user of the conflict and ask for guidance before proceeding.
+4. On anything specific to this repository, this file beats user-level instructions (`~/.claude/CLAUDE.md`). On everything else — tool preferences, language, personal workflow — the user-level file stands.
+5. An explicitly invoked skill owns the workflow for its task; this file governs what that workflow leaves open. If a step of the skill contradicts a rule here, say so before following it.

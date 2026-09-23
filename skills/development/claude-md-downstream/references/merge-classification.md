@@ -14,6 +14,7 @@ Read this before Step 5 of the workflow.
   - [What counts as one rule](#what-counts-as-one-rule)
 - [Contradiction checks](#contradiction-checks)
 - [Presenting a conflict](#presenting-a-conflict)
+- [The whole-file option](#the-whole-file-option)
 - [Worked example](#worked-example)
 
 ## The three inputs
@@ -171,19 +172,46 @@ Options:
   A  take upstream
   B  keep local
   C  merge — <the merged wording, written out>
+  T  take the current template 1:1 — whole file, drops this and every other local rule
 ```
 
-Three things make this work:
+Four things make this work:
 
 - **Name the upstream intent.** Without it the user is comparing two strings. With it they are
   making a decision, which is what was asked for.
 - **Write option C out in full.** "Or we could combine them" puts the drafting back on the user.
   Where a merge is not plausible, leave C out rather than offering an empty option.
+- **Keep T on every conflict**, and keep it lettered `T` rather than `D` — it is not a fourth way
+  to settle *this* rule, it is a decision about the whole file, and a letter in sequence invites it
+  to be picked as if it were. One line, no argument for or against; see
+  [the whole-file option](#the-whole-file-option) for what happens when it is chosen.
 - **Admit uncertainty about the local intent.** You are inferring it from a file, and guessing
   confidently is worse than asking.
 
 If a decision settles other conflicts too, say which, and re-present only those that actually
 changed.
+
+## The whole-file option
+
+`T` is the answer for a project that has stopped wanting its divergence: the local edits were
+drift, an abandoned experiment, or rules the team has decided the template now covers better. For
+them, ruling on six conflicts to arrive at the template is six questions too many — so the option
+is on every conflict, not only on the first.
+
+What it does **not** mean is "upstream wins this one". That is `A`, and the two are a single word
+apart in casual speech ("just take upstream"). When the wording could be either, ask which was
+meant before acting — the cost of the question is one line, the cost of the confusion is the
+project's whole set of local rules.
+
+Taking it hands off to SKILL.md Step 7a, which exists because the losses have to be seen before
+they are accepted:
+
+- everything classified `local-own` — whole sections the template never had;
+- everything classified `local-changed` — template rules the project deliberately bent;
+- any conflict already settled in favour of local earlier in the same run.
+
+`upstream-new`, `upstream-changed` and `unchanged` rules need no mention: they are in the template
+either way, so listing them buries the three categories that actually disappear.
 
 ## Worked example
 
@@ -219,7 +247,10 @@ Options:
   B  keep local
   C  merge — "You MUST not git commit files unless explicitly asked to do so by the user.
      Stage files by name (never `git add -A`). Commits on `main` are forbidden; branch first."
+  T  take the current template 1:1 — whole file, drops this and every other local rule
 ```
 
 C is the right recommendation here, and saying so is part of the job — the two clauses do not
-interact, and dropping either loses a rule someone deliberately wrote.
+interact, and dropping either loses a rule someone deliberately wrote. T still gets its line:
+recommending C is a judgement about this rule, and the user may be sitting on a decision about the
+whole file that no per-rule recommendation can reach.

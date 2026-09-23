@@ -55,6 +55,26 @@
         "Asked the user nothing",
         "The report is brief \u2014 no offers, no proposals, no follow-up work"
       ]
+    },
+    {
+      "id": 3,
+      "name": "take-template-1-1",
+      "scenario": "repo-diverged",
+      "prompt": "Run claude-md-downstream in repo mode against our internal mirror at <UPSTREAM>. The local edits in that file are leftovers from an experiment nobody stands behind any more \u2014 if it has drifted from the template, I just want the template as it is now, not a merge.",
+      "expected_output": "Reports the file as diverged, recognises that the user is asking for the whole-file route rather than a per-conflict merge, lists in full what taking the template 1:1 would remove (both local sections with their rules, the local commit-rule clause, the bent simplicity rule), says the removed text survives in the backup, asks once for confirmation, and only then writes the current template verbatim with a timestamped backup and no commit.",
+      "assertions": [
+        "Reports the file as diverged before offering anything",
+        "Takes the whole-file route instead of walking the user through the conflicts one by one",
+        "Lists what the 1:1 take removes, quoting the local rules rather than only counting them",
+        "Names both local sections ('Build and Test', 'Deployment') among the losses",
+        "Names the local 'Never commit on main' clause among the losses",
+        "States that the removed text survives in the timestamped backup",
+        "Asks once for confirmation before writing, rather than treating the prompt as approval",
+        "The final CLAUDE.md equals the current upstream template verbatim",
+        "No local-only rule survives in the final CLAUDE.md",
+        "A timestamped backup of the previous CLAUDE.md exists next to it",
+        "No git commit was created in the scenario repository"
+      ]
     }
   ]
 }

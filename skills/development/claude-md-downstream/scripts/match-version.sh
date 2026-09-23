@@ -159,7 +159,11 @@ similarity() {
   changed=$(diff "$a" "$b" | grep -c '^[<>]' || true)
   la=$(wc -l < "$a" | tr -d ' ')
   lb=$(wc -l < "$b" | tr -d ' ')
-  awk -v c="$changed" -v la="$la" -v lb="$lb" \
+  # LC_ALL=C: under a locale whose decimal separator is a comma, awk's printf
+  # would emit 0,7018 — invalid JSON, and a string that the numeric comparison
+  # below silently mis-sorts, so best_base comes back null on a file that has a
+  # perfectly good ancestor.
+  LC_ALL=C awk -v c="$changed" -v la="$la" -v lb="$lb" \
     'BEGIN { t = la + lb; if (t == 0) { print "1.0000" } else { s = 1 - c / t; if (s < 0) s = 0; printf "%.4f\n", s } }'
 }
 
@@ -260,7 +264,7 @@ while [[ $i -lt ${#shas[@]} ]]; do
     if [[ $matched_idx -lt 0 ]] && cmp -s "$LOCAL_NORM" "$ver.norm"; then
       matched_idx=$i
     fi
-    if awk -v a="$sim" -v b="$best_sim" 'BEGIN { exit !(a > b) }'; then
+    if LC_ALL=C awk -v a="$sim" -v b="$best_sim" 'BEGIN { exit !(a > b) }'; then
       best_sim=$sim; best_idx=$i
     fi
     [[ $first -eq 0 ]] && history_json+=","

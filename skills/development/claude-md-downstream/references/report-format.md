@@ -11,6 +11,7 @@ Read this before writing any report.
 - [`identical`](#identical)
 - [`known-older-version`](#known-older-version)
 - [`diverged`](#diverged)
+  - [The 1:1 confirmation](#5-the-11-confirmation)
 - [`no-local-file`](#no-local-file)
 - [`empty-template` / `no-template`](#empty-template--no-template)
 - [Closing report](#closing-report)
@@ -101,8 +102,9 @@ about one table in it.
 
 ## `diverged`
 
-This is the long one. Four parts, in this order — the user needs the shape of the divergence before
-they can rule on any single conflict.
+This is the long one. Four parts, in this order — the user needs the shape of the divergence
+before they can rule on any single conflict — and a fifth that appears only if they decide to take
+the template 1:1 instead.
 
 ### 1. The situation
 
@@ -143,7 +145,15 @@ Kept as-is (yours, untouched):
   local-own          "## Build and test" (3 rules)
   local-own          "## Deployment" (1 rule)
   local-changed      Simplicity rule — you removed the ponytail reference
+
+Or say so at any point and I take the current template 1:1 instead — that drops both sections
+above and your changes to 2 template rules.
 ```
+
+That last line is the whole-file option, and one line is its whole budget. It belongs here because
+this is the first point where the user can see what the merge costs them in questions and what it
+protects — but a project that wrote those sections on purpose should not have to read a paragraph
+arguing for their deletion. Print it, move on, and repeat it only as the `T` line on each conflict.
 
 ### 3. Problems found
 
@@ -160,6 +170,41 @@ sections listed by heading so the user can confirm nothing of theirs vanished, a
 complete resulting file in a fenced block.
 
 Then the approval question — a single, direct one. Not "shall I proceed?" buried under a summary.
+
+### 5. The 1:1 confirmation
+
+Only when the user took that route (SKILL.md Step 7a). They have asked for the template verbatim,
+so the report's job is no longer to explain the merge — it is to show what leaving the merge
+behind costs, once, before it happens:
+
+```
+Taking the current template 1:1 would remove these, in full:
+
+  "## Build and test" (3 rules)
+      Build with `./gradlew build` before every push
+      Integration tests need `docker compose up -d db`
+      Never skip the contract tests
+  "## Deployment" (1 rule)
+      Deployments run from CI only
+  Commit rule, your clause: "Never commit on main — branch first."
+  Simplicity rule: you had removed the ponytail reference; it comes back.
+
+Everything else in your file is in the template anyway.
+
+The removed text stays in the backup (CLAUDE.md.bak-<timestamp>) and in git history for the
+committed version, so this is reversible.
+
+Take the template 1:1?
+```
+
+Quote the local rules rather than counting them. The user chose this route to save time, which
+makes them exactly the person who has not re-read their own `CLAUDE.md` in months — "4 local rules
+would be dropped" is a number they can accept without knowing what they agreed to. The reversibility
+line is not reassurance for its own sake: it is true, and it is what lets someone decide in one
+step instead of reopening the merge.
+
+A yes here is the approval; go to Step 9. A no returns to the conflict the user was on, with the
+decisions already made still standing — say that, so declining does not look like starting over.
 
 ## `no-local-file`
 
@@ -217,3 +262,16 @@ Nothing was staged or committed. The backup is not in .gitignore — remove it o
 
 The last line earns its place: a stray `.bak-*` file is exactly the kind of thing that gets
 committed by accident by the next `git add`.
+
+After a 1:1 take, the `Applied` / `Resolved` / `Untouched` block does not describe what happened —
+no change was applied individually and nothing was kept. Replace those three lines:
+
+```
+  Taken:     the current template, verbatim — no local rules remain
+  Dropped:   4 rules in 2 local sections, plus local changes to 2 template rules
+             (all of it is in the backup)
+```
+
+Name the drop even though the user just approved it. This report is the line a later session, or a
+colleague reading the diff, has to reconstruct the decision from, and "synced to 87d4623" alone
+does not say that the project's own instructions are gone.

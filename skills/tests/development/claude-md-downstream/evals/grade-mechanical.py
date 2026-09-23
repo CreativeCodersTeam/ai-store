@@ -18,7 +18,8 @@ import subprocess
 import sys
 from pathlib import Path
 
-REPO_BY_EVAL = {0: "repo-diverged", 1: "repo-older", 2: "repo-current"}
+REPO_BY_EVAL = {0: "repo-diverged", 1: "repo-older", 2: "repo-current",
+                3: "repo-diverged"}
 
 
 def read(p: Path) -> str:
@@ -171,6 +172,45 @@ def grade(eval_id: int, run_dir: Path):
             not offers,
             f"unsolicited offer/suggestion phrasing: {offers}" if offers
             else "no offers or suggestions in the report"))
+
+    elif eval_id == 3:
+        # The whole-file route: the result must be the template itself, with
+        # nothing of the project left in it. Checking only "equals the template"
+        # would pass a run that never noticed the local rules, so the losses are
+        # checked from both ends — gone from the file, named before the write.
+        same = " ".join(final.split()) == " ".join(current_template.split())
+        r.append(check(
+            "The final CLAUDE.md equals the current upstream template verbatim",
+            same and bool(current_template),
+            "matches the upstream template" if same else "differs from the upstream template"))
+        survivors = [rule for rule in ("Build with `./gradlew build`",
+                                       "Deployments run from CI only",
+                                       "Never commit on main")
+                     if contains(final, rule)]
+        r.append(check(
+            "No local-only rule survives in the final CLAUDE.md",
+            not survivors,
+            f"still present: {survivors}" if survivors else "no local rule left in the file"))
+        named = [rule for rule in ("Build and Test", "Deployment", "Never commit on main")
+                 if contains(questions, rule)]
+        r.append(check(
+            "Lists what the 1:1 take removes, naming the local sections and the commit clause",
+            len(named) == 3,
+            f"named before the write: {named}"))
+        r.append(check(
+            "States that the removed text survives in the timestamped backup",
+            contains(questions, "backup") or contains(report, "backup"),
+            "the backup is mentioned" if contains(questions, "backup") or contains(report, "backup")
+            else "no mention of the backup"))
+        r.append(check(
+            "Asks once for confirmation before writing, rather than treating the prompt as approval",
+            "?" in questions,
+            f"questions.md is {len(questions)} chars and "
+            + ("contains a question" if "?" in questions else "contains no question")))
+        r.append(check(
+            "A timestamped backup of the previous CLAUDE.md exists next to it",
+            len(backups) == 1,
+            f"{len(backups)} backup file(s): {[b.name for b in backups]}"))
 
     # Applies to every eval: the skill must never commit.
     r.append(check(

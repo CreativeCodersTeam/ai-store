@@ -117,6 +117,33 @@ awk -v s="$sim" 'BEGIN { exit !(s > 0.5 && s < 1.0) }' \
   && assert_eq ok ok "diverged similarity is plausible ($sim)" \
   || fail "diverged similarity is plausible (got $sim)"
 
+# 6b. the JSON survives a locale whose decimal separator is a comma.
+#     awk's printf follows LC_NUMERIC, so an unguarded "%.4f" emits 0,8276 —
+#     which is not JSON, and which the ranking comparison then reads as 0, so
+#     best_base came back null on a file with a perfectly good ancestor. The
+#     assertions above only catch this when the developer happens to run the
+#     suite under such a locale; this one catches it everywhere.
+comma_locale=""
+for cand in de_DE.UTF-8 de_DE.utf8 fr_FR.UTF-8 de_DE; do
+  if locale -a 2>/dev/null | grep -qx "$cand"; then comma_locale=$cand; break; fi
+done
+if [[ -n "$comma_locale" ]]; then
+  lout=$(LC_ALL="$comma_locale" run --mode repo --start-dir "$FIX/downstream-diverged")
+  printf '%s' "$lout" | jq -e . >/dev/null 2>&1 \
+    && assert_eq ok ok "output is valid JSON under $comma_locale" \
+    || fail "output is valid JSON under $comma_locale (got: ${lout:0:120})"
+  assert_json_eq "$lout" '.best_base.sha' "$V2" "base still found under $comma_locale"
+  lsim=$(printf '%s' "$lout" | jq -r .best_base.similarity 2>/dev/null)
+  # An empty value means jq already choked on the JSON, so this check has to
+  # treat it as a failure rather than as "no comma found".
+  case "$lsim" in
+    ""|null|*,*) fail "similarity uses a dot under $comma_locale (got '${lsim}')" ;;
+    *)           assert_eq ok ok "similarity uses a dot under $comma_locale ($lsim)" ;;
+  esac
+else
+  printf '  SKIP no comma-decimal locale installed; locale guard untested\n'
+fi
+
 # 7. similarity ranking prefers v2 over v1 and v3 for this file
 s1=$(printf '%s' "$out" | jq -r --arg s "$V1" '.history[] | select(.sha==$s) | .similarity')
 s2=$(printf '%s' "$out" | jq -r --arg s "$V2" '.history[] | select(.sha==$s) | .similarity')
