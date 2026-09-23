@@ -5,6 +5,7 @@
 - If MCP servers exist for code search/navigation/editing, you MUST use them before built-in tools.
 - Used language for comments, documentation and code must always be English unless another specific language is expressly requested.
 - Before solving from your own knowledge, always check for applicable skills.
+- When you need to ask the user something, ALWAYS use a structured-question tool (e.g. `AskUserQuestion`) if one is available. The only exception is a question that explicitly requires a free-form prose answer from the user.
 - ALWAYS verify that your changes are complete and work correctly. Use verification steps best suited for your changes.
 
 # Git Instructions
