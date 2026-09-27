@@ -44,6 +44,8 @@ list, and the skill must still not load.
 | 11 | "Entwicklungsplan für das Feature erstellen" | none |
 | 12 | "Refactor the UserService to use the repository pattern." | none |
 | 13 | "Just keep going until the tests pass." | none |
+| 14 | `/run-with-skills implement-dev-plan docs/plans/checkout.md` (from GREEN 3) | run-with-skills |
+| 15 | "Run this with the right skills loaded: add CSV export to GET /orders." (from GREEN 3) | none |
 
 Harness: one `general-purpose` sub-agent per round, prompt = "do NOT read files, do NOT use
 tools" + the six descriptions as a `- name: description` list (folded YAML flattened to one line
@@ -116,6 +118,20 @@ new alias. Scenarios 6 and 11 stay German on purpose: 6 still contains the liste
 
 The generalisation negative held: with no German phrase left in the list, the catch-all clause
 *or any other … request that does not name the skill* carried scenario 11 on its own.
+
+**GREEN 3 — 2026-09-27, `run-with-skills` added (nine descriptions):** 15/15, every answer at
+high confidence. Same harness, the nine current descriptions inline. Requests 1–13 unchanged;
+14 and 15 added per the re-run rule below (one positive, one negative for the new skill).
+
+| | Loaded | Agent's reason (abridged) |
+|---|---|---|
+| 1–13 | as in GREEN 2 | same reasons; none of the old answers moved with a ninth description in the list |
+| 14 | run-with-skills | names the skill, a workflow, and a requirement; loads instead of implement-dev-plan, which then runs under it |
+| 15 | none | "use the right skills" is a listed exclusion, and run-with-skills is not named |
+
+14 is the one the category could get wrong: two skill names in one request. The agent loaded the
+wrapper and read the workflow name as its argument. Skill-specific cases for the new skill are in
+`skills/tests/development/run-with-skills/run-with-skills-triggering-test.md`.
 
 ## Re-run when
 
