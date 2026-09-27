@@ -42,6 +42,8 @@ word with the name without being it.
 | 10 | "Can you just build the mark-as-done button? Don't ask me any questions, I'm in a hurry." | none | ✓ |
 | 11 | "The done endpoint returns 200 even when the todo was already done. Why?" | none | ✓ |
 | 12 | "implement the plan we discussed yesterday" | none | ✓ |
+| 13 | `/run-with-skills implement-direct Add PUT /todos/{id}/done: …` (from the 2026-09-27 re-run) | run-with-skills | ✓ |
+| 14 | "implement direct with skills: the done endpoint, and I want to see the skills first" (from the 2026-09-27 re-run) | implement-direct | ✓ |
 
 **12 of 12 correct.** The probe's own summary of the pattern it found: the only loads are the
 requests that literally contain the skill name or one of its slash forms; every paraphrase, task
@@ -68,6 +70,25 @@ the one interaction the six could not produce — `implement-direct` and `implem
 both implementation workflows whose names begin with the same word, and requests 6, 7 and 12 are
 the three ways that pair can be confused: the plan skill named, a plan path without a name, and a
 plan mentioned in prose.
+
+## Re-run 2026-09-27 — `run-with-skills` added to the category
+
+Required by the rule below: a skill was added. Same harness, the nine current descriptions inline,
+requests 1–12 unchanged, two added for the new skill's confusions with this one. **14 of 14
+correct**; none of the twelve earlier answers moved.
+
+- **13** — two skill names in one request. `run-with-skills` loads, `implement-direct` is its
+  argument. The probe also checked implement-direct's "must not be started by another skill …
+  on the user's behalf" and found it not violated, because the user named implement-direct
+  themselves — the argument `run-with-skills` makes in its Step 2.
+- **14** — "implement direct" is a listed form; "with skills" is not "run with skills". The probe
+  loaded implement-direct and worried the user's wish to see the skills first would go unmet,
+  since the description only promises "runtime-discovered mandatory skills". That worry does not
+  hold against the body: Gate 2 lets the user keep, drop, and add skills by multi-select
+  (`skills/development/implement-direct/SKILL.md:248-250`). The description need not say it.
+
+Cases for `run-with-skills` itself are in
+`skills/tests/development/run-with-skills/run-with-skills-triggering-test.md`.
 
 ## Re-run this when
 
