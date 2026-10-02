@@ -1,0 +1,121 @@
+{
+  "skill_name": "code-design",
+  "notes": "Fixtures are small Python 3.9 projects (standard library, unittest) under evals/fixtures/. Each run copies one into a scratch directory and runs `git init` + one commit there, so the diff against the untouched fixture can be graded — never inside this repository. Every case runs twice, non-interactive: with the skill (the sub-agent reads SKILL.md as if loaded by the skill tool) and without_skill as baseline. Cases run one at a time with the user's go-ahead before the next. grade_mechanical.py checks the mechanical assertions (tests, removed test lines, host growth, function length, abstract types); the rest is graded by reading the diff and final_reply.md. Its 'abstract types with < 2 implementations' check counts nominal subclasses only, so a Protocol always shows 0 — verify Protocols by hand. Full scenarios and results: code-design-workflow-test.md.",
+  "evals": [
+    {
+      "id": 1,
+      "name": "god-class",
+      "fixture": "evals/fixtures/shop — OrderService (173 lines) mixing validation, pricing, persistence, mail, reporting",
+      "prompt": "/code-design Add discount codes to order placement: a customer can enter one code when placing an order. Codes are either a percentage (e.g. 10%) or a fixed amount (e.g. 5 EUR), each has an expiry date, and each customer can redeem a given code only once. Codes are applied after the loyalty discount and before shipping and tax are calculated.",
+      "expected_output": "Discount rules and redemption tracking in their own units; OrderService only delegates; discount logic tested directly; no single-implementation abstraction; design notes with principle and rejected alternative.",
+      "files": [],
+      "assertions": [
+        "All tests pass (existing and new)",
+        "No test removed or altered in pre-existing test files (import-line edits allowed)",
+        "Discount rules (percentage, fixed, expiry) live in a production module other than shop/service.py",
+        "OrderService holds no discount rule or redemption rule itself — it only calls into discount units",
+        "Redemption tracking (once per customer) is held outside OrderService",
+        "Discount logic is tested without constructing OrderService",
+        "No ABC/Protocol with fewer than two implementations",
+        "place_order — the function the change extends — is at most 30 lines afterwards",
+        "Existing paths moved out of place_order are covered by tests that existed or were written before the move (vacuously true if nothing was moved)",
+        "Final reply contains a design-notes table with principle and rejected alternative per decision"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "third-exporter",
+      "fixture": "evals/fixtures/reports — CSV and HTML exporters with copy-pasted money/date formatting and totals, both tested",
+      "prompt": "/code-design Add a Markdown export for the monthly sales report, the same columns and totals as the CSV and HTML exports.",
+      "expected_output": "The duplicated formatting and totals are extracted once and used by all three exporters (rule of three reached, covered by tests); the Markdown exporter does not copy the logic a third time.",
+      "files": [],
+      "assertions": [
+        "All tests pass (existing and new)",
+        "No test removed or altered in pre-existing test files (import-line edits allowed)",
+        "The money formatting (German format, thousands separator) exists exactly once in production code",
+        "Month filtering, cancellation filter, sorting, and totals/by-region aggregation exist exactly once in production code",
+        "csv_export and html_export use the extracted shared code (not only the new Markdown exporter)",
+        "CSV and HTML output is byte-identical to before (existing exact-match tests unchanged and green)",
+        "The Markdown exporter has its own test(s) with an exact or row-level expected output",
+        "No exporter registry, factory, or plug-in mechanism, and no abstraction with fewer than two implementations (YAGNI)",
+        "Final reply contains a design-notes table with principle and rejected alternative per decision"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "kiss-guard",
+      "fixture": "evals/fixtures/textkit — a small module of pure text helper functions",
+      "prompt": "/code-design Add a function that turns article titles into URL slugs: lowercase, ASCII only (transliterate umlauts), words joined by hyphens, at most 60 characters without cutting a word.",
+      "expected_output": "A plain function in the existing helper module, with tests; no class, interface, factory, or configuration object; design notes record 'extend existing module' with its reason.",
+      "files": [],
+      "assertions": [
+        "All tests pass (existing and new)",
+        "No test removed or altered in pre-existing test files (import-line edits allowed)",
+        "The slug function is a plain module-level function in textkit/text_utils.py (no new module)",
+        "No new class, ABC/Protocol, factory, registry, or configuration object is introduced",
+        "Umlauts are transliterated (ä->ae, ö->oe, ü->ue, ß->ss) and tested",
+        "The 60-character limit without cutting a word is tested",
+        "Existing helpers are reused where they fit (normalize_whitespace / strip_accents) instead of reimplemented",
+        "The diff touches no existing function except where reuse requires it",
+        "Final reply contains a design-notes table that records the extend-existing-module decision with its reason"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "seam",
+      "fixture": "evals/fixtures/pricing — price calculation as pure domain logic, no I/O",
+      "prompt": "/code-design Prices must be shown in the customer's currency. Convert using live exchange rates from https://rates.example.com/latest?base=EUR (JSON: {\"rates\": {\"USD\": 1.08, ...}}).",
+      "expected_output": "A domain-named abstraction for exchange rates owned by the pricing side; the HTTP call only in an adapter; tests use a fake and never reach the network; conversion logic unaware of HTTP.",
+      "files": [],
+      "assertions": [
+        "All tests pass (existing and new) without network access",
+        "No test removed or altered in pre-existing test files (import-line edits allowed)",
+        "The HTTP call (urllib/http client, the URL) appears in exactly one adapter unit and nowhere in prices.py or display.py",
+        "Conversion and display logic depend on a domain-named abstraction or a passed-in rate/function, not on the HTTP adapter",
+        "Tests replace the rate source with a fake/stub; no test patches urllib or the network module",
+        "The adapter's JSON parsing is tested with a canned response (no network)",
+        "gross_price and VAT/volume rules remain unchanged and EUR-based",
+        "No abstraction beyond the one seam (no factory, registry, or second interface without a second implementation or test double)",
+        "The adapter has a timeout and a defined failure behaviour, and the rate fetch does not run once per price line (fetched once and passed, or cached)",
+        "Final reply contains a design-notes table with principle and rejected alternative per decision"
+      ]
+    }
+  ],
+  "iterations": [
+    {
+      "iteration": 1,
+      "skill_version": "initial",
+      "evals": [
+        1
+      ],
+      "outcome": "1: skill 7/9, baseline 6/9 (two assertions replaced afterwards as non-discriminating)"
+    },
+    {
+      "iteration": 2,
+      "skill_version": "characterization tests before moving untested paths; an extended function counts as changed as a whole",
+      "evals": [
+        1
+      ],
+      "outcome": "1: skill 9/10, baseline 6/10 (redemption rule slipped back into OrderService)"
+    },
+    {
+      "iteration": 3,
+      "skill_version": "'a rule stays a rule when it needs data'",
+      "evals": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "outcome": "1: 10/10 vs 6/10 · 2: 9/9 vs 8/9 · 3: 9/9 vs 8/9 · 4: 8/9 vs 7/9"
+    },
+    {
+      "iteration": 4,
+      "skill_version": "YAGNI excludes operational needs of an integration; adapters wired where the application is assembled",
+      "evals": [
+        4
+      ],
+      "outcome": "4: 10/10 vs 8/10 (baseline from iteration 3, regraded with the added assertion)"
+    }
+  ]
+}
