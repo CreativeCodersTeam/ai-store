@@ -1,0 +1,31 @@
+{
+ "data": {
+  "repository": {
+   "releases": {
+    "nodes": [
+     {
+      "tagName": "v2.0.0",
+      "publishedAt": "2026-01-01T00:00:00Z",
+      "isPrerelease": false,
+      "isDraft": false,
+      "immutable": false,
+      "url": "https://github.com/acme/old/releases/tag/v2.0.0",
+      "description": "Removed the `foo` input"
+     }
+    ]
+   },
+   "refs": {
+    "nodes": [
+     {
+      "name": "v2.0.0",
+      "target": {
+       "__typename": "Commit",
+       "oid": "d200000000000000000000000000000000000000",
+       "committedDate": "2025-12-30T00:00:00Z"
+      }
+     }
+    ]
+   }
+  }
+ }
+}

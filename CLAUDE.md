@@ -22,8 +22,9 @@ bash scripts/validate-skills.sh                # 0 ok / 1 validation failures / 
 bash scripts/validate-skills.sh --warn-at 800  # lower the "approaching the limit" warning threshold
 ```
 
-Two skills have an automated test suite for their scripts, both living under `skills/tests/`, not
-inside the skill: `dotnet-reviewer` and `claude-md-downstream`. Run from the repository root:
+Three skills have an automated test suite for their scripts, all living under `skills/tests/`, not
+inside the skill: `dotnet-reviewer`, `claude-md-downstream`, and `upgrade-gh-wf-actions`. Run from the
+repository root:
 
 ```bash
 S=skills/tests/dotnet/dotnet-reviewer/scripts
@@ -53,6 +54,16 @@ carries over state from the previous run (`test-fetch-upstream.sh` commits to th
 fixture on purpose). A new test file therefore calls `fixtures/make-fixtures.sh` itself instead of
 assuming a fixture exists; `KEEP_FIXTURES=1` suspends the cleanup for debugging, and running a
 single test file directly leaves the fixtures behind for you to `clean-fixtures.sh`.
+
+```bash
+S=skills/tests/development/upgrade-gh-wf-actions/scripts
+bash $S/run-tests.sh                 # all unit tests; static fixtures, nothing to clean up
+```
+
+The `upgrade-gh-wf-actions` suite replaces `gh` with `$S/mock-gh/gh` (responses from
+`$S/fixtures/gh-data/`), so it needs neither network nor a GitHub login. Its fixture `action.yml`
+files are found by `scan-actions.sh` when the skill runs on this repository — exclude
+`skills/tests`.
 
 The `angular-reviewer` and `gherkin-bdd-reviewer` scripts have no test suite; verify them by hand.
 

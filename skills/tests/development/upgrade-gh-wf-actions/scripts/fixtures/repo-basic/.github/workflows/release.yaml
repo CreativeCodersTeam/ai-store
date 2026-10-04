@@ -1,0 +1,7 @@
+on: push
+jobs:
+  r:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: "acme/checkout@v4"
