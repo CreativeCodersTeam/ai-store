@@ -1,0 +1,52 @@
+{
+ "data": {
+  "repository": {
+   "releases": {
+    "nodes": []
+   },
+   "refs": {
+    "nodes": [
+     {
+      "name": "v2.0.0",
+      "target": {
+       "__typename": "Commit",
+       "oid": "2000000000000000000000000000000000000000",
+       "committedDate": "2026-10-02T00:00:00Z"
+      }
+     },
+     {
+      "name": "v2.0.0-rc.1",
+      "target": {
+       "__typename": "Commit",
+       "oid": "2c00000000000000000000000000000000000000",
+       "committedDate": "2026-09-25T00:00:00Z"
+      }
+     },
+     {
+      "name": "v1.1.0",
+      "target": {
+       "__typename": "Tag",
+       "oid": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+       "tagger": {
+        "date": "2026-09-20T22:00:00-04:00"
+       },
+       "target": {
+        "__typename": "Commit",
+        "oid": "1100000000000000000000000000000000000000",
+        "committedDate": "2026-01-01T00:00:00Z"
+       }
+      }
+     },
+     {
+      "name": "v1.0.0",
+      "target": {
+       "__typename": "Commit",
+       "oid": "1000000000000000000000000000000000000000",
+       "committedDate": "2026-01-01T00:00:00Z"
+      }
+     }
+    ]
+   }
+  }
+ }
+}

@@ -1,6 +1,6 @@
 {
   "name": "cc-ai-dev",
-  "description": "Requirement-to-code workflow skills: interview-driven specifications, traceable development plans, plan-driven implementation, plan-less direct implementation, workflow runs under a user-confirmed skill selection, root-cause bug diagnosis, design-driven code writing, evidence-driven refactoring, unattended goal-driven iteration loops, and CLAUDE.md synchronisation with the shared upstream template. All skills load on explicit invocation only (/cc-ai-dev:<skill> in Claude Code, /<skill> in Copilot, or the skill name in the prompt).",
+  "description": "Requirement-to-code workflow skills: interview-driven specifications, traceable development plans, plan-driven implementation, plan-less direct implementation, workflow runs under a user-confirmed skill selection, root-cause bug diagnosis, design-driven code writing, evidence-driven refactoring, unattended goal-driven iteration loops, CLAUDE.md synchronisation with the shared upstream template, and age-gated, SHA-pinned GitHub Actions upgrades. All skills except upgrade-gh-wf-actions load on explicit invocation only (/cc-ai-dev:<skill> in Claude Code, /<skill> in Copilot, or the skill name in the prompt); upgrade-gh-wf-actions also activates on requests to upgrade or pin GitHub Actions.",
   "author": {
     "name": "CreativeCodersTeam",
     "url": "https://github.com/CreativeCodersTeam"
@@ -17,7 +17,9 @@
     "code-design",
     "workflow",
     "autonomy",
-    "claude-md"
+    "claude-md",
+    "github-actions",
+    "supply-chain"
   ],
   "skills": [
     "./create-dev-spec",
@@ -29,6 +31,7 @@
     "./code-design",
     "./refactor",
     "./auto-loop",
-    "./claude-md-downstream"
+    "./claude-md-downstream",
+    "./upgrade-gh-wf-actions"
   ]
 }

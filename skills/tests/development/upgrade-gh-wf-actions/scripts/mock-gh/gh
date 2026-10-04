@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+# Mock `gh` for the upgrade-gh-wf-actions script tests. Never touches the network.
+#
+# Supported calls (everything else exits 1):
+#   gh auth status                                     exit 0, or 1 when MOCK_GH_AUTH=fail
+#   gh api graphql -f query=... -f owner=O -f name=N   prints $MOCK_GH_DATA/graphql/O__N.json,
+#                                                      or a NOT_FOUND response + exit 1
+#   gh api repos/O/N/commits/refs/tags/T --jq .sha     prints the SHA for T from
+#                                                      $MOCK_GH_DATA/tags/O__N.tsv, or exit 1
+#   gh api repos/O/N/contents/PATH?ref=REF             {"content": base64} of
+#                                                      $MOCK_GH_DATA/contents/O__N/REF/PATH, or exit 1
+# Every call is appended to $MOCK_GH_LOG when set.
+
+[[ -n "${MOCK_GH_LOG:-}" ]] && printf '%s\n' "$*" >> "$MOCK_GH_LOG"
+
+if [[ "${1:-}" == auth && "${2:-}" == status ]]; then
+  [[ "${MOCK_GH_AUTH:-ok}" == fail ]] && { echo "You are not logged into any GitHub hosts." >&2; exit 1; }
+  exit 0
+fi
+
+[[ "${1:-}" == api ]] || exit 1
+shift
+
+if [[ "${1:-}" == graphql ]]; then
+  shift
+  owner="" name=""
+  while (( $# > 0 )); do
+    case "$1" in
+      -f|-F) case "$2" in owner=*) owner="${2#owner=}" ;; name=*) name="${2#name=}" ;; esac; shift 2 ;;
+      *) shift ;;
+    esac
+  done
+  f="$MOCK_GH_DATA/graphql/${owner}__${name}.json"
+  if [[ -f "$f" ]]; then cat "$f"; exit 0; fi
+  printf '{"data":{"repository":null},"errors":[{"type":"NOT_FOUND","message":"Could not resolve to a Repository with the name %s/%s."}]}' "$owner" "$name"
+  echo "gh: Could not resolve to a Repository with the name '$owner/$name'." >&2
+  exit 1
+fi
+
+if [[ "${1:-}" =~ ^repos/([^/]+)/([^/]+)/commits/refs/tags/(.+)$ ]]; then
+  f="$MOCK_GH_DATA/tags/${BASH_REMATCH[1]}__${BASH_REMATCH[2]}.tsv"
+  tag="${BASH_REMATCH[3]}"
+  if [[ -f "$f" ]]; then
+    sha=$(awk -F '\t' -v t="$tag" '$1 == t { print $2 }' "$f")
+    [[ -n "$sha" ]] && { echo "$sha"; exit 0; }
+  fi
+  echo "gh: No commit found for SHA: refs/tags/$tag (HTTP 422)" >&2
+  exit 1
+fi
+
+if [[ "${1:-}" =~ ^repos/([^/]+)/([^/]+)/contents/([^?]+)\?ref=(.+)$ ]]; then
+  f="$MOCK_GH_DATA/contents/${BASH_REMATCH[1]}__${BASH_REMATCH[2]}/${BASH_REMATCH[4]}/${BASH_REMATCH[3]}"
+  if [[ -f "$f" ]]; then
+    printf '{"content":"%s","encoding":"base64"}' "$(base64 < "$f" | tr -d '\n')"
+    exit 0
+  fi
+  echo "gh: Not Found (HTTP 404)" >&2
+  exit 1
+fi
+
+exit 1

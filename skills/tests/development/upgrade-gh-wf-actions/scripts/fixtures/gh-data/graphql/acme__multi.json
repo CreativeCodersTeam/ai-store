@@ -1,0 +1,56 @@
+{
+ "data": {
+  "repository": {
+   "releases": {
+    "nodes": [
+     {
+      "tagName": "v2.1.0",
+      "publishedAt": "2026-08-01T00:00:00Z",
+      "isPrerelease": false,
+      "isDraft": false,
+      "immutable": false,
+      "url": "https://github.com/acme/multi/releases/tag/v2.1.0",
+      "description": ""
+     },
+     {
+      "tagName": "v2.0.0",
+      "publishedAt": "2026-05-01T00:00:00Z",
+      "isPrerelease": false,
+      "isDraft": false,
+      "immutable": false,
+      "url": "https://github.com/acme/multi/releases/tag/v2.0.0",
+      "description": ""
+     }
+    ]
+   },
+   "refs": {
+    "nodes": [
+     {
+      "name": "v2.1.0",
+      "target": {
+       "__typename": "Commit",
+       "oid": "b210000000000000000000000000000000000000",
+       "committedDate": "2026-07-30T00:00:00Z"
+      }
+     },
+     {
+      "name": "v2",
+      "target": {
+       "__typename": "Commit",
+       "oid": "b210000000000000000000000000000000000000",
+       "committedDate": "2026-07-30T00:00:00Z"
+      }
+     },
+     {
+      "name": "v2.0.0",
+      "target": {
+       "__typename": "Commit",
+       "oid": "b200000000000000000000000000000000000000",
+       "committedDate": "2026-04-30T00:00:00Z"
+      }
+     }
+    ]
+   }
+  }
+ }
+}

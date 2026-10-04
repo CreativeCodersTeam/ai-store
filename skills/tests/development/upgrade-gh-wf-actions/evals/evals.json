@@ -1,0 +1,65 @@
+{
+  "skill_name": "upgrade-gh-wf-actions",
+  "notes": "The scenario repository is built by make-eval-scenarios.sh into <workspace>/scenarios. Each prompt runs with a fresh copy of repo-outdated as the working directory. The evals use the live GitHub API through an authenticated gh, so offered versions drift over time; the assertions check behaviour, not specific versions. Sub-agents have no AskUserQuestion, so every case exercises the non-interactive path. grade-mechanical.py <eval-id> <run-dir> checks every assertion and writes grading.json.",
+  "evals": [
+    {
+      "id": 1,
+      "name": "no-major-upgrades",
+      "scenario": "repo-outdated",
+      "prompt": "Bring die GitHub Actions in diesem Repo auf den neuesten Stand, aber bitte keine Major-Upgrades.",
+      "expected_output": "Lists the upgradeable actions with current version, new version and age, applies only rows that stay within the current major (same-major upgrades and pins), writes every changed uses: line as @<40-hex sha> # vX.Y.Z with SHAs resolved from the action's tags, upgrades codeql init and analyze together, leaves the local action untouched, and does not commit. Warns that same-major targets still declare node20 and reports the relevant release-note findings (actions/cache before v3.4.0 relies on the retired cache service).",
+      "files": [],
+      "assertions": [
+        "Every changed uses: line is pinned as @<40-hex sha> # vX.Y.Z",
+        "Each pinned SHA is the commit the commented version tag points at",
+        "Each new version's release is at least 7 days old",
+        "No upgrade crosses a major version",
+        "Every remote action occurrence is pinned (checkout x2, setup-node, cache, codeql init+analyze, setup-python in the composite action)",
+        "codeql-action init and analyze end on the same SHA",
+        "Both actions/checkout occurrences end on the same SHA",
+        "The local action reference ./.github/actions/setup-py is unchanged",
+        "Nothing was committed",
+        "The response warns that some chosen targets still declare the removed node20 runtime",
+        "The response reports release-note findings for the applied upgrades (e.g. actions/cache v3.4.0 moving to the new cache service)"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "report-only-min-age-14",
+      "scenario": "repo-outdated",
+      "prompt": "Which of our workflow actions are outdated? Use a minimum age of 14 days for new versions, and don't change anything yet.",
+      "expected_output": "A table with action, current version, new version and age of the new version, headed by the 14-day minimum age; versions younger than 14 days are not offered but mentioned; no file in the repository is modified. For every action it offers a within-major alternative next to the newest major and warns that those within-major targets still declare node16 or node20.",
+      "files": [],
+      "assertions": [
+        "No file in the repository is modified",
+        "The response states the 14-day minimum age",
+        "The response contains a table with at least four columns",
+        "The response mentions the codeql-action releases that are newer but younger than 14 days instead of offering them",
+        "For every action the report offers a version within the current major (same-major upgrade or pin) next to the newest major",
+        "The report warns that the within-major targets still declare a removed runtime (node16/node20)",
+        "The local action reference ./.github/actions/setup-py is unchanged",
+        "Nothing was committed"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "targeted-selection-majors-allowed",
+      "scenario": "repo-outdated",
+      "prompt": "upgrade checkout and setup-node to the latest version, majors are fine",
+      "expected_output": "Only actions/checkout (both workflows) and actions/setup-node are rewritten, each to the newest version that is at least 7 days old, as @<sha> # vX.Y.Z; cache, codeql and setup-python are unchanged; a reminder to review the release notes of the major upgrades; no commit.",
+      "files": [],
+      "assertions": [
+        "Every changed uses: line is pinned as @<40-hex sha> # vX.Y.Z",
+        "Each pinned SHA is the commit the commented version tag points at",
+        "Each new version's release is at least 7 days old",
+        "Both checkout occurrences and setup-node are upgraded",
+        "cache, codeql-action, and setup-python are left unchanged",
+        "The targets are major upgrades (latest allowed version, majors permitted)",
+        "The response points at release notes / breaking changes of the major upgrades",
+        "The local action reference ./.github/actions/setup-py is unchanged",
+        "Nothing was committed",
+        "The response reports release-note findings per upgraded action, not only a link"
+      ]
+    }
+  ]
+}

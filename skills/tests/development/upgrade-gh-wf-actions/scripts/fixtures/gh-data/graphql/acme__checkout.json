@@ -1,0 +1,181 @@
+{
+ "data": {
+  "repository": {
+   "releases": {
+    "nodes": [
+     {
+      "tagName": "v5.1.0",
+      "publishedAt": "2026-10-01T00:00:00Z",
+      "isPrerelease": false,
+      "isDraft": false,
+      "immutable": false,
+      "url": "https://github.com/acme/checkout/releases/tag/v5.1.0",
+      "description": "Small fix"
+     },
+     {
+      "tagName": "v4.3.0",
+      "publishedAt": "2026-09-30T00:00:00Z",
+      "isPrerelease": false,
+      "isDraft": false,
+      "immutable": false,
+      "url": "https://github.com/acme/checkout/releases/tag/v4.3.0",
+      "description": "Deprecation: v3 will stop working on 2026-12-01. Please upgrade."
+     },
+     {
+      "tagName": "v7.0.0",
+      "publishedAt": "2026-09-01T00:00:00Z",
+      "isPrerelease": false,
+      "isDraft": true,
+      "immutable": false,
+      "url": "https://github.com/acme/checkout/releases/tag/v7.0.0",
+      "description": null
+     },
+     {
+      "tagName": "v6.0.0",
+      "publishedAt": "2026-09-01T00:00:00Z",
+      "isPrerelease": true,
+      "isDraft": false,
+      "immutable": false,
+      "url": "https://github.com/acme/checkout/releases/tag/v6.0.0",
+      "description": null
+     },
+     {
+      "tagName": "v5.0.0",
+      "publishedAt": "2026-09-01T00:00:00Z",
+      "isPrerelease": false,
+      "isDraft": false,
+      "immutable": true,
+      "url": "https://github.com/acme/checkout/releases/tag/v5.0.0",
+      "description": "## Breaking changes\r\n- Requires runner v2.327.1 or later\r\n- Fixed a typo"
+     },
+     {
+      "tagName": "v4.2.2",
+      "publishedAt": "2026-01-10T00:00:00Z",
+      "isPrerelease": false,
+      "isDraft": false,
+      "immutable": false,
+      "url": "https://github.com/acme/checkout/releases/tag/v4.2.2",
+      "description": "Bug fixes only"
+     },
+     {
+      "tagName": "v4.0.0",
+      "publishedAt": "2025-06-01T00:00:00Z",
+      "isPrerelease": false,
+      "isDraft": false,
+      "immutable": false,
+      "url": "https://github.com/acme/checkout/releases/tag/v4.0.0",
+      "description": null
+     },
+     {
+      "tagName": "v3.6.0",
+      "publishedAt": "2025-01-01T00:00:00Z",
+      "isPrerelease": false,
+      "isDraft": false,
+      "immutable": false,
+      "url": "https://github.com/acme/checkout/releases/tag/v3.6.0",
+      "description": null
+     }
+    ]
+   },
+   "refs": {
+    "nodes": [
+     {
+      "name": "v5.1.0",
+      "target": {
+       "__typename": "Commit",
+       "oid": "0510ffffffffffffffffffffffffffffffffffff",
+       "committedDate": "2026-09-30T00:00:00Z"
+      }
+     },
+     {
+      "name": "v5",
+      "target": {
+       "__typename": "Commit",
+       "oid": "0510ffffffffffffffffffffffffffffffffffff",
+       "committedDate": "2026-09-30T00:00:00Z"
+      }
+     },
+     {
+      "name": "v4.3.0",
+      "target": {
+       "__typename": "Commit",
+       "oid": "0430ffffffffffffffffffffffffffffffffffff",
+       "committedDate": "2026-09-29T00:00:00Z"
+      }
+     },
+     {
+      "name": "v4",
+      "target": {
+       "__typename": "Commit",
+       "oid": "0430ffffffffffffffffffffffffffffffffffff",
+       "committedDate": "2026-09-29T00:00:00Z"
+      }
+     },
+     {
+      "name": "v6.0.0",
+      "target": {
+       "__typename": "Commit",
+       "oid": "0600ffffffffffffffffffffffffffffffffffff",
+       "committedDate": "2026-08-30T00:00:00Z"
+      }
+     },
+     {
+      "name": "v7.0.0",
+      "target": {
+       "__typename": "Commit",
+       "oid": "0700ffffffffffffffffffffffffffffffffffff",
+       "committedDate": "2026-08-30T00:00:00Z"
+      }
+     },
+     {
+      "name": "v5.0.0",
+      "target": {
+       "__typename": "Commit",
+       "oid": "0500ffffffffffffffffffffffffffffffffffff",
+       "committedDate": "2026-08-30T00:00:00Z"
+      }
+     },
+     {
+      "name": "v4.2.2",
+      "target": {
+       "__typename": "Tag",
+       "oid": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+       "tagger": {
+        "date": "2026-01-09T00:00:00Z"
+       },
+       "target": {
+        "__typename": "Commit",
+        "oid": "0422ffffffffffffffffffffffffffffffffffff",
+        "committedDate": "2026-01-08T00:00:00Z"
+       }
+      }
+     },
+     {
+      "name": "v4.0.0",
+      "target": {
+       "__typename": "Commit",
+       "oid": "0400ffffffffffffffffffffffffffffffffffff",
+       "committedDate": "2025-05-30T00:00:00Z"
+      }
+     },
+     {
+      "name": "v3.6.0",
+      "target": {
+       "__typename": "Commit",
+       "oid": "0360ffffffffffffffffffffffffffffffffffff",
+       "committedDate": "2024-12-30T00:00:00Z"
+      }
+     },
+     {
+      "name": "v3",
+      "target": {
+       "__typename": "Commit",
+       "oid": "0360ffffffffffffffffffffffffffffffffffff",
+       "committedDate": "2024-12-30T00:00:00Z"
+      }
+     }
+    ]
+   }
+  }
+ }
+}

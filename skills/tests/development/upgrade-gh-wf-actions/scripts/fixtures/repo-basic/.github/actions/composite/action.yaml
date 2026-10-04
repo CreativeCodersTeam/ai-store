@@ -1,0 +1,4 @@
+runs:
+  using: composite
+  steps:
+    - uses: acme/tagonly@v1.0.0

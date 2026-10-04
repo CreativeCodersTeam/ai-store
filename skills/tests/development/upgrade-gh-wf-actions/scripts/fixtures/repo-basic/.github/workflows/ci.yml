@@ -1,0 +1,21 @@
+name: ci
+on: push
+jobs:
+  reuse:
+    uses: acme/multi/.github/workflows/reusable.yml@v2
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: acme/checkout@v4
+      - uses: 'acme/checkout@v3.6.0'
+      - uses: acme/tagonly@v1.0.0 # keep: needed for legacy build
+      - uses: acme/multi/init@v2
+      - uses: acme/multi/analyze@v2
+      - uses: acme/old@d100000000000000000000000000000000000000 # v1.0.0
+      - uses: acme/checkout@0422ffffffffffffffffffffffffffffffffffff
+      - uses: acme/checkout@0400ffffffffffffffffffffffffffffffffffff # v4.2.2
+      - uses: acme/branchy@main
+      - uses: missing/repo@v1
+      - uses: ./local
+      - uses: docker://alpine:3
+      - uses: acme/noref

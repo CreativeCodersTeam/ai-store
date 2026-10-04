@@ -1,0 +1,4 @@
+runs:
+  using: composite
+  steps:
+    - uses: acme/checkout@v5
