@@ -1,0 +1,8 @@
+diff --git a/Dockerfile b/Dockerfile
+index 1111111..2222222 100644
+--- a/Dockerfile
++++ b/Dockerfile
+@@ -10,2 +10,2 @@
+-FROM node:20.11-alpine AS build
++FROM node:20.15-alpine AS build
+ WORKDIR /app

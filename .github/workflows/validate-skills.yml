@@ -34,3 +34,18 @@ jobs:
       # run-tests.sh fails with a clear message if jq is ever missing.
       - name: Run dotnet-reviewer script tests
         run: bash skills/tests/dotnet/dotnet-reviewer/scripts/run-tests.sh
+
+  dep-pr-cleanup-tests:
+    # The skill must work on Windows without bash or jq, so its Python suite runs on both.
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Run dep-pr-cleanup script tests
+        run: python skills/tests/development/dep-pr-cleanup/scripts/run_tests.py -v

@@ -1,0 +1,8 @@
+diff --git a/docker-compose.yml b/docker-compose.yml
+index 1111111..2222222 100644
+--- a/docker-compose.yml
++++ b/docker-compose.yml
+@@ -10,2 +10,2 @@
+   db:
+-    image: postgres:16.3
++    image: postgres:16.5

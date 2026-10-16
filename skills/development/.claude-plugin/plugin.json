@@ -1,6 +1,6 @@
 {
   "name": "cc-ai-dev",
-  "description": "Requirement-to-code workflow skills: interview-driven specifications, traceable development plans, plan-driven implementation, plan-less direct implementation, workflow runs under a user-confirmed skill selection, root-cause bug diagnosis, design-driven code writing, evidence-driven refactoring, unattended goal-driven iteration loops, CLAUDE.md synchronisation with the shared upstream template, and age-gated, SHA-pinned GitHub Actions upgrades. All skills except upgrade-gh-wf-actions load on explicit invocation only (/cc-ai-dev:<skill> in Claude Code, /<skill> in Copilot, or the skill name in the prompt); upgrade-gh-wf-actions also activates on requests to upgrade or pin GitHub Actions.",
+  "description": "Requirement-to-code workflow skills: interview-driven specifications, traceable development plans, plan-driven implementation, plan-less direct implementation, workflow runs under a user-confirmed skill selection, root-cause bug diagnosis, design-driven code writing, evidence-driven refactoring, unattended goal-driven iteration loops, CLAUDE.md synchronisation with the shared upstream template, age-gated, SHA-pinned GitHub Actions upgrades, and cleanup of superseded Dependabot/Renovate pull requests. All skills except upgrade-gh-wf-actions and dep-pr-cleanup load on explicit invocation only (/cc-ai-dev:<skill> in Claude Code, /<skill> in Copilot, or the skill name in the prompt); upgrade-gh-wf-actions also activates on requests to upgrade or pin GitHub Actions, dep-pr-cleanup on requests to clean up or consolidate dependency-bot pull requests.",
   "author": {
     "name": "CreativeCodersTeam",
     "url": "https://github.com/CreativeCodersTeam"
@@ -19,7 +19,9 @@
     "autonomy",
     "claude-md",
     "github-actions",
-    "supply-chain"
+    "supply-chain",
+    "dependabot",
+    "renovate"
   ],
   "skills": [
     "./create-dev-spec",
@@ -32,6 +34,7 @@
     "./refactor",
     "./auto-loop",
     "./claude-md-downstream",
-    "./upgrade-gh-wf-actions"
+    "./upgrade-gh-wf-actions",
+    "./dep-pr-cleanup"
   ]
 }

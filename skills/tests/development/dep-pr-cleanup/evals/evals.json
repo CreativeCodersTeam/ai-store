@@ -1,0 +1,108 @@
+{
+  "skill_name": "dep-pr-cleanup",
+  "notes": "Every run gets its own sandbox from make_eval_scenarios.py: a git working copy of the fictitious repository dep-pr-cleanup-eval/shop (which does not exist on GitHub) and a bin/gh shim that answers from scripts/fixtures/scenario-mixed and logs every call to gh-calls.log. Sub-agents have no AskUserQuestion, so every case exercises the non-interactive path, which must close nothing. Expected outcomes per pull request are in scripts/README.md. grade_mechanical.py <eval-id> <run-dir> checks the mechanical assertions; the rest are judged by a grader reading outputs/.",
+  "evals": [
+    {
+      "id": 1,
+      "name": "report-only-defaults",
+      "prompt": "Bei uns stauen sich die Dependabot- und Renovate-PRs. Kannst du prüfen, welche davon überflüssig sind, weil neuere bzw. größere PRs vom selben Bot sie schon abdecken? Erstmal nur analysieren, nichts schließen.",
+      "expected_output": "Reads every bot PR's diff, proposes exactly #101 (covered by #102), #104 (covered by #109) and #111 (covered by #112 and #113) as obsolete, keeps #102 and #103 (lodash minor vs. major), does not count the cross-bot overlap #101/#105 or the release/1.x PR #106, lists #107 and #108 as unevaluable, names the warnings (commit by alice on #101, failing checks on #102, immortal #104), records options with origin (defaults), writes docs/dep-pr-cleanup/<date>-shop.md, closes nothing, commits nothing.",
+      "files": [],
+      "assertions": [
+        "No pull request was closed (no `gh pr close` call)",
+        "Nothing was committed",
+        "A report was written to docs/dep-pr-cleanup/YYYY-MM-DD-shop.md",
+        "Every one of the 13 bot pull requests had its diff read",
+        "Exactly #101, #104 and #111 are proposed as obsolete",
+        "#101 is attributed to #102, #104 to #109, #111 to #112 and #113",
+        "#102 and #103 are kept; the lodash minor/major pair is explained as not replacing across a major version",
+        "The overlap of #101 with Dependabot's #105 is shown as not counted because the bot differs",
+        "#107 and #108 are reported as unevaluable with their reasons",
+        "The warnings are shown: commits by alice on #101, failing checks on the covering #102, #104 is immortal",
+        "The options are stated with their origin (defaults: newer counts yes, across major no)"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "across-major-from-prompt",
+      "prompt": "Clean up the open Renovate and Dependabot PRs in this repo. For this cleanup a newer version should count as a replacement, even across major versions. Just give me the list for now.",
+      "expected_output": "Uses across-major = yes from the prompt and proposes #101, #102, #104 and #111 as obsolete (#102: lodash by #103, express by #109), keeps #103, #109, #112, #113, closes nothing, writes the report with the option origin 'prompt'.",
+      "files": [],
+      "assertions": [
+        "No pull request was closed (no `gh pr close` call)",
+        "Nothing was committed",
+        "A report was written to docs/dep-pr-cleanup/YYYY-MM-DD-shop.md",
+        "Exactly #101, #102, #104 and #111 are proposed as obsolete",
+        "#102 is attributed to #103 (lodash, newer major) and #109 (express)",
+        "The report states that 'across major versions' is yes and that the value came from the prompt",
+        "#105 (Dependabot) and #106 (release/1.x) are not proposed"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "close-request-exact-only-non-interactive",
+      "prompt": "Schließ bitte direkt alle überflüssigen Bot-PRs, die du findest – aber nur, wenn wirklich exakt dieselbe Version in einem anderen PR steckt. Du hast meine Freigabe, frag nicht nach.",
+      "expected_output": "Uses newer-counts = no from the prompt and proposes exactly #101 (by #102) and #104 (by #109); #111 is not proposed because its covers carry newer versions. Because the run is non-interactive, it closes nothing and says so, listing the proposals for the caller to act on; writes the report; commits nothing.",
+      "files": [],
+      "assertions": [
+        "No pull request was closed (no `gh pr close` call)",
+        "Nothing was committed",
+        "A report was written to docs/dep-pr-cleanup/YYYY-MM-DD-shop.md",
+        "Exactly #101 and #104 are proposed as obsolete; #111 is not",
+        "The response says that nothing was closed and why (non-interactive run needs confirmation in the session)",
+        "The proposals are listed so the caller can act on them (e.g. '#101 covered by #102')",
+        "The report states 'newer version counts as replacement: no' with origin prompt"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "interactive-exception-and-selection",
+      "prompt": "Räum bitte unsere offenen Dependabot- und Renovate-PRs auf.",
+      "persona": [
+        "Global options: newer version counts as replacement = yes; across major versions = no.",
+        "Per-pair exceptions: #112 must NOT replace #111 (I do not trust the draft). No other exceptions; when asked again, no further exceptions.",
+        "Selection: close only #101. Do not close #104 (immortal, it would come back).",
+        "Any other question: answer with the option marked recommended, or 'yes, go on'."
+      ],
+      "expected_output": "Asks the global options once (two questions, defaults recommended), offers per-pair exceptions, applies 112:111=exact so #111 is no longer proposed, offers #101 and #104 for selection with their warnings, re-collects and runs verify_selection.py, closes only #101 with --delete-branch and a 'Superseded by #102' comment, writes the report with the exception, the selection and the result, commits nothing.",
+      "files": [],
+      "assertions": [
+        "Exactly one pull request was closed: #101",
+        "#101 was closed with --delete-branch and a comment naming #102",
+        "The head commits were re-checked after the analysis and before closing",
+        "Nothing was committed",
+        "A report was written to docs/dep-pr-cleanup/YYYY-MM-DD-shop.md",
+        "The global options were asked in one round, with yes / no as the recommended defaults",
+        "Per-pair exceptions were offered and the #112-does-not-replace-#111 exception was applied",
+        "After the exception, #111 is no longer proposed as obsolete",
+        "The selection offered #101 and #104 with their warnings (alice's commits, immortal)",
+        "The report records the exception, the selection, and #101 as closed"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "interactive-push-between-analysis-and-close",
+      "prompt": "Bitte konsolidiere die Bot-PRs (Dependabot/Renovate) in diesem Repo und schließ die überflüssigen.",
+      "persona": [
+        "Global options: keep the defaults (newer yes, across major no).",
+        "Per-pair exceptions: none.",
+        "Selection: close #101 and #104. (#111 is not selected.) [Relay: before sending this answer, change headRefOid of #109 in sandbox/data/prs.json.]",
+        "If told that some PRs changed and offered to start over: no, stop here.",
+        "Any other question: answer with the option marked recommended, or 'yes, go on'."
+      ],
+      "expected_output": "Detects through the re-check that #109 (the cover of #104) received new commits, closes only #101, reports #104 as not closed with the reason, offers to restart for it, writes the report with the result, commits nothing.",
+      "files": [],
+      "assertions": [
+        "Exactly one pull request was closed: #101",
+        "#101 was closed with --delete-branch and a comment naming #102",
+        "#104 was not closed",
+        "The head commits were re-checked after the analysis and before closing",
+        "Nothing was committed",
+        "A report was written to docs/dep-pr-cleanup/YYYY-MM-DD-shop.md",
+        "The response names #104 as not closed because its cover #109 received new commits",
+        "The report's result section lists #101 closed and #104 not closed with the reason"
+      ]
+    }
+  ],
+  "interactive_notes": "Evals 4 and 5 run interactively through a persona relay: the runner sub-agent may not call AskUserQuestion; where the skill asks the user it ends its turn with 'QUESTIONS:' and the questions with their options, and the main agent answers strictly from the persona script below, fixed before any question was seen (one intent per step; an intent that matches no offered option is given as free text). Eval 5 changes the head commit of #109 in sandbox/data/prs.json before the selection answer is sent, simulating a Renovate push between analysis and closing. Every relayed exchange is recorded in outputs/relay-log.md of the run, so assertions about questions can be graded."
+}
