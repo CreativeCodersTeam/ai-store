@@ -10,7 +10,8 @@ siblings, consumed by Claude Code and other agents via `npx skills add …`, and
 defined by `.claude-plugin/marketplace.json` (see README, and *Plugin distribution* below). Tests
 are not a skill sibling and live outside the category directories entirely, under
 `skills/tests/<category>/<skill-name>/` (see below).
-Everything is Markdown and Bash; "shipping" means merging to `main`.
+Everything is Markdown and Bash (plus standard-library Python for `dep-pr-cleanup`); "shipping"
+means merging to `main`.
 
 ## Commands
 
@@ -22,9 +23,9 @@ bash scripts/validate-skills.sh                # 0 ok / 1 validation failures / 
 bash scripts/validate-skills.sh --warn-at 800  # lower the "approaching the limit" warning threshold
 ```
 
-Three skills have an automated test suite for their scripts, all living under `skills/tests/`, not
-inside the skill: `dotnet-reviewer`, `claude-md-downstream`, and `upgrade-gh-wf-actions`. Run from the
-repository root:
+Four skills have an automated test suite for their scripts, all living under `skills/tests/`, not
+inside the skill: `dotnet-reviewer`, `claude-md-downstream`, `upgrade-gh-wf-actions`, and
+`dep-pr-cleanup`. Run from the repository root:
 
 ```bash
 S=skills/tests/dotnet/dotnet-reviewer/scripts
@@ -64,6 +65,17 @@ The `upgrade-gh-wf-actions` suite replaces `gh` with `$S/mock-gh/gh` (responses 
 `$S/fixtures/gh-data/`), so it needs neither network nor a GitHub login. Its fixture `action.yml`
 files are found by `scan-actions.sh` when the skill runs on this repository — exclude
 `skills/tests`.
+
+```bash
+S=skills/tests/development/dep-pr-cleanup/scripts
+python3 $S/run_tests.py              # all unit tests (python / py -3 on Windows); nothing to clean up
+python3 $S/fixtures/build_fixtures.py   # regenerate fixtures/scenario-mixed after changing it
+```
+
+`dep-pr-cleanup` is the one skill whose scripts are Python (3.8+, standard library only), because
+it must run on Windows without bash or jq; keep it that way. Its suite selects `$S/mock_gh/gh.py`
+through `DEP_PR_CLEANUP_GH` (responses from a scenario directory), so it needs neither network nor
+a GitHub login, and CI runs it on Ubuntu and Windows.
 
 The `angular-reviewer` and `gherkin-bdd-reviewer` scripts have no test suite; verify them by hand.
 

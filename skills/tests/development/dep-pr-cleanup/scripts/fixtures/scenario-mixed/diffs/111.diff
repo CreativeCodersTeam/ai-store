@@ -1,0 +1,16 @@
+diff --git a/Dockerfile b/Dockerfile
+index 1111111..2222222 100644
+--- a/Dockerfile
++++ b/Dockerfile
+@@ -10,2 +10,2 @@
+-FROM node:20.11-alpine AS build
++FROM node:20.12-alpine AS build
+ WORKDIR /app
+diff --git a/docker-compose.yml b/docker-compose.yml
+index 1111111..2222222 100644
+--- a/docker-compose.yml
++++ b/docker-compose.yml
+@@ -10,2 +10,2 @@
+   db:
+-    image: postgres:16.3
++    image: postgres:16.4

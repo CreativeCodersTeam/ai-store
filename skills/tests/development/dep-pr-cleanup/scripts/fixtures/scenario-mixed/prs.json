@@ -1,0 +1,327 @@
+[
+ {
+  "number": 101,
+  "title": "Update dependency lodash to v4.17.21",
+  "url": "https://github.com/acme/shop/pull/101",
+  "author": {
+   "is_bot": true,
+   "login": "app/renovate"
+  },
+  "headRefName": "renovate/branch-101",
+  "headRefOid": "0000000000000000000000000000000000000065",
+  "baseRefName": "main",
+  "isDraft": false,
+  "mergeable": "MERGEABLE",
+  "createdAt": "2026-10-18T08:00:00Z",
+  "statusCheckRollup": [
+   {
+    "__typename": "CheckRun",
+    "name": "ci",
+    "status": "COMPLETED",
+    "conclusion": "SUCCESS"
+   }
+  ],
+  "body": "",
+  "isCrossRepository": false
+ },
+ {
+  "number": 102,
+  "title": "Update all non-major dependencies",
+  "url": "https://github.com/acme/shop/pull/102",
+  "author": {
+   "is_bot": true,
+   "login": "app/renovate"
+  },
+  "headRefName": "renovate/branch-102",
+  "headRefOid": "0000000000000000000000000000000000000066",
+  "baseRefName": "main",
+  "isDraft": false,
+  "mergeable": "MERGEABLE",
+  "createdAt": "2026-10-19T08:00:00Z",
+  "statusCheckRollup": [
+   {
+    "__typename": "CheckRun",
+    "name": "ci",
+    "status": "COMPLETED",
+    "conclusion": "FAILURE"
+   }
+  ],
+  "body": "",
+  "isCrossRepository": false
+ },
+ {
+  "number": 103,
+  "title": "Update dependency lodash to v5",
+  "url": "https://github.com/acme/shop/pull/103",
+  "author": {
+   "is_bot": true,
+   "login": "app/renovate"
+  },
+  "headRefName": "renovate/branch-103",
+  "headRefOid": "0000000000000000000000000000000000000067",
+  "baseRefName": "main",
+  "isDraft": false,
+  "mergeable": "MERGEABLE",
+  "createdAt": "2026-10-20T08:00:00Z",
+  "statusCheckRollup": [
+   {
+    "__typename": "CheckRun",
+    "name": "ci",
+    "status": "COMPLETED",
+    "conclusion": "SUCCESS"
+   }
+  ],
+  "body": "",
+  "isCrossRepository": false
+ },
+ {
+  "number": 104,
+  "title": "Update dependency express to v4.20.0",
+  "url": "https://github.com/acme/shop/pull/104",
+  "author": {
+   "is_bot": true,
+   "login": "app/renovate"
+  },
+  "headRefName": "renovate/branch-104",
+  "headRefOid": "0000000000000000000000000000000000000068",
+  "baseRefName": "main",
+  "isDraft": false,
+  "mergeable": "MERGEABLE",
+  "createdAt": "2026-10-21T08:00:00Z",
+  "statusCheckRollup": [
+   {
+    "__typename": "CheckRun",
+    "name": "ci",
+    "status": "COMPLETED",
+    "conclusion": "SUCCESS"
+   }
+  ],
+  "body": "This PR contains the following updates: express ^4.18.2 -> ^4.20.0\n\n\ud83d\udc7b **Immortal**: This PR will be recreated if closed unmerged. Get config help if that's undesired.",
+  "isCrossRepository": false
+ },
+ {
+  "number": 105,
+  "title": "Bump lodash from 4.17.20 to 4.17.21",
+  "url": "https://github.com/acme/shop/pull/105",
+  "author": {
+   "is_bot": true,
+   "login": "app/dependabot"
+  },
+  "headRefName": "dependabot/branch-105",
+  "headRefOid": "0000000000000000000000000000000000000069",
+  "baseRefName": "main",
+  "isDraft": false,
+  "mergeable": "MERGEABLE",
+  "createdAt": "2026-10-22T08:00:00Z",
+  "statusCheckRollup": [
+   {
+    "__typename": "CheckRun",
+    "name": "ci",
+    "status": "COMPLETED",
+    "conclusion": "SUCCESS"
+   }
+  ],
+  "body": "",
+  "isCrossRepository": false
+ },
+ {
+  "number": 106,
+  "title": "Update dependency lodash to v4.17.21 (release/1.x)",
+  "url": "https://github.com/acme/shop/pull/106",
+  "author": {
+   "is_bot": true,
+   "login": "app/renovate"
+  },
+  "headRefName": "renovate/branch-106",
+  "headRefOid": "000000000000000000000000000000000000006a",
+  "baseRefName": "release/1.x",
+  "isDraft": false,
+  "mergeable": "MERGEABLE",
+  "createdAt": "2026-10-23T08:00:00Z",
+  "statusCheckRollup": [
+   {
+    "__typename": "CheckRun",
+    "name": "ci",
+    "status": "COMPLETED",
+    "conclusion": "SUCCESS"
+   }
+  ],
+  "body": "",
+  "isCrossRepository": false
+ },
+ {
+  "number": 107,
+  "title": "Lock file maintenance",
+  "url": "https://github.com/acme/shop/pull/107",
+  "author": {
+   "is_bot": true,
+   "login": "app/renovate"
+  },
+  "headRefName": "renovate/branch-107",
+  "headRefOid": "000000000000000000000000000000000000006b",
+  "baseRefName": "main",
+  "isDraft": false,
+  "mergeable": "MERGEABLE",
+  "createdAt": "2026-10-24T08:00:00Z",
+  "statusCheckRollup": [
+   {
+    "__typename": "CheckRun",
+    "name": "ci",
+    "status": "COMPLETED",
+    "conclusion": "SUCCESS"
+   }
+  ],
+  "body": "",
+  "isCrossRepository": false
+ },
+ {
+  "number": 108,
+  "title": "Update Rust crate serde to v1.0.210",
+  "url": "https://github.com/acme/shop/pull/108",
+  "author": {
+   "is_bot": true,
+   "login": "app/renovate"
+  },
+  "headRefName": "renovate/branch-108",
+  "headRefOid": "000000000000000000000000000000000000006c",
+  "baseRefName": "main",
+  "isDraft": false,
+  "mergeable": "MERGEABLE",
+  "createdAt": "2026-10-25T08:00:00Z",
+  "statusCheckRollup": [
+   {
+    "__typename": "CheckRun",
+    "name": "ci",
+    "status": "COMPLETED",
+    "conclusion": "SUCCESS"
+   }
+  ],
+  "body": "",
+  "isCrossRepository": false
+ },
+ {
+  "number": 109,
+  "title": "Update dependency express to v4.20.0",
+  "url": "https://github.com/acme/shop/pull/109",
+  "author": {
+   "is_bot": true,
+   "login": "app/renovate"
+  },
+  "headRefName": "renovate/branch-109",
+  "headRefOid": "000000000000000000000000000000000000006d",
+  "baseRefName": "main",
+  "isDraft": false,
+  "mergeable": "MERGEABLE",
+  "createdAt": "2026-10-26T08:00:00Z",
+  "statusCheckRollup": [
+   {
+    "__typename": "CheckRun",
+    "name": "ci",
+    "status": "COMPLETED",
+    "conclusion": "SUCCESS"
+   }
+  ],
+  "body": "",
+  "isCrossRepository": false
+ },
+ {
+  "number": 110,
+  "title": "Bump actions/checkout from 4 to 5",
+  "url": "https://github.com/acme/shop/pull/110",
+  "author": {
+   "is_bot": true,
+   "login": "app/dependabot"
+  },
+  "headRefName": "dependabot/branch-110",
+  "headRefOid": "000000000000000000000000000000000000006e",
+  "baseRefName": "main",
+  "isDraft": false,
+  "mergeable": "MERGEABLE",
+  "createdAt": "2026-10-27T08:00:00Z",
+  "statusCheckRollup": [
+   {
+    "__typename": "CheckRun",
+    "name": "ci",
+    "status": "COMPLETED",
+    "conclusion": "SUCCESS"
+   }
+  ],
+  "body": "",
+  "isCrossRepository": false
+ },
+ {
+  "number": 111,
+  "title": "Bump the docker group with 2 updates",
+  "url": "https://github.com/acme/shop/pull/111",
+  "author": {
+   "is_bot": true,
+   "login": "app/dependabot"
+  },
+  "headRefName": "dependabot/branch-111",
+  "headRefOid": "000000000000000000000000000000000000006f",
+  "baseRefName": "main",
+  "isDraft": false,
+  "mergeable": "MERGEABLE",
+  "createdAt": "2026-10-28T08:00:00Z",
+  "statusCheckRollup": [
+   {
+    "__typename": "CheckRun",
+    "name": "ci",
+    "status": "COMPLETED",
+    "conclusion": "SUCCESS"
+   }
+  ],
+  "body": "",
+  "isCrossRepository": false
+ },
+ {
+  "number": 112,
+  "title": "Bump node from 20.11-alpine to 20.15-alpine",
+  "url": "https://github.com/acme/shop/pull/112",
+  "author": {
+   "is_bot": true,
+   "login": "app/dependabot"
+  },
+  "headRefName": "dependabot/branch-112",
+  "headRefOid": "0000000000000000000000000000000000000070",
+  "baseRefName": "main",
+  "isDraft": true,
+  "mergeable": "MERGEABLE",
+  "createdAt": "2026-10-01T08:00:00Z",
+  "statusCheckRollup": [
+   {
+    "__typename": "CheckRun",
+    "name": "ci",
+    "status": "COMPLETED",
+    "conclusion": "SUCCESS"
+   }
+  ],
+  "body": "",
+  "isCrossRepository": false
+ },
+ {
+  "number": 113,
+  "title": "Bump postgres from 16.3 to 16.5",
+  "url": "https://github.com/acme/shop/pull/113",
+  "author": {
+   "is_bot": true,
+   "login": "app/dependabot"
+  },
+  "headRefName": "dependabot/branch-113",
+  "headRefOid": "0000000000000000000000000000000000000071",
+  "baseRefName": "main",
+  "isDraft": false,
+  "mergeable": "MERGEABLE",
+  "createdAt": "2026-10-02T08:00:00Z",
+  "statusCheckRollup": [
+   {
+    "__typename": "CheckRun",
+    "name": "ci",
+    "status": "COMPLETED",
+    "conclusion": "SUCCESS"
+   }
+  ],
+  "body": "",
+  "isCrossRepository": false
+ }
+]

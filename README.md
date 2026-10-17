@@ -2,7 +2,7 @@
 
 A curated collection of [Agent Skills](https://code.claude.com/docs/en/skills) for Claude Code and compatible AI coding agents, organized by technology stack.
 
-Each skill is a self-contained `SKILL.md` file that teaches the agent a specific workflow or set of best practices — from implementing .NET features and reviewing Angular code to writing Gherkin scenarios and refactoring safely. Skills are loaded automatically when relevant, or can be invoked explicitly by name. The [Development](skills/development) category loads on explicit invocation only, except `upgrade-gh-wf-actions`.
+Each skill is a self-contained `SKILL.md` file that teaches the agent a specific workflow or set of best practices — from implementing .NET features and reviewing Angular code to writing Gherkin scenarios and refactoring safely. Skills are loaded automatically when relevant, or can be invoked explicitly by name. The [Development](skills/development) category loads on explicit invocation only, except `upgrade-gh-wf-actions` and `dep-pr-cleanup`.
 
 The repository's skills are organized in the following categories:
 
@@ -11,7 +11,7 @@ The repository's skills are organized in the following categories:
 | [Angular](skills/angular) | 11 | Angular development, testing, reviews, libraries |
 | [.NET](skills/dotnet) | 11 | .NET/C# development, ASP.NET Core, EF Core, NuGet |
 | [General](skills/general) | 7 | Language-agnostic workflows: reviews, BDD, docs, prompts |
-| [Development](skills/development) | 11 | Requirement engineering, diagnosis, and code quality: interview-driven specifications, traceable development plans, plan-driven and plan-less direct implementation, workflow runs under a user-confirmed skill selection, root-cause bug diagnosis, design-driven code writing, evidence-driven refactoring, unattended goal-driven iteration loops, CLAUDE.md synchronisation with the shared upstream template, and age-gated, SHA-pinned GitHub Actions upgrades (explicit invocation only, except `upgrade-gh-wf-actions`) |
+| [Development](skills/development) | 12 | Requirement engineering, diagnosis, and code quality: interview-driven specifications, traceable development plans, plan-driven and plan-less direct implementation, workflow runs under a user-confirmed skill selection, root-cause bug diagnosis, design-driven code writing, evidence-driven refactoring, unattended goal-driven iteration loops, CLAUDE.md synchronisation with the shared upstream template, age-gated, SHA-pinned GitHub Actions upgrades, and cleanup of superseded Dependabot/Renovate pull requests (explicit invocation only, except `upgrade-gh-wf-actions` and `dep-pr-cleanup`) |
 | [Java](skills/java) | 4 | Spring Boot, JUnit 5, Javadoc |
 | [TypeScript](skills/typescript) | 2 | Jest, RxJS |
 
@@ -26,7 +26,7 @@ work in both **Claude Code** and the **GitHub Copilot CLI** — the two read the
 |---|---|---|
 | `cc-ai-angular` | 11 | The complete [Angular](skills/angular) category: `angular`, `angular-dev`, `angular-fundamentals`, `angular-components`, `angular-state`, `angular-rxjs`, `angular-library-builder`, `angular-tester`, `angular-reviewer`, `angular-package-manager`, `angular-tsdoc` |
 | `cc-ai-dotnet` | 11 | The complete [.NET](skills/dotnet) category: `dotnet`, `dotnet-dev`, `dotnet-fundamentals`, `dotnet-aspnet`, `dotnet-ef-core`, `dotnet-sdk-builder`, `dotnet-tester`, `dotnet-reviewer`, `dotnet-inspect`, `dotnet-nuget-manager`, `dotnet-xmldocs` |
-| `cc-ai-dev` | 11 | The complete [Development](skills/development) category: `create-dev-spec`, `create-dev-plan`, `implement-dev-plan`, `implement-direct`, `run-with-skills`, `diagnose-bug`, `code-design`, `refactor`, `auto-loop`, `claude-md-downstream`, `upgrade-gh-wf-actions` |
+| `cc-ai-dev` | 12 | The complete [Development](skills/development) category: `create-dev-spec`, `create-dev-plan`, `implement-dev-plan`, `implement-direct`, `run-with-skills`, `diagnose-bug`, `code-design`, `refactor`, `auto-loop`, `claude-md-downstream`, `upgrade-gh-wf-actions`, `dep-pr-cleanup` |
 
 ### Claude Code
 
@@ -231,12 +231,14 @@ Restart Claude Code afterwards and run `/skills` to confirm the skills are loade
 
 ### Development
 
-Every skill in this category except `upgrade-gh-wf-actions` loads on **explicit invocation only** —
+Every skill in this category except `upgrade-gh-wf-actions` and `dep-pr-cleanup` loads on **explicit invocation only** —
 `/name` (`/cc-ai-dev:name` when installed as a plugin in Claude Code) or the skill name in the prompt.
 None of them activates from a task description alone; "spec this out", "why does this test fail", or
 "clean this up" are answered as ordinary requests. `upgrade-gh-wf-actions` also activates on a
 request to upgrade or SHA-pin a repository's GitHub Actions; it writes nothing before the user has
-picked the upgrades.
+picked the upgrades. `dep-pr-cleanup` also activates on a request to clean up or consolidate the
+open pull requests of Dependabot or Renovate; it closes nothing before the user has confirmed the
+selection.
 
 | Skill | Description |
 |---|---|
@@ -251,6 +253,7 @@ picked the upgrades.
 | `auto-loop` | Runs an explicitly requested goal as an unattended iteration loop: a setup interview fixes criteria, verification commands, budget, scope limits, and Git strategy, then every round takes one step against `docs/auto-loop/<slug>.md` as its only memory, commits on green and rolls back on red. Stops on met criteria, exhausted budget, stagnation, a needed scope violation, or a contradiction, always with a closing report. Commits to its own branch, never merges or pushes |
 | `claude-md-downstream` | Synchronises a `CLAUDE.md` with the shared template published in this repository, in `repo` mode (the working repository's root `CLAUDE.md`) or `user` mode (`~/.claude/CLAUDE.md`): finds the template version the file grew out of, so local additions and upstream changes can be told apart, classifies every difference, checks the merged result for contradictions, resolves each conflict with the user, and writes only after approval — with a backup, and never a commit |
 | `upgrade-gh-wf-actions` | Upgrades the GitHub Actions used in `.github/workflows` and composite actions: finds every remote action with a newer release that is at least a minimum age old (default 7 days, adjustable) to sit out freshly compromised releases, lists action, current version, new version, and age — newest same-major and newest overall side by side, plus pin-only rows for mutable tags — flags rows whose release notes mention breaking changes or deprecations and targets that still declare a runtime GitHub removed, lets the user multi-select, rewrites the chosen lines to `@<commit-sha> # vX.Y.Z` with the SHA resolved from the action's own tags, and summarises what the release notes of the applied upgrades mean for the repository. Never commits |
+| `dep-pr-cleanup` | Consolidates the open pull requests of dependency bots (Dependabot, Mend Renovate, further bot accounts configurable) on GitHub: reads the manifest diff of every bot PR (NuGet, npm, Maven, Gradle, Python, GitHub Actions, Docker, Renovate-annotated values; lockfiles ignored), shows the PRs with overlapping package updates side by side, lets the user decide globally and per pair whether a newer version — and a newer major version — counts as a replacement, proposes a PR as obsolete only when every one of its updates is covered by PRs of the same bot that stay open, and after confirmation and a fresh re-check closes the chosen PRs with a "superseded by" comment and deletes their branches. Report in `docs/dep-pr-cleanup/`; Python scripts, Windows-compatible. Never commits |
 
 ### Java
 

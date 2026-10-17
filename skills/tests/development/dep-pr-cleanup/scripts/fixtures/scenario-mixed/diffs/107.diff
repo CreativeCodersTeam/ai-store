@@ -1,0 +1,8 @@
+diff --git a/package-lock.json b/package-lock.json
+index 1111111..2222222 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -10,2 +10,2 @@
+     "node_modules/x": {
+-      "version": "1.0.0",
++      "version": "1.0.1",
